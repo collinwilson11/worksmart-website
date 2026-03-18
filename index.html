@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>WorkSmart SC — Upstate South Carolina</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --navy:    #0A1F3D;
+      --navy2:   #0F2850;
+      --slate:   #1A3A5C;
+      --silver:  #7A9BB8;
+      --light:   #EBF4F0;
+      --white:   #FFFFFF;
+      --accent:  #2E8B57;
+      --accent2: #3AAD6E;
+      --text:    #0D1F35;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', sans-serif; background: var(--white); color: var(--text); overflow-x: hidden; }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.2rem 4rem;
+      background: rgba(15,31,61,0.97);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(46,139,87,0.2);
+    }
+    .nav-logo { font-family: 'Playfair Display', serif; font-size: 1.35rem; font-weight: 700; color: var(--white); letter-spacing: 0.02em; }
+    .nav-logo span { color: var(--accent); }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a { color: rgba(255,255,255,0.75); text-decoration: none; font-size: 0.875rem; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--accent); }
+    .nav-cta { background: var(--accent); color: var(--navy); padding: 0.6rem 1.5rem; border-radius: 3px; font-size: 0.875rem; font-weight: 600; text-decoration: none; letter-spacing: 0.04em; transition: background 0.2s, transform 0.2s; }
+    .nav-cta:hover { background: var(--accent2); transform: translateY(-1px); }
+
+    /* HERO */
+    #hero {
+      min-height: 100vh;
+      background: var(--navy);
+      display: flex; align-items: center;
+      position: relative; overflow: hidden;
+      padding: 8rem 4rem 5rem;
+    }
+    .hero-grid { position: absolute; inset: 0; opacity: 0.04; background-image: linear-gradient(rgba(46,139,87,0.8) 1px, transparent 1px), linear-gradient(90deg, rgba(46,139,87,0.8) 1px, transparent 1px); background-size: 60px 60px; }
+    .hero-glow { position: absolute; top: -200px; right: -200px; width: 700px; height: 700px; border-radius: 50%; background: radial-gradient(circle, rgba(46,139,87,0.1) 0%, transparent 70%); pointer-events: none; }
+    .hero-glow2 { position: absolute; bottom: -300px; left: -100px; width: 600px; height: 600px; border-radius: 50%; background: radial-gradient(circle, rgba(44,62,90,0.6) 0%, transparent 70%); pointer-events: none; }
+    .hero-content { position: relative; z-index: 2; max-width: 700px; }
+    .hero-eyebrow { display: inline-flex; align-items: center; gap: 0.75rem; background: rgba(46,139,87,0.12); border: 1px solid rgba(46,139,87,0.3); padding: 0.4rem 1rem; border-radius: 2px; margin-bottom: 2rem; opacity: 0; animation: fadeUp 0.8s 0.2s forwards; }
+    .hero-eyebrow-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1);} 50%{opacity:0.5;transform:scale(1.4);} }
+    .hero-eyebrow span { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); }
+    .hero-title { font-family: 'Playfair Display', serif; font-size: clamp(3rem,6vw,5.5rem); font-weight: 900; line-height: 1.05; color: var(--white); margin-bottom: 1.5rem; opacity: 0; animation: fadeUp 0.8s 0.4s forwards; }
+    .hero-title em { color: var(--accent); font-style: normal; }
+    .hero-sub { font-size: 1.15rem; line-height: 1.7; color: rgba(255,255,255,0.65); max-width: 520px; margin-bottom: 2.5rem; font-weight: 300; opacity: 0; animation: fadeUp 0.8s 0.6s forwards; }
+    .hero-actions { display: flex; gap: 1rem; align-items: center; opacity: 0; animation: fadeUp 0.8s 0.8s forwards; }
+    .btn-primary { background: var(--accent); color: var(--navy); padding: 0.9rem 2.2rem; border-radius: 3px; font-weight: 700; font-size: 0.95rem; text-decoration: none; letter-spacing: 0.03em; transition: all 0.2s; display: inline-block; }
+    .btn-primary:hover { background: var(--accent2); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(46,139,87,0.3); }
+    .btn-secondary { color: rgba(255,255,255,0.75); font-size: 0.95rem; text-decoration: none; display: flex; align-items: center; gap: 0.5rem; transition: color 0.2s; font-weight: 500; }
+    .btn-secondary:hover { color: var(--accent); }
+    .btn-arrow { font-size: 1.1rem; transition: transform 0.2s; }
+    .btn-secondary:hover .btn-arrow { transform: translateX(4px); }
+    .hero-stats { position: absolute; right: 4rem; bottom: 4rem; display: flex; gap: 3rem; z-index: 2; opacity: 0; animation: fadeUp 0.8s 1s forwards; }
+    @media (max-width: 700px) {
+      .hero-stats { position: static !important; margin-top: 2.5rem; flex-wrap: wrap; gap: 1.5rem; opacity: 1 !important; animation: none !important; justify-content: flex-start; }
+    }
+    .stat { text-align: center; }
+    .stat-num { font-family: 'Playfair Display', serif; font-size: 2.2rem; font-weight: 700; color: var(--accent); display: block; }
+    .stat-label { font-size: 0.75rem; color: rgba(255,255,255,0.5); letter-spacing: 0.08em; text-transform: uppercase; }
+    @keyframes fadeUp { from{opacity:0;transform:translateY(24px);} to{opacity:1;transform:translateY(0);} }
+
+    /* SECTIONS */
+    section { padding: 6rem 4rem; }
+    .section-label { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.75rem; display: block; }
+    .section-title { font-family: 'Playfair Display', serif; font-size: clamp(2rem,4vw,3rem); font-weight: 700; color: var(--navy); line-height: 1.15; margin-bottom: 1.25rem; }
+    .section-sub { font-size: 1.05rem; color: var(--silver); line-height: 1.7; max-width: 540px; font-weight: 300; }
+
+    /* PROBLEMS */
+    #problems { background: var(--light); }
+    .problems-inner { max-width: 1100px; margin: 0 auto; }
+    .problems-header { margin-bottom: 3.5rem; }
+    .problems-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5px; background: #D0D8E4; border: 1.5px solid #D0D8E4; border-radius: 6px; overflow: hidden; }
+    .problem-card { background: var(--white); padding: 2.2rem; transition: background 0.2s; }
+    .problem-card:hover { background: #F7F9FC; }
+    .problem-icon { width: 44px; height: 44px; border-radius: 4px; background: var(--navy); display: flex; align-items: center; justify-content: center; margin-bottom: 1.2rem; font-size: 1.2rem; }
+    .problem-title { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; color: var(--navy); margin-bottom: 0.6rem; }
+    .problem-desc { font-size: 0.9rem; color: var(--silver); line-height: 1.65; font-weight: 300; }
+
+    /* SERVICES */
+    #services { background: var(--white); }
+    .services-inner { max-width: 1100px; margin: 0 auto; }
+    .services-layout { display: grid; grid-template-columns: 1fr 1.8fr; gap: 5rem; align-items: start; }
+    .services-list { display: flex; flex-direction: column; gap: 1px; background: #E2E8F0; border: 1px solid #E2E8F0; border-radius: 6px; overflow: hidden; margin-top: 2.5rem; }
+    .service-item { background: var(--white); padding: 1.6rem 1.8rem; display: flex; align-items: flex-start; gap: 1.2rem; cursor: pointer; transition: all 0.2s; border-left: 3px solid transparent; }
+    .service-item:hover, .service-item.active { background: var(--navy); border-left-color: var(--accent); }
+    .service-item:hover .service-name, .service-item.active .service-name { color: var(--white); }
+    .service-item:hover .service-brief, .service-item.active .service-brief { color: rgba(255,255,255,0.55); }
+    .service-num { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 700; color: var(--accent); min-width: 2rem; }
+    .service-name { font-size: 0.95rem; font-weight: 600; color: var(--navy); margin-bottom: 0.2rem; transition: color 0.2s; }
+    .service-brief { font-size: 0.82rem; color: var(--silver); line-height: 1.5; transition: color 0.2s; }
+    .services-detail { position: sticky; top: 100px; }
+    .detail-card { background: var(--navy); border-radius: 8px; padding: 3rem; position: relative; overflow: hidden; }
+    .detail-card::before { content:''; position: absolute; top: -60px; right: -60px; width: 200px; height: 200px; border-radius: 50%; background: radial-gradient(circle, rgba(46,139,87,0.12) 0%, transparent 70%); }
+    .detail-tag { display: inline-block; background: rgba(46,139,87,0.15); border: 1px solid rgba(46,139,87,0.3); color: var(--accent); font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.3rem 0.8rem; border-radius: 2px; margin-bottom: 1.5rem; }
+    .detail-title { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 700; color: var(--white); margin-bottom: 1rem; line-height: 1.2; }
+    .detail-desc { font-size: 0.95rem; color: rgba(255,255,255,0.65); line-height: 1.75; margin-bottom: 1.8rem; font-weight: 300; }
+    .detail-points { list-style: none; display: flex; flex-direction: column; gap: 0.7rem; }
+    .detail-points li { display: flex; align-items: flex-start; gap: 0.75rem; font-size: 0.88rem; color: rgba(255,255,255,0.75); line-height: 1.5; }
+    .detail-points li::before { content: '→'; color: var(--accent); font-weight: 700; flex-shrink: 0; margin-top: 0.05rem; }
+
+    /* INDUSTRIES */
+    #industries { background: var(--navy); padding: 6rem 4rem; }
+    .industries-inner { max-width: 1100px; margin: 0 auto; }
+    .industries-inner .section-title { color: var(--white); }
+    .industries-inner .section-sub { color: rgba(255,255,255,0.5); }
+    .industries-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 1rem; margin-top: 3rem; }
+    .industry-card { border: 1px solid rgba(255,255,255,0.08); border-radius: 6px; padding: 1.8rem 1.5rem; transition: all 0.25s; cursor: default; background: rgba(255,255,255,0.03); }
+    .industry-card:hover { background: rgba(46,139,87,0.1); border-color: rgba(46,139,87,0.3); transform: translateY(-3px); }
+    .industry-icon { font-size: 1.8rem; margin-bottom: 1rem; display: block; }
+    .industry-name { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; color: var(--white); margin-bottom: 0.5rem; }
+    .industry-pain { font-size: 0.82rem; color: rgba(255,255,255,0.45); line-height: 1.6; font-weight: 300; }
+
+    /* PROCESS */
+    #process { background: var(--light); }
+    .process-inner { max-width: 1100px; margin: 0 auto; }
+    .process-steps { display: grid; grid-template-columns: repeat(4,1fr); gap: 0; margin-top: 3.5rem; position: relative; }
+    .process-steps::before { content:''; position: absolute; top: 2.5rem; left: 10%; right: 10%; height: 1px; background: linear-gradient(90deg, transparent, var(--accent), transparent); z-index: 0; }
+    .process-step { text-align: center; padding: 0 1.5rem; position: relative; z-index: 1; }
+    .step-circle { width: 52px; height: 52px; border-radius: 50%; background: var(--navy); border: 2px solid var(--accent); display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700; color: var(--accent); }
+    .step-title { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; color: var(--navy); margin-bottom: 0.5rem; }
+    .step-desc { font-size: 0.85rem; color: var(--silver); line-height: 1.6; font-weight: 300; }
+
+    /* PRICING */
+    #pricing { background: var(--white); }
+    .pricing-inner { max-width: 900px; margin: 0 auto; text-align: center; }
+    .pricing-inner .section-sub { margin: 0 auto 3.5rem; }
+    .pricing-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; text-align: left; }
+    .pricing-card { border: 1.5px solid #E2E8F0; border-radius: 8px; padding: 2.5rem; position: relative; transition: all 0.25s; }
+    .pricing-card:hover { border-color: var(--accent); transform: translateY(-3px); box-shadow: 0 12px 40px rgba(15,31,61,0.1); }
+    .pricing-card.featured { background: var(--navy); border-color: var(--accent); }
+    .pricing-badge { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: var(--accent); color: var(--navy); font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.25rem 1rem; border-radius: 20px; }
+    .pricing-tier { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.5rem; }
+    .pricing-name { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 700; color: var(--navy); margin-bottom: 1rem; }
+    .pricing-card.featured .pricing-name { color: var(--white); }
+    .pricing-price { font-family: 'Playfair Display', serif; font-size: 2.8rem; font-weight: 900; color: var(--navy); line-height: 1; }
+    .pricing-card.featured .pricing-price { color: var(--accent); }
+    .pricing-period { font-size: 0.85rem; color: var(--silver); font-weight: 300; }
+    .pricing-divider { height: 1px; background: #E2E8F0; margin: 1.5rem 0; }
+    .pricing-card.featured .pricing-divider { background: rgba(255,255,255,0.12); }
+    .pricing-setup { font-size: 0.82rem; color: var(--silver); margin-bottom: 1.5rem; }
+    .pricing-card.featured .pricing-setup { color: rgba(255,255,255,0.5); }
+    .pricing-features { list-style: none; display: flex; flex-direction: column; gap: 0.65rem; margin-bottom: 2rem; }
+    .pricing-features li { display: flex; align-items: flex-start; gap: 0.7rem; font-size: 0.88rem; color: #4A5568; line-height: 1.5; }
+    .pricing-card.featured .pricing-features li { color: rgba(255,255,255,0.75); }
+    .pricing-features li::before { content: '✓'; color: var(--accent); font-weight: 700; flex-shrink: 0; }
+    .btn-plan { display: block; text-align: center; padding: 0.9rem; border-radius: 4px; font-weight: 700; font-size: 0.9rem; text-decoration: none; transition: all 0.2s; letter-spacing: 0.03em; }
+    .btn-plan-outline { border: 1.5px solid var(--navy); color: var(--navy); }
+    .btn-plan-outline:hover { background: var(--navy); color: var(--white); }
+    .btn-plan-filled { background: var(--accent); color: var(--navy); }
+    .btn-plan-filled:hover { background: var(--accent2); transform: translateY(-1px); }
+
+    /* CONTACT */
+    #contact { background: var(--navy); padding: 7rem 4rem; text-align: center; position: relative; overflow: hidden; }
+    #contact::before { content:''; position: absolute; inset: 0; background: radial-gradient(ellipse at center, rgba(46,139,87,0.07) 0%, transparent 70%); }
+    .contact-inner { position: relative; z-index: 1; max-width: 620px; margin: 0 auto; }
+    #contact .section-title { color: var(--white); }
+    #contact .section-sub { color: rgba(255,255,255,0.55); margin: 0 auto 2.5rem; }
+    .contact-form { display: flex; flex-direction: column; gap: 1rem; max-width: 480px; margin: 0 auto; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .form-input { background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12); border-radius: 4px; padding: 0.85rem 1.1rem; color: var(--white); font-family: 'DM Sans', sans-serif; font-size: 0.9rem; outline: none; transition: border-color 0.2s; }
+    .form-input::placeholder { color: rgba(255,255,255,0.35); }
+    .form-input:focus { border-color: var(--accent); }
+    .form-select { background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12); border-radius: 4px; padding: 0.85rem 1.1rem; color: rgba(255,255,255,0.7); font-family: 'DM Sans', sans-serif; font-size: 0.9rem; outline: none; transition: border-color 0.2s; appearance: none; }
+    .form-select option { background: var(--navy2); color: var(--white); }
+    .form-textarea { background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12); border-radius: 4px; padding: 0.85rem 1.1rem; color: var(--white); font-family: 'DM Sans', sans-serif; font-size: 0.9rem; outline: none; transition: border-color 0.2s; resize: vertical; min-height: 100px; }
+    .form-textarea::placeholder { color: rgba(255,255,255,0.35); }
+    .form-textarea:focus { border-color: var(--accent); }
+    .btn-submit { background: var(--accent); color: var(--navy); border: none; border-radius: 4px; padding: 1rem; font-family: 'DM Sans', sans-serif; font-size: 0.95rem; font-weight: 700; cursor: pointer; transition: all 0.2s; letter-spacing: 0.04em; }
+    .btn-submit:hover { background: var(--accent2); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(46,139,87,0.3); }
+
+    /* FOOTER */
+    footer { background: #080F1E; padding: 2rem 4rem; display: flex; align-items: center; justify-content: space-between; }
+    .footer-logo { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; color: var(--white); }
+    .footer-logo span { color: var(--accent); }
+    .footer-copy { font-size: 0.8rem; color: rgba(255,255,255,0.3); }
+    .footer-location { font-size: 0.8rem; color: rgba(255,255,255,0.35); display: flex; align-items: center; gap: 0.4rem; }
+
+    /* REVEAL */
+    .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* RESPONSIVE */
+    @media (max-width: 900px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { display: none; }
+      section { padding: 4rem 1.5rem; }
+      #hero { padding: 7rem 1.5rem 4rem; }
+      .problems-grid { grid-template-columns: 1fr; }
+      .services-layout { grid-template-columns: 1fr; }
+      .industries-grid { grid-template-columns: repeat(2,1fr); }
+      .process-steps { grid-template-columns: 1fr 1fr; }
+      .process-steps::before { display: none; }
+      .pricing-grid { grid-template-columns: 1fr; }
+      .form-row { grid-template-columns: 1fr; }
+      footer { flex-direction: column; gap: 0.75rem; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Work<span>Smart</span> SC</div>
+  <ul class="nav-links">
+    <li><a href="#problems">Problems</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#industries">Industries</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+  </ul>
+  <a href="#contact" class="nav-cta">Get a Free Consultation</a>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-glow2"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">
+      <div class="hero-eyebrow-dot"></div>
+      <span>Greenville, SC — AI Automation</span>
+    </div>
+    <h1 class="hero-title">Work Smarter.<br/><em>Grow Faster.</em></h1>
+    <p class="hero-sub">We build smart systems that handle the repetitive, time-consuming work holding your business back — so your team can focus on the work only they can do.</p>
+    <div class="hero-actions">
+      <a href="#contact" class="btn-primary">Book a Free Consultation</a>
+      <a href="#services" class="btn-secondary">See What We Build <span class="btn-arrow">→</span></a>
+    </div>
+  </div>
+  <div class="hero-stats">
+    <div class="stat"><span class="stat-num">10+</span><span class="stat-label">Hours Saved Weekly</span></div>
+    <div class="stat"><span class="stat-num">48hr</span><span class="stat-label">Avg. Build Time</span></div>
+    <div class="stat"><span class="stat-num">ROI</span><span class="stat-label">From Month One</span></div>
+  </div>
+</section>
+
+<!-- PROBLEMS -->
+<section id="problems">
+  <div class="problems-inner">
+    <div class="problems-header reveal">
+      <span class="section-label">The Problem</span>
+      <h2 class="section-title">Your team is buried in work<br/>that shouldn't require a human.</h2>
+      <p class="section-sub">Every hour spent on scheduling, follow-ups, and repetitive admin is an hour not spent on growing your business or serving your clients.</p>
+    </div>
+    <div class="problems-grid reveal">
+      <div class="problem-card"><div class="problem-icon">📅</div><div class="problem-title">Scheduling Chaos</div><p class="problem-desc">Staff spending hours on the phone booking, rescheduling, and confirming appointments that an AI can handle automatically 24/7.</p></div>
+      <div class="problem-card"><div class="problem-icon">🔁</div><div class="problem-title">Repetitive Follow-Ups</div><p class="problem-desc">Leads going cold, invoices going unpaid, and customers going uncontacted because nobody had time to send the same message for the hundredth time.</p></div>
+      <div class="problem-card"><div class="problem-icon">📦</div><div class="problem-title">Manual Supply Ordering</div><p class="problem-desc">Meetings held and hours spent determining what supplies to order — when usage patterns are predictable and the decision could be automated entirely.</p></div>
+      <div class="problem-card"><div class="problem-icon">💬</div><div class="problem-title">Slow Customer Response</div><p class="problem-desc">Inquiries sitting unanswered for hours while staff are busy. First businesses to respond win the customer — AI responds in seconds, every time.</p></div>
+      <div class="problem-card"><div class="problem-icon">📋</div><div class="problem-title">Data Entry Everywhere</div><p class="problem-desc">Information living in emails, texts, and sticky notes instead of your systems — creating errors, gaps, and hours of manual reconciliation every week.</p></div>
+      <div class="problem-card"><div class="problem-icon">⚠️</div><div class="problem-title">Things Falling Through</div><p class="problem-desc">Tasks that depend on someone remembering to do them. AI doesn't forget. It closes every loop, confirms every action, and escalates when something needs a human.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="services-inner">
+    <div class="services-layout">
+      <div>
+        <div class="reveal">
+          <span class="section-label">What We Build</span>
+          <h2 class="section-title">Smart systems built for how your business actually works.</h2>
+          <p class="section-sub">Every system is custom-built for your specific workflows — not a generic software subscription that requires you to change how you operate.</p>
+        </div>
+        <div class="services-list reveal">
+          <div class="service-item active" onclick="setService(0)"><span class="service-num">01</span><div><div class="service-name">Scheduling & Booking Agents</div><div class="service-brief">Automated appointment management, confirmations, and reminders</div></div></div>
+          <div class="service-item" onclick="setService(1)"><span class="service-num">02</span><div><div class="service-name">Customer Communication Agents</div><div class="service-brief">Instant response, follow-up sequences, and inquiry handling</div></div></div>
+          <div class="service-item" onclick="setService(2)"><span class="service-num">03</span><div><div class="service-name">Operations & Supply Agents</div><div class="service-brief">Inventory tracking, automated ordering, and supply management</div></div></div>
+          <div class="service-item" onclick="setService(3)"><span class="service-num">04</span><div><div class="service-name">Workflow Automation</div><div class="service-brief">Connect your existing tools and eliminate manual data transfer</div></div></div>
+          <div class="service-item" onclick="setService(4)"><span class="service-num">05</span><div><div class="service-name">AI-Powered SEO Management</div><div class="service-brief">AI that actively manages your Google ranking and local visibility</div></div></div>
+        </div>
+      </div>
+      <div class="services-detail reveal">
+        <div class="detail-card" id="detail-card">
+          <div class="detail-tag" id="detail-tag">Most Popular</div>
+          <h3 class="detail-title" id="detail-title">Scheduling & Booking Agents</h3>
+          <p class="detail-desc" id="detail-desc">An AI agent that handles your entire appointment workflow — booking, confirming, reminding, and rescheduling — without a single staff member touching it. Available 24/7, never puts a caller on hold, and integrates with your existing calendar system.</p>
+          <ul class="detail-points" id="detail-points">
+            <li>Answers booking requests via text, web chat, or phone</li>
+            <li>Sends automated confirmations and 24-hour reminders</li>
+            <li>Handles cancellations and fills slots from a waitlist automatically</li>
+            <li>Escalates complex situations to a human instantly</li>
+            <li>Works with your existing calendar — no new software to learn</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INDUSTRIES -->
+<section id="industries">
+  <div class="industries-inner">
+    <div class="reveal">
+      <span class="section-label" style="color:var(--accent)">Who We Serve</span>
+      <h2 class="section-title">Built for Upstate SC's business community.</h2>
+      <p class="section-sub">We specialize in local businesses where time is money and repetitive admin is costing both.</p>
+    </div>
+    <div class="industries-grid reveal">
+      <div class="industry-card"><span class="industry-icon">🏥</span><div class="industry-name">Medical & PT Practices</div><p class="industry-pain">Scheduling backlogs, supply ordering, insurance follow-ups, and no-shows all automated.</p></div>
+      <div class="industry-card"><span class="industry-icon">⚖️</span><div class="industry-name">Law Firms</div><p class="industry-pain">Client intake, consultation scheduling, document follow-ups, and lead response handled before staff arrive.</p></div>
+      <div class="industry-card"><span class="industry-icon">🔧</span><div class="industry-name">Contractors & Trades</div><p class="industry-pain">Quote follow-ups, job scheduling, maintenance reminders, and supply reorder automation.</p></div>
+      <div class="industry-card"><span class="industry-icon">🏡</span><div class="industry-name">Real Estate</div><p class="industry-pain">New leads contacted in under 60 seconds, showing scheduling automated, and long-term nurture sequences.</p></div>
+      <div class="industry-card"><span class="industry-icon">💆</span><div class="industry-name">Wellness & Fitness</div><p class="industry-pain">Class bookings, membership inquiries, cancellation win-back, and client check-in sequences automated.</p></div>
+      <div class="industry-card"><span class="industry-icon">🦷</span><div class="industry-name">Dental Practices</div><p class="industry-pain">Recall reminders, appointment confirmations, new patient intake, and supply management without staff involvement.</p></div>
+      <div class="industry-card"><span class="industry-icon">🏘️</span><div class="industry-name">Property Management</div><p class="industry-pain">Maintenance requests, vendor scheduling, tenant communication, and lease renewals automated end-to-end.</p></div>
+      <div class="industry-card"><span class="industry-icon">🍽️</span><div class="industry-name">Restaurants & Catering</div><p class="industry-pain">Reservation management, event inquiries, catering quote follow-ups, and supplier reorder automation.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section id="process">
+  <div class="process-inner">
+    <div class="reveal" style="text-align:center;max-width:600px;margin:0 auto 1rem;">
+      <span class="section-label">How It Works</span>
+      <h2 class="section-title">Up and running in days, not months.</h2>
+      <p class="section-sub" style="margin:0 auto;">No lengthy implementations. No learning new software. We build around how you already work.</p>
+    </div>
+    <div class="process-steps reveal">
+      <div class="process-step"><div class="step-circle">1</div><div class="step-title">Discovery Call</div><p class="step-desc">We learn exactly where your team's time is being consumed and identify the highest-impact automation opportunities.</p></div>
+      <div class="process-step"><div class="step-circle">2</div><div class="step-title">Custom Build</div><p class="step-desc">We build your AI agent around your specific workflows, tools, and business rules — not a generic template.</p></div>
+      <div class="process-step"><div class="step-circle">3</div><div class="step-title">Live Demo</div><p class="step-desc">You see your agent handling real scenarios from your business before anything goes live. Nothing surprises you.</p></div>
+      <div class="process-step"><div class="step-circle">4</div><div class="step-title">Ongoing Support</div><p class="step-desc">We monitor, refine, and improve your agent monthly as your business evolves. You're never on your own.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing">
+  <div class="pricing-inner">
+    <div class="reveal">
+      <span class="section-label">Pricing</span>
+      <h2 class="section-title">Simple, transparent pricing.</h2>
+      <p class="section-sub">A one-time setup fee to build your agent, then a low monthly retainer to keep it running and improving. Most clients see full ROI within the first 30 days.</p>
+    </div>
+    <div class="pricing-grid reveal">
+      <div class="pricing-card">
+        <div class="pricing-tier">Starter</div>
+        <div class="pricing-name">Single Agent</div>
+        <div class="pricing-price">$500<span style="font-size:1rem;font-weight:400">/mo</span></div>
+        <div class="pricing-period">+ one-time $750 setup fee</div>
+        <div class="pricing-divider"></div>
+        <div class="pricing-setup">Best for: Single-location businesses with one core automation need</div>
+        <ul class="pricing-features">
+          <li>One custom AI agent</li>
+          <li>Integration with your existing tools</li>
+          <li>SMS and email automation</li>
+          <li>Monthly performance review</li>
+          <li>Email support</li>
+        </ul>
+        <a href="#contact" class="btn-plan btn-plan-outline">Get Started</a>
+      </div>
+      <div class="pricing-card featured">
+        <div class="pricing-badge">Most Popular</div>
+        <div class="pricing-tier">Growth</div>
+        <div class="pricing-name">Full Operations Suite</div>
+        <div class="pricing-price" style="color:var(--accent)">$1,200<span style="font-size:1rem;font-weight:400;color:rgba(255,255,255,0.5)">/mo</span></div>
+        <div class="pricing-period" style="color:rgba(255,255,255,0.4)">+ one-time $1,500 setup fee</div>
+        <div class="pricing-divider"></div>
+        <div class="pricing-setup">Best for: Practices and businesses with multiple automation needs</div>
+        <ul class="pricing-features">
+          <li>Up to 3 custom AI agents</li>
+          <li>Full workflow integration</li>
+          <li>SMS, email, and web chat automation</li>
+          <li>Weekly performance reporting</li>
+          <li>Priority support with same-day response</li>
+          <li>Quarterly strategy review</li>
+        </ul>
+        <a href="#contact" class="btn-plan btn-plan-filled">Get Started</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-inner">
+    <div class="reveal">
+      <span class="section-label">Free Consultation</span>
+      <h2 class="section-title">See what WorkSmart SC can do for your business.</h2>
+      <p class="section-sub">Tell us about your biggest operational headache. We'll show you exactly how we'd solve it — no commitment required.</p>
+    </div>
+    <div class="reveal" style="text-align:center;margin-bottom:1.5rem;">
+      <p style="color:rgba(255,255,255,0.55);font-size:0.9rem;margin-bottom:0.5rem;">Prefer to reach out directly?</p>
+      <a href="tel:8644194713" style="color:var(--accent);font-weight:700;font-size:1rem;text-decoration:none;margin-right:1.5rem;">📞 864-419-4713</a>
+      <a href="mailto:collin@worksmartsc.com" style="color:var(--accent);font-weight:700;font-size:1rem;text-decoration:none;">✉️ collin@worksmartsc.com</a>
+    </div>
+    <form class="contact-form reveal" action="https://formspree.io/f/xleqkpvn" method="POST">
+      <div class="form-row">
+        <input class="form-input" type="text" name="name" placeholder="Your Name" required />
+        <input class="form-input" type="text" name="business" placeholder="Business Name" required />
+      </div>
+      <div class="form-row">
+        <input class="form-input" type="email" name="email" placeholder="Email Address" required />
+        <input class="form-input" type="tel" name="phone" placeholder="Phone Number" />
+      </div>
+      <select class="form-select" name="business_type">
+        <option value="" disabled selected>What type of business?</option>
+        <option>Medical / Physical Therapy</option>
+        <option>Dental Practice</option>
+        <option>Law Firm</option>
+        <option>Contractor / Trades</option>
+        <option>Real Estate</option>
+        <option>Fitness / Wellness</option>
+        <option>Restaurant / Catering</option>
+        <option>Property Management</option>
+        <option>Other</option>
+      </select>
+      <textarea class="form-textarea" name="message" placeholder="What's your biggest operational headache right now?"></textarea>
+      <button type="submit" class="btn-submit">Book My Free Consultation →</button>
+    </form>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Work<span>Smart</span> SC</div>
+  <div class="footer-copy">© 2026 WorkSmart SC. All rights reserved. &nbsp;|&nbsp; Collin Wilson &nbsp;|&nbsp; <a href="tel:8644194713" style="color:inherit;text-decoration:none;">864-419-4713</a> &nbsp;|&nbsp; <a href="mailto:collin@worksmartsc.com" style="color:inherit;text-decoration:none;">collin@worksmartsc.com</a></div>
+  <div class="footer-location">📍 Greenville, South Carolina</div>
+</footer>
+
+<script>
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  reveals.forEach(r => observer.observe(r));
+
+  // Service switcher
+  const services = [
+    { tag:"Most Popular", title:"Scheduling & Booking Agents", desc:"An AI agent that handles your entire appointment workflow — booking, confirming, reminding, and rescheduling — without a single staff member touching it. Available 24/7, never puts a caller on hold, and integrates with your existing calendar system.", points:["Answers booking requests via text, web chat, or phone","Sends automated confirmations and 24-hour reminders","Handles cancellations and fills slots from a waitlist automatically","Escalates complex situations to a human instantly","Works with your existing calendar — no new software to learn"] },
+    { tag:"High ROI", title:"Customer Communication Agents", desc:"New leads contacted within 60 seconds, follow-up sequences that never drop a prospect, and customer questions answered instantly — without a single staff member involved. The first business to respond wins the customer. AI ensures that's always you.", points:["Responds to new inquiries in under 60 seconds, 24/7","Nurtures leads automatically until they're ready to buy","Follows up on unpaid invoices without awkward conversations","Answers common questions via SMS or web chat instantly","Hands off to a human the moment a conversation needs one"] },
+    { tag:"Immediate Savings", title:"Operations & Supply Agents", desc:"Stop holding meetings to decide what to order. An AI agent monitors your usage patterns, tracks current inventory, and generates purchase orders automatically for one-tap approval. What used to take an hour of meetings now takes ten seconds.", points:["Tracks inventory levels and usage patterns automatically","Generates reorder recommendations before you run out","Sends one-tap approval requests to the right person","Logs all orders and maintains audit trail automatically","Adapts to seasonal patterns and usage changes over time"] },
+    { tag:"Foundation Layer", title:"Workflow Automation", desc:"Your business runs on a dozen different tools that don't talk to each other. We connect them — so information flows automatically, nothing gets re-entered twice, and your team stops copying data from one system to another all day.", points:["Connects your existing software without replacing anything","Eliminates manual data re-entry between systems","Triggers actions automatically based on business events","Creates audit trails and reporting without extra work","Scales as your business grows without additional staff"] },
+    { tag:"New Service", title:"AI-Powered SEO Management", desc:"An AI that actively manages your local search presence every day — not a monthly PDF from an agency. Google Business Profile optimization, local citation building, review management, competitor tracking, and keyword-targeted content — all running automatically while you focus on your business.", points:["Google Business Profile optimized and updated weekly","Local citations built across 50+ directories automatically","Review monitoring with AI-drafted response suggestions","Keyword-targeted local content published consistently","Competitor ranking tracked and gaps identified monthly"] },
+  ];
+
+  function setService(i) {
+    document.querySelectorAll('.service-item').forEach((el,idx) => el.classList.toggle('active', idx===i));
+    const s = services[i];
+    document.getElementById('detail-tag').textContent = s.tag;
+    document.getElementById('detail-title').textContent = s.title;
+    document.getElementById('detail-desc').textContent = s.desc;
+    const pts = document.getElementById('detail-points');
+    pts.innerHTML = s.points.map(p => `<li>${p}</li>`).join('');
+  }
+</script>
+</body>
+</html>
