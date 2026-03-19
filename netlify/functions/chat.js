@@ -1,11 +1,6 @@
-exports.handler = async function (event) {
-  if (event.httpMethod !== "POST") {
-    return { statusCode: 405, body: "Method Not Allowed" };
-  }
+const https = require("https");
 
-  const { messages } = JSON.parse(event.body);
-
-  const SYSTEM_PROMPT = `You are the AI answering agent for WorkSmart SC, an AI automation agency based in Greenville/Upstate South Carolina. Your job is to answer inbound inquiries from business owners and help them understand what WorkSmart SC offers — and ultimately book a free 20-minute discovery call.
+const SYSTEM_PROMPT = `You are the AI answering agent for WorkSmart SC, an AI automation agency based in Greenville/Upstate South Carolina. Your job is to answer inbound inquiries from business owners and help them understand what WorkSmart SC offers — and ultimately book a free 20-minute discovery call.
 
 COMPANY INFO:
 - Company: WorkSmart SC
@@ -18,56 +13,106 @@ COMPANY INFO:
 SERVICES & PRICING:
 | Service | Setup Fee | Monthly |
 |---|---|---|
-| AI Scheduling Agent | $500–750 | $300–500/mo |
-| AI Customer Comms Agent | $750–1,000 | $400–600/mo |
-| AI Operations / Supply Agent | $750–1,000 | $400–600/mo |
-| Workflow Automation | $1,000–1,500 | $300–500/mo |
-| AI-Powered SEO | $500–750 | $500–1,000/mo |
+| AI Scheduling Agent | $500-750 | $300-500/mo |
+| AI Customer Comms Agent | $750-1,000 | $400-600/mo |
+| AI Operations / Supply Agent | $750-1,000 | $400-600/mo |
+| Workflow Automation | $1,000-1,500 | $300-500/mo |
+| AI-Powered SEO | $500-750 | $500-1,000/mo |
 | Full Suite (3 agents) | $1,500 setup | $1,200/mo |
 
 WHO WE SERVE: Medical offices, dental practices, law firms, HVAC/plumbing/trades, real estate agents, optometry, and other local businesses in Upstate SC.
-
-WHAT WE DO: We build AI systems that handle scheduling, patient/customer communications, admin tasks, supply ordering reminders, and workflow automation — so staff can focus on actual work, not busywork.
 
 YOUR ROLE:
 - Be warm, direct, and helpful — never pushy
 - Answer questions about services and pricing honestly
 - If they seem interested, invite them to book a free 20-minute call with Collin
 - Keep responses concise — 2-4 sentences max unless they ask for detail
-- If asked something you don't know, offer to have Collin follow up directly
 - Always be friendly — this is a local, relationship-based business
 
-TONE: Friendly, professional, confident. You represent a Greenville local who genuinely helps businesses save time.`;
+TONE: Friendly, professional, confident.`;
 
-  try {
-    const response = await fetch("https://api.anthropic.com/v1/messages", {
+function callAnthropic(apiKey, messages) {
+  return new Promise((resolve, reject) => {
+    const body = JSON.stringify({
+      model: "claude-haiku-4-5-20251001",
+      max_tokens: 1000,
+      system: SYSTEM_PROMPT,
+      messages,
+    });
+
+    const options = {
+      hostname: "api.anthropic.com",
+      path: "/v1/messages",
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "x-api-key": process.env.ANTHROPIC_API_KEY,
+        "x-api-key": apiKey,
         "anthropic-version": "2023-06-01",
+        "Content-Length": Buffer.byteLength(body),
       },
-      body: JSON.stringify({
-        model: "claude-haiku-4-5-20251001",
-        max_tokens: 1000,
-        system: SYSTEM_PROMPT,
-        messages,
-      }),
+    };
+
+    const req = https.request(options, (res) => {
+      let data = "";
+      res.on("data", (chunk) => { data += chunk; });
+      res.on("end", () => {
+        try {
+          resolve({ status: res.statusCode, body: JSON.parse(data) });
+        } catch (e) {
+          reject(new Error("Failed to parse response: " + data));
+        }
+      });
     });
 
-    const data = await response.json();
+    req.on("error", reject);
+    req.write(body);
+    req.end();
+  });
+}
 
-    if (!response.ok) {
-      return { statusCode: response.status, body: JSON.stringify({ error: data }) };
+exports.handler = async function (event) {
+  if (event.httpMethod !== "POST") {
+    return { statusCode: 405, body: "Method Not Allowed" };
+  }
+
+  const apiKey = process.env.ANTHROPIC_API_KEY;
+  if (!apiKey) {
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ error: "API key not configured" }),
+    };
+  }
+
+  let messages;
+  try {
+    messages = JSON.parse(event.body).messages;
+  } catch (e) {
+    return { statusCode: 400, body: JSON.stringify({ error: "Invalid request body" }) };
+  }
+
+  try {
+    const result = await callAnthropic(apiKey, messages);
+
+    if (result.status !== 200) {
+      console.error("Anthropic error:", JSON.stringify(result.body));
+      return {
+        statusCode: result.status,
+        body: JSON.stringify({ error: result.body }),
+      };
     }
 
     return {
       statusCode: 200,
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ reply: data.content?.[0]?.text || "Sorry, I couldn't generate a response." }),
+      body: JSON.stringify({
+        reply: result.body.content?.[0]?.text || "Sorry, no response generated.",
+      }),
     };
   } catch (error) {
-    console.error("Chat function error:", error);
-    return { statusCode: 500, body: JSON.stringify({ error: "Internal server error" }) };
+    console.error("Function error:", error.message);
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ error: error.message }),
+    };
   }
 };
