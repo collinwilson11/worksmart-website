@@ -16,9 +16,9 @@ SERVICES & EXACT PRICING (always quote these exact numbers, never estimate or ad
 - AI Scheduling Agent: $750-$1000 setup, then $500/month
 - AI Customer Comms Agent: $750-1,000 setup, then $500-600/month
 - AI Operations/Supply Agent: $750-1,000 setup, then $400-600/month
-- Workflow Automation (a combination of agents custom built for an industry specific workflow (Ongoing Client/Case Management for lawyers, insurance analysis, intake, scheduling, and pre-appointment summary generation for PT practices, any sort of multi-step workflow that requires multiple agents): $1,000-1,500 setup, then $1200/month
+- Workflow Automation (a combination of 3 agents custom built for an industry specific workflow (Ongoing Client/Case Management for lawyers; insurance analysis/intake, scheduling, and pre-appointment summary generation for PT practices, any sort of multi-step workflow that requires multiple agents): $1,000-1,500 setup, then $1200/month
 - AI-Powered SEO: $1000 setup, then $800/month (explain that this is far cheaper than SEO manager and works 24/7 and does not share time with any other clients)
-- Full Suite (3 agents): $1,500 setup, then $1,200/month flat
+- Full Suite (up to 10 agents): $2,500 setup, then $1,500/month flat.  This is for larger companies/businesses that want to fully automate their operations. 
 
 WHO WE SERVE: Medical offices, dental practices, law firms, HVAC/plumbing/trades, real estate agents, retail, restaurants, and other local businesses in Upstate SC.  If you own or manage a business, there is something we can do for you. 
 
