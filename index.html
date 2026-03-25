@@ -135,14 +135,7 @@
     .step-desc { font-size: 0.85rem; color: var(--silver); line-height: 1.6; font-weight: 300; }
 
     /* ROI */
-    <!--
-  ============================================================
-  ROI CALCULATOR SECTION
-  Replace your existing #pricing section with this code.
-  Keep everything above (hero, problems, services, industries,
-  how-it-works) exactly as-is.
-  ============================================================
--->
+  
 
 <section id="pricing" style="padding: 100px 24px; background: #f8fafc; position: relative;">
   <div style="max-width: 800px; margin: 0 auto;">
@@ -511,154 +504,9 @@
 })();
 </script>
 
-  <!--
-  ============================================================
-  CUSTOM PLATFORMS SECTION
-  Place this AFTER the ROI calculator section (#pricing)
-  and BEFORE the Free Consultation / Contact section.
   
-  IMAGE FILES NEEDED IN YOUR REPO (same folder as index.html):
-  - CareLoop-Staff-Phone.png
-  - CareLoop-Family-Phone.png
-  - crewiq_dashboard_mockup.png
-  - crewiq_training_progress_mockup.png
-  ============================================================
--->
 
-<section id="platforms" style="padding: 100px 24px; background: #ffffff; position: relative;">
-  <div style="max-width: 1080px; margin: 0 auto;">
-
-    <!-- Section Header -->
-    <div style="text-align: center; margin-bottom: 60px;">
-      <p style="font-size: 13px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #2E8B57; margin: 0 0 16px;">Beyond Automation</p>
-      <h2 style="font-family: inherit; font-size: clamp(28px, 5vw, 42px); font-weight: 800; color: #0A1F3D; margin: 0 0 20px; line-height: 1.15;">
-        We don't just build agents.<br>We build entire platforms.
-      </h2>
-      <p style="font-size: clamp(15px, 3.5vw, 18px); color: #6B7280; margin: 0 auto; max-width: 640px; line-height: 1.6;">
-        When your business needs more than automation — a full custom application built around how your operation actually works — we build that too.
-      </p>
-    </div>
-
-    <!-- ==================== CARELOOP ==================== -->
-    <div style="margin-bottom: 80px;">
-      <div style="display: flex; gap: 48px; align-items: center; flex-wrap: wrap;" class="platform-row">
-
-        <!-- CareLoop Phone Mockups — side by side -->
-        <div style="flex: 1 1 360px; min-width: 280px;">
-          <div style="display: flex; gap: 16px; justify-content: center; align-items: flex-start;">
-            <img src="CareLoop-Staff-Phone.png" alt="CareLoop Staff Dashboard" style="width: 48%; max-width: 220px; border-radius: 20px; box-shadow: 0 8px 32px rgba(0,0,0,0.15);">
-            <img src="CareLoop-Family-Phone.png" alt="CareLoop Family Portal" style="width: 48%; max-width: 220px; border-radius: 20px; box-shadow: 0 8px 32px rgba(0,0,0,0.15);">
-          </div>
-          <div style="display: flex; gap: 16px; justify-content: center; margin-top: 12px;">
-            <p style="font-size: 11px; color: #9CA3AF; text-align: center; width: 48%; max-width: 220px;">Staff View</p>
-            <p style="font-size: 11px; color: #9CA3AF; text-align: center; width: 48%; max-width: 220px;">Family View</p>
-          </div>
-        </div>
-
-        <!-- Description -->
-        <div style="flex: 1 1 360px; min-width: 280px;">
-          <div style="display: inline-flex; align-items: center; gap: 8px; background: rgba(46,139,87,0.08); border-radius: 8px; padding: 6px 14px; margin-bottom: 16px;">
-            <span style="font-size: 16px;">💚</span>
-            <span style="font-size: 12px; font-weight: 700; color: #2E8B57; text-transform: uppercase; letter-spacing: 0.06em;">Healthcare Platform</span>
-          </div>
-          <h3 style="font-size: clamp(22px, 4vw, 30px); font-weight: 800; color: #0A1F3D; margin: 0 0 12px; line-height: 1.2;">CareLoop</h3>
-          <p style="font-size: 15px; color: #374151; line-height: 1.7; margin: 0 0 16px;">
-            An AI-powered communication platform for memory care facilities. Families send notes and questions through a simple portal. Staff see prioritized task lists, care schedules, and alerts. AI turns every family message into a trackable action item — nothing falls through.
-          </p>
-          <div style="display: flex; flex-direction: column; gap: 8px;">
-            <div style="display: flex; align-items: center; gap: 10px;">
-              <span style="color: #2E8B57; font-weight: 700;">✓</span>
-              <span style="font-size: 14px; color: #4B5563;">Family portal with message history & real-time updates</span>
-            </div>
-            <div style="display: flex; align-items: center; gap: 10px;">
-              <span style="color: #2E8B57; font-weight: 700;">✓</span>
-              <span style="font-size: 14px; color: #4B5563;">AI-generated care tasks from family messages</span>
-            </div>
-            <div style="display: flex; align-items: center; gap: 10px;">
-              <span style="color: #2E8B57; font-weight: 700;">✓</span>
-              <span style="font-size: 14px; color: #4B5563;">Staff dashboard with AI care insights & shift handoffs</span>
-            </div>
-            <div style="display: flex; align-items: center; gap: 10px;">
-              <span style="color: #2E8B57; font-weight: 700;">✓</span>
-              <span style="font-size: 14px; color: #4B5563;">Overdue escalation with automatic family notifications</span>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </div>
-
-    <!-- ==================== CREWIQ ==================== -->
-    <div style="margin-bottom: 60px;">
-      <div style="display: flex; gap: 48px; align-items: center; flex-wrap: wrap; flex-direction: row-reverse;" class="platform-row">
-
-        <!-- CrewIQ Desktop Screenshots — stacked -->
-        <div style="flex: 1 1 420px; min-width: 300px;">
-          <div style="display: flex; flex-direction: column; gap: 16px;">
-            <img src="crewiq_dashboard_mockup.png" alt="CrewIQ Roster Dashboard" style="width: 100%; border-radius: 12px; box-shadow: 0 8px 32px rgba(0,0,0,0.18);">
-            <img src="crewiq_training_progress_mockup.png" alt="CrewIQ Training & Compliance" style="width: 100%; border-radius: 12px; box-shadow: 0 8px 32px rgba(0,0,0,0.18);">
-          </div>
-        </div>
-
-        <!-- Description -->
-        <div style="flex: 1 1 340px; min-width: 280px;">
-          <div style="display: inline-flex; align-items: center; gap: 8px; background: rgba(224,92,26,0.08); border-radius: 8px; padding: 6px 14px; margin-bottom: 16px;">
-            <span style="font-size: 16px;">🔥</span>
-            <span style="font-size: 12px; font-weight: 700; color: #e05c1a; text-transform: uppercase; letter-spacing: 0.06em;">Public Safety Platform</span>
-          </div>
-          <h3 style="font-size: clamp(22px, 4vw, 30px); font-weight: 800; color: #0A1F3D; margin: 0 0 12px; line-height: 1.2;">CrewIQ</h3>
-          <p style="font-size: 15px; color: #374151; line-height: 1.7; margin: 0 0 16px;">
-            A personnel readiness platform for fire departments. Replaces printed probie workbooks, expo-marker binders, and scattered training records with one system that tells any officer whether a firefighter is ready — in 30 seconds.
-          </p>
-          <div style="display: flex; flex-direction: column; gap: 8px;">
-            <div style="display: flex; align-items: center; gap: 10px;">
-              <span style="color: #e05c1a; font-weight: 700;">✓</span>
-              <span style="font-size: 14px; color: #4B5563;">Digital skills tracker with officer sign-off workflow</span>
-            </div>
-            <div style="display: flex; align-items: center; gap: 10px;">
-              <span style="color: #e05c1a; font-weight: 700;">✓</span>
-              <span style="font-size: 14px; color: #4B5563;">Training compliance dashboard with automated alerts</span>
-            </div>
-            <div style="display: flex; align-items: center; gap: 10px;">
-              <span style="color: #e05c1a; font-weight: 700;">✓</span>
-              <span style="font-size: 14px; color: #4B5563;">Interactive district map training & quiz module</span>
-            </div>
-            <div style="display: flex; align-items: center; gap: 10px;">
-              <span style="color: #e05c1a; font-weight: 700;">✓</span>
-              <span style="font-size: 14px; color: #4B5563;">Promotion pathways, HR tools & retirement projector</span>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </div>
-
-    <!-- Bottom CTA -->
-    <div style="text-align: center; padding: 40px 24px; background: rgba(10,31,61,0.03); border-radius: 20px; border: 1px solid #E5E7EB;">
-      <h3 style="font-size: clamp(20px, 4vw, 26px); font-weight: 800; color: #0A1F3D; margin: 0 0 12px;">Got a problem that doesn't fit in a box?</h3>
-      <p style="font-size: 15px; color: #6B7280; max-width: 520px; margin: 0 auto 24px; line-height: 1.6;">
-        If your business needs something that doesn't exist yet — a custom app, an internal tool, a platform built around your exact workflow — that's what we do. No idea is too niche.
-      </p>
-      <a href="book.html" style="
-        display: inline-block; padding: 16px 36px; border-radius: 12px;
-        background: linear-gradient(135deg, #2E8B57, #246B45); color: #fff;
-        font-size: 16px; font-weight: 700; text-decoration: none;
-        box-shadow: 0 4px 16px rgba(46,139,87,0.25);
-      ">Let's Talk About Your Idea →</a>
-    </div>
-
-  </div>
-</section>
-
-<style>
-  @media (max-width: 768px) {
-    .platform-row {
-      flex-direction: column !important;
-    }
-  }
-</style>
-
-    /* CONTACT */
+/* CONTACT */
     #contact { background: var(--navy); padding: 7rem 4rem; text-align: center; position: relative; overflow: hidden; }
     #contact::before { content:''; position: absolute; inset: 0; background: radial-gradient(ellipse at center, rgba(46,139,87,0.07) 0%, transparent 70%); }
     .contact-inner { position: relative; z-index: 1; max-width: 620px; margin: 0 auto; }
