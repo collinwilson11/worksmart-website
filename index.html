@@ -1,811 +1,671 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>WorkSmart SC — Upstate South Carolina</title>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light only">
+  <meta name="supported-color-schemes" content="light only">
+  <title>Book a Free Consultation | WorkSmart SC</title>
+  <meta name="description" content="Book a free 20-minute consultation with WorkSmart SC. We build custom AI systems that recover lost revenue and eliminate bottlenecks for Upstate SC businesses.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --navy:    #0A1F3D;
-      --navy2:   #0F2850;
-      --slate:   #1A3A5C;
-      --silver:  #7A9BB8;
-      --light:   #EBF4F0;
-      --white:   #FFFFFF;
-      --accent:  #2E8B57;
-      --accent2: #3AAD6E;
-      --text:    #0D1F35;
+      --navy: #0A1F3D;
+      --green: #2E8B57;
+      --green-light: #34A065;
+      --green-dark: #246B45;
+      --cream: #F8F6F1;
+      --white: #FFFFFF;
+      --gray: #6B7280;
+      --gray-light: #E5E7EB;
+      --text: #1A1A2E;
     }
-    html { scroll-behavior: smooth; }
-    body { font-family: 'DM Sans', sans-serif; background: var(--white); color: var(--text); overflow-x: hidden; }
 
-    /* NAV */
-    nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 1.2rem 4rem;
-      background: rgba(15,31,61,0.97);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid rgba(46,139,87,0.2);
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html, body, div, section, main, article, aside, header, footer, nav,
+    input, textarea, button, select, iframe, p, h1, h2, h3, h4, h5, h6, span, label, a {
+      color-scheme: light !important;
     }
-    .nav-logo { font-family: 'Playfair Display', serif; font-size: 1.35rem; font-weight: 700; color: var(--white); letter-spacing: 0.02em; }
-    .nav-logo span { color: var(--accent); }
-    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
-    .nav-links a { color: rgba(255,255,255,0.75); text-decoration: none; font-size: 0.875rem; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; transition: color 0.2s; }
-    .nav-links a:hover { color: var(--accent); }
-    .nav-cta { background: var(--accent); color: var(--navy); padding: 0.6rem 1.5rem; border-radius: 3px; font-size: 0.875rem; font-weight: 600; text-decoration: none; letter-spacing: 0.04em; transition: background 0.2s, transform 0.2s; }
-    .nav-cta:hover { background: var(--accent2); transform: translateY(-1px); }
 
-    /* HERO */
-    #hero {
+    @media (prefers-color-scheme: dark) {
+      html, body { background-color: #F8F6F1 !important; color: #1A1A2E !important; }
+      input, textarea { background-color: #FFFFFF !important; color: #1A1A2E !important; border-color: #E5E7EB !important; }
+      button { color: inherit !important; }
+    }
+
+    html { background-color: #F8F6F1 !important; }
+
+    body {
+      font-family: 'DM Sans', 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: #F8F6F1 !important;
+      color: #1A1A2E !important;
       min-height: 100vh;
-      background: var(--navy);
-      display: flex; align-items: center;
-      position: relative; overflow: hidden;
-      padding: 8rem 4rem 5rem;
+      min-height: 100dvh;
+      -webkit-text-size-adjust: 100%;
     }
-    .hero-grid { position: absolute; inset: 0; opacity: 0.04; background-image: linear-gradient(rgba(46,139,87,0.8) 1px, transparent 1px), linear-gradient(90deg, rgba(46,139,87,0.8) 1px, transparent 1px); background-size: 60px 60px; }
-    .hero-glow { position: absolute; top: -200px; right: -200px; width: 700px; height: 700px; border-radius: 50%; background: radial-gradient(circle, rgba(46,139,87,0.1) 0%, transparent 70%); pointer-events: none; }
-    .hero-glow2 { position: absolute; bottom: -300px; left: -100px; width: 600px; height: 600px; border-radius: 50%; background: radial-gradient(circle, rgba(44,62,90,0.6) 0%, transparent 70%); pointer-events: none; }
-    .hero-content { position: relative; z-index: 2; max-width: 700px; }
-    .hero-eyebrow { display: inline-flex; align-items: center; gap: 0.75rem; background: rgba(46,139,87,0.12); border: 1px solid rgba(46,139,87,0.3); padding: 0.4rem 1rem; border-radius: 2px; margin-bottom: 2rem; opacity: 0; animation: fadeUp 0.8s 0.2s forwards; }
-    .hero-eyebrow-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); animation: pulse 2s infinite; }
-    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1);} 50%{opacity:0.5;transform:scale(1.4);} }
-    .hero-eyebrow span { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); }
-    .hero-title { font-family: 'Playfair Display', serif; font-size: clamp(3rem,6vw,5.5rem); font-weight: 900; line-height: 1.05; color: var(--white); margin-bottom: 1.5rem; opacity: 0; animation: fadeUp 0.8s 0.4s forwards; }
-    .hero-title em { color: var(--accent); font-style: normal; }
-    .hero-sub { font-size: 1.15rem; line-height: 1.7; color: rgba(255,255,255,0.65); max-width: 520px; margin-bottom: 2.5rem; font-weight: 300; opacity: 0; animation: fadeUp 0.8s 0.6s forwards; }
-    .hero-actions { display: flex; gap: 1rem; align-items: center; opacity: 0; animation: fadeUp 0.8s 0.8s forwards; }
-    .btn-primary { background: var(--accent); color: var(--navy); padding: 0.9rem 2.2rem; border-radius: 3px; font-weight: 700; font-size: 0.95rem; text-decoration: none; letter-spacing: 0.03em; transition: all 0.2s; display: inline-block; }
-    .btn-primary:hover { background: var(--accent2); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(46,139,87,0.3); }
-    .btn-secondary { color: rgba(255,255,255,0.75); font-size: 0.95rem; text-decoration: none; display: flex; align-items: center; gap: 0.5rem; transition: color 0.2s; font-weight: 500; }
-    .btn-secondary:hover { color: var(--accent); }
-    .btn-arrow { font-size: 1.1rem; transition: transform 0.2s; }
-    .btn-secondary:hover .btn-arrow { transform: translateX(4px); }
-    .hero-stats { position: absolute; right: 4rem; bottom: 4rem; display: flex; gap: 3rem; z-index: 2; opacity: 0; animation: fadeUp 0.8s 1s forwards; }
-    @media (max-width: 700px) {
-      .hero-stats { position: static !important; margin-top: 2.5rem; flex-wrap: wrap; gap: 1.5rem; opacity: 1 !important; animation: none !important; justify-content: flex-start; }
+
+    .container {
+      max-width: 420px;
+      margin: 0 auto;
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      overflow: auto;
+      background-color: #F8F6F1 !important;
     }
-    .stat { text-align: center; }
-    .stat-num { font-family: 'Playfair Display', serif; font-size: 2.2rem; font-weight: 700; color: var(--accent); display: block; }
-    .stat-label { font-size: 0.75rem; color: rgba(255,255,255,0.5); letter-spacing: 0.08em; text-transform: uppercase; }
-    @keyframes fadeUp { from{opacity:0;transform:translateY(24px);} to{opacity:1;transform:translateY(0);} }
 
-    /* SECTIONS */
-    section { padding: 6rem 4rem; }
-    .section-label { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.75rem; display: block; }
-    .section-title { font-family: 'Playfair Display', serif; font-size: clamp(2rem,4vw,3rem); font-weight: 700; color: var(--navy); line-height: 1.15; margin-bottom: 1.25rem; }
-    .section-sub { font-size: 1.05rem; color: var(--silver); line-height: 1.7; max-width: 540px; font-weight: 300; }
-
-    /* PROBLEMS */
-    #problems { background: var(--light); }
-    .problems-inner { max-width: 1100px; margin: 0 auto; }
-    .problems-header { margin-bottom: 3.5rem; }
-    .problems-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5px; background: #D0D8E4; border: 1.5px solid #D0D8E4; border-radius: 6px; overflow: hidden; }
-    .problem-card { background: var(--white); padding: 2.2rem; transition: background 0.2s; }
-    .problem-card:hover { background: #F7F9FC; }
-    .problem-icon { width: 44px; height: 44px; border-radius: 4px; background: var(--navy); display: flex; align-items: center; justify-content: center; margin-bottom: 1.2rem; font-size: 1.2rem; }
-    .problem-title { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; color: var(--navy); margin-bottom: 0.6rem; }
-    .problem-desc { font-size: 0.9rem; color: var(--silver); line-height: 1.65; font-weight: 300; }
-
-    /* SERVICES */
-    #services { background: var(--white); }
-    .services-inner { max-width: 1100px; margin: 0 auto; }
-    .services-layout { display: grid; grid-template-columns: 1fr 1.8fr; gap: 5rem; align-items: start; }
-    .services-list { display: flex; flex-direction: column; gap: 1px; background: #E2E8F0; border: 1px solid #E2E8F0; border-radius: 6px; overflow: hidden; margin-top: 2.5rem; }
-    .service-item { background: var(--white); padding: 1.6rem 1.8rem; display: flex; align-items: flex-start; gap: 1.2rem; cursor: pointer; transition: all 0.2s; border-left: 3px solid transparent; }
-    .service-item:hover, .service-item.active { background: var(--navy); border-left-color: var(--accent); }
-    .service-item:hover .service-name, .service-item.active .service-name { color: var(--white); }
-    .service-item:hover .service-brief, .service-item.active .service-brief { color: rgba(255,255,255,0.55); }
-    .service-num { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 700; color: var(--accent); min-width: 2rem; }
-    .service-name { font-size: 0.95rem; font-weight: 600; color: var(--navy); margin-bottom: 0.2rem; transition: color 0.2s; }
-    .service-brief { font-size: 0.82rem; color: var(--silver); line-height: 1.5; transition: color 0.2s; }
-    .services-detail { position: sticky; top: 100px; }
-    .detail-card { background: var(--navy); border-radius: 8px; padding: 3rem; position: relative; overflow: hidden; }
-    .detail-card::before { content:''; position: absolute; top: -60px; right: -60px; width: 200px; height: 200px; border-radius: 50%; background: radial-gradient(circle, rgba(46,139,87,0.12) 0%, transparent 70%); }
-    .detail-tag { display: inline-block; background: rgba(46,139,87,0.15); border: 1px solid rgba(46,139,87,0.3); color: var(--accent); font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.3rem 0.8rem; border-radius: 2px; margin-bottom: 1.5rem; }
-    .detail-title { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 700; color: var(--white); margin-bottom: 1rem; line-height: 1.2; }
-    .detail-desc { font-size: 0.95rem; color: rgba(255,255,255,0.65); line-height: 1.75; margin-bottom: 1.8rem; font-weight: 300; }
-    .detail-points { list-style: none; display: flex; flex-direction: column; gap: 0.7rem; }
-    .detail-points li { display: flex; align-items: flex-start; gap: 0.75rem; font-size: 0.88rem; color: rgba(255,255,255,0.75); line-height: 1.5; }
-    .detail-points li::before { content: '→'; color: var(--accent); font-weight: 700; flex-shrink: 0; margin-top: 0.05rem; }
-
-    /* INDUSTRIES */
-    #industries { background: var(--navy); padding: 6rem 4rem; }
-    .industries-inner { max-width: 1100px; margin: 0 auto; }
-    .industries-inner .section-title { color: var(--white); }
-    .industries-inner .section-sub { color: rgba(255,255,255,0.5); }
-    .industries-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 1rem; margin-top: 3rem; }
-    .industry-card { border: 1px solid rgba(255,255,255,0.08); border-radius: 6px; padding: 1.8rem 1.5rem; transition: all 0.25s; cursor: default; background: rgba(255,255,255,0.03); }
-    .industry-card:hover { background: rgba(46,139,87,0.1); border-color: rgba(46,139,87,0.3); transform: translateY(-3px); }
-    .industry-icon { font-size: 1.8rem; margin-bottom: 1rem; display: block; }
-    .industry-name { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; color: var(--white); margin-bottom: 0.5rem; }
-    .industry-pain { font-size: 0.82rem; color: rgba(255,255,255,0.45); line-height: 1.6; font-weight: 300; }
-
-    /* PROCESS */
-    #process { background: var(--light); }
-    .process-inner { max-width: 1100px; margin: 0 auto; }
-    .process-steps { display: grid; grid-template-columns: repeat(4,1fr); gap: 0; margin-top: 3.5rem; position: relative; }
-    .process-steps::before { content:''; position: absolute; top: 2.5rem; left: 10%; right: 10%; height: 1px; background: linear-gradient(90deg, transparent, var(--accent), transparent); z-index: 0; }
-    .process-step { text-align: center; padding: 0 1.5rem; position: relative; z-index: 1; }
-    .step-circle { width: 52px; height: 52px; border-radius: 50%; background: var(--navy); border: 2px solid var(--accent); display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700; color: var(--accent); }
-    .step-title { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; color: var(--navy); margin-bottom: 0.5rem; }
-    .step-desc { font-size: 0.85rem; color: var(--silver); line-height: 1.6; font-weight: 300; }
-
-    /* ROI */
-  
-
-<section id="pricing" style="padding: 100px 24px; background: #f8fafc; position: relative;">
-  <div style="max-width: 800px; margin: 0 auto;">
-
-    <div style="text-align: center; margin-bottom: 48px;">
-      <p style="font-size: 13px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #2E8B57; margin: 0 0 16px;">The Real Question</p>
-      <h2 style="font-family: inherit; font-size: clamp(28px, 5vw, 42px); font-weight: 800; color: #0A1F3D; margin: 0 0 20px; line-height: 1.15;">
-        It's not <em>"how much does it cost?"</em>
-      </h2>
-      <p style="font-size: clamp(16px, 3.5vw, 20px); color: #6B7280; margin: 0 auto; max-width: 600px; line-height: 1.6;">
-        We work with businesses of all sizes and budgets. The real question is — <strong style="color: #0A1F3D;">how much revenue is your business leaving on the table?</strong>
-      </p>
-    </div>
-
-    <div id="roiCalc" style="background: #ffffff; border-radius: 20px; box-shadow: 0 4px 24px rgba(0,0,0,0.06); border: 1px solid #E5E7EB; overflow: hidden;">
-
-      <div style="background: linear-gradient(135deg, #0A1F3D, #143052); padding: 28px 32px; color: #fff;">
-        <p style="font-size: 13px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: #2E8B57; margin: 0 0 8px;">Free Revenue Assessment</p>
-        <h3 style="font-size: clamp(20px, 4vw, 26px); font-weight: 700; margin: 0 0 6px; color: #fff;">How much are you leaving on the table?</h3>
-        <p style="font-size: 14px; color: rgba(255,255,255,0.6); margin: 0;">Answer a few quick questions. Takes about 30 seconds.</p>
-      </div>
-
-      <div id="roiStep1" style="padding: 32px;">
-        <p style="font-size: 15px; font-weight: 700; color: #0A1F3D; margin: 0 0 6px;">What type of business do you run?</p>
-        <p style="font-size: 13px; color: #6B7280; margin: 0 0 20px;">This helps us use the right revenue benchmarks.</p>
-        <div id="roiIndustryList" style="display: flex; flex-direction: column; gap: 10px;"></div>
-      </div>
-
-      <div id="roiStep2" style="padding: 32px; display: none;">
-        <p style="font-size: 15px; font-weight: 700; color: #0A1F3D; margin: 0 0 6px;">A few quick numbers.</p>
-        <p style="font-size: 13px; color: #6B7280; margin: 0 0 24px;">Don't overthink it — rough estimates work fine.</p>
-
-        <div style="display: flex; flex-direction: column; gap: 20px;">
-          <div>
-            <label style="display: block; font-size: 13px; font-weight: 600; color: #0A1F3D; margin-bottom: 6px;">
-              How many calls or inquiries does your team miss per week?
-            </label>
-            <div style="display: flex; gap: 8px; flex-wrap: wrap;" id="q_missed">
-              <button onclick="selectOption('missed','0-2')" class="roi-opt" data-val="0-2">0–2</button>
-              <button onclick="selectOption('missed','3-5')" class="roi-opt" data-val="3-5">3–5</button>
-              <button onclick="selectOption('missed','6-10')" class="roi-opt" data-val="6-10">6–10</button>
-              <button onclick="selectOption('missed','10+')" class="roi-opt" data-val="10+">10+</button>
-            </div>
-          </div>
-
-          <div>
-            <label style="display: block; font-size: 13px; font-weight: 600; color: #0A1F3D; margin-bottom: 6px;">
-              How many no-shows or last-minute cancellations per month?
-            </label>
-            <div style="display: flex; gap: 8px; flex-wrap: wrap;" id="q_noshows">
-              <button onclick="selectOption('noshows','0-2')" class="roi-opt" data-val="0-2">0–2</button>
-              <button onclick="selectOption('noshows','3-5')" class="roi-opt" data-val="3-5">3–5</button>
-              <button onclick="selectOption('noshows','6-10')" class="roi-opt" data-val="6-10">6–10</button>
-              <button onclick="selectOption('noshows','10+')" class="roi-opt" data-val="10+">10+</button>
-            </div>
-          </div>
-
-          <div>
-            <label style="display: block; font-size: 13px; font-weight: 600; color: #0A1F3D; margin-bottom: 6px;">
-              How many hours per week does your team spend on repetitive admin?
-            </label>
-            <div style="display: flex; gap: 8px; flex-wrap: wrap;" id="q_admin">
-              <button onclick="selectOption('admin','1-5')" class="roi-opt" data-val="1-5">1–5 hrs</button>
-              <button onclick="selectOption('admin','5-10')" class="roi-opt" data-val="5-10">5–10 hrs</button>
-              <button onclick="selectOption('admin','10-20')" class="roi-opt" data-val="10-20">10–20 hrs</button>
-              <button onclick="selectOption('admin','20+')" class="roi-opt" data-val="20+">20+ hrs</button>
-            </div>
-          </div>
-
-          <div>
-            <label style="display: block; font-size: 13px; font-weight: 600; color: #0A1F3D; margin-bottom: 6px;">
-              How many customers/clients do you think you lose to competitors per month?
-            </label>
-            <div style="display: flex; gap: 8px; flex-wrap: wrap;" id="q_lost">
-              <button onclick="selectOption('lost','0-1')" class="roi-opt" data-val="0-1">0–1</button>
-              <button onclick="selectOption('lost','2-4')" class="roi-opt" data-val="2-4">2–4</button>
-              <button onclick="selectOption('lost','5-8')" class="roi-opt" data-val="5-8">5–8</button>
-              <button onclick="selectOption('lost','8+')" class="roi-opt" data-val="8+">8+</button>
-            </div>
-          </div>
-          <div id="q_special_wrap" style="display:none;">
-            <label id="q_special_label" style="display: block; font-size: 13px; font-weight: 600; color: #0A1F3D; margin-bottom: 6px;"></label>
-            <div style="display: flex; gap: 8px; flex-wrap: wrap;" id="q_special"></div>
-          </div>
-        </div>
-
-        <button id="roiCalcBtn" onclick="calculateROI()" disabled style="
-          width: 100%; margin-top: 28px; padding: 16px; border-radius: 12px; border: none;
-          background: linear-gradient(135deg, #2E8B57, #246B45); color: #fff;
-          font-size: 16px; font-weight: 700; cursor: pointer; font-family: inherit;
-          box-shadow: 0 4px 16px rgba(46,139,87,0.25); opacity: 0.4;
-          transition: all 0.3s ease;
-        ">Show My Results →</button>
-      </div>
-
-      <div id="roiStep3" style="padding: 32px; display: none;">
-        <div style="text-align: center; margin-bottom: 28px;">
-          <p style="font-size: 13px; font-weight: 600; color: #2E8B57; letter-spacing: 0.05em; text-transform: uppercase; margin: 0 0 8px;">Your Estimated Annual Revenue Loss</p>
-          <p id="roiTotal" style="font-size: clamp(42px, 10vw, 64px); font-weight: 800; color: #0A1F3D; margin: 0; line-height: 1;">$0</p>
-          <p style="font-size: 14px; color: #6B7280; margin: 8px 0 0;">per year — walking out the door</p>
-        </div>
-
-        <div id="roiBreakdown" style="display: flex; flex-direction: column; gap: 0; border-radius: 14px; overflow: hidden; border: 1px solid #E5E7EB; margin-bottom: 24px;"></div>
-
-        <div style="background: rgba(46,139,87,0.06); border-radius: 14px; padding: 24px; text-align: center; border: 1px solid rgba(46,139,87,0.15);">
-          <p style="font-size: 16px; font-weight: 700; color: #0A1F3D; margin: 0 0 8px;">This is recoverable.</p>
-          <p style="font-size: 14px; color: #6B7280; margin: 0 0 20px; line-height: 1.6;">
-            We build a custom system around your specific problem — and we work with your budget to make it happen. No cookie-cutter software. No one-size-fits-all pricing.
-          </p>
-          <a href="book.html" style="
-            display: inline-block; padding: 16px 36px; border-radius: 12px;
-            background: linear-gradient(135deg, #2E8B57, #246B45); color: #fff;
-            font-size: 16px; font-weight: 700; text-decoration: none;
-            box-shadow: 0 4px 16px rgba(46,139,87,0.25);
-          ">Book a Free Consultation →</a>
-          <p style="font-size: 12px; color: #6B7280; margin: 12px 0 0;">20 minutes. No pitch. We'll map out exactly where you're losing revenue.</p>
-        </div>
-
-        <button onclick="resetCalc()" style="
-          display: block; margin: 20px auto 0; padding: 10px 24px; border-radius: 8px;
-          border: 1px solid #E5E7EB; background: #fff; color: #6B7280;
-          font-size: 13px; font-weight: 600; cursor: pointer; font-family: inherit;
-        ">↻ Recalculate</button>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<style>
-  .roi-ind-btn {
-    width: 100%; padding: 14px 16px; border-radius: 12px;
-    border: 2px solid #E5E7EB; background: #ffffff;
-    cursor: pointer; display: flex; align-items: center; gap: 12px;
-    font-size: 15px; color: #1A1A2E; font-weight: 400;
-    transition: all 0.2s ease; text-align: left; font-family: inherit;
-  }
-  .roi-ind-btn:hover { border-color: #ccc; }
-  .roi-ind-btn.selected {
-    border-color: #2E8B57; background: rgba(46,139,87,0.06);
-    font-weight: 600;
-  }
-  .roi-ind-btn .check {
-    margin-left: auto; color: #2E8B57; font-weight: 700; display: none;
-  }
-  .roi-ind-btn.selected .check { display: inline; }
-
-  .roi-opt {
-    padding: 10px 18px; border-radius: 10px;
-    border: 2px solid #E5E7EB; background: #ffffff;
-    cursor: pointer; font-size: 14px; color: #1A1A2E; font-weight: 500;
-    transition: all 0.2s ease; font-family: inherit;
-    flex: 1; min-width: 70px; text-align: center;
-  }
-  .roi-opt:hover { border-color: #ccc; }
-  .roi-opt.selected {
-    border-color: #2E8B57; background: #2E8B57; color: #fff; font-weight: 700;
-  }
-
-  .breakdown-row {
-    display: flex; justify-content: space-between; align-items: center;
-    padding: 14px 20px; background: #fff;
-    border-bottom: 1px solid #F3F4F6;
-  }
-  .breakdown-row:last-child { border-bottom: none; }
-  .breakdown-row .label { font-size: 14px; color: #374151; display: flex; align-items: center; gap: 10px; }
-  .breakdown-row .label .icon { font-size: 18px; }
-  .breakdown-row .value { font-size: 16px; font-weight: 700; color: #0A1F3D; }
-
-  @media (max-width: 480px) {
-    .roi-opt { padding: 10px 12px; font-size: 13px; min-width: 60px; }
-  }
-</style>
-
-<script>
-(function() {
-  const INDUSTRIES = [
-    { id: 'medical', label: 'Medical / PT / Chiro', icon: '🏥', avgClient: 1925, avgHourly: 25,
-      specialQ: 'How many treatments per month run into billing issues — coded wrong, denied, or not covered?',
-      specialOpts: ['0–1', '2–4', '5–8', '8+'],
-      specialVals: { '0–1': 0.5, '2–4': 3, '5–8': 6.5, '8+': 10 },
-      specialCalc: (n) => Math.round(n * 12 * 175),
-      specialLabel: 'Unbilled treatments from insurance issues',
-      specialIcon: '🩺'
-    },
-    { id: 'dental', label: 'Dental Practice', icon: '🦷', avgClient: 1200, avgHourly: 22,
-      specialQ: 'How many recall patients per month lapse without rebooking?',
-      specialOpts: ['0–3', '4–8', '9–15', '15+'],
-      specialVals: { '0–3': 1.5, '4–8': 6, '9–15': 12, '15+': 20 },
-      specialCalc: (n) => Math.round(n * 12 * 400),
-      specialLabel: 'Lapsed recall patients who never rebook',
-      specialIcon: '🦷'
-    },
-    { id: 'legal', label: 'Law Firm', icon: '⚖️', avgClient: 3500, avgHourly: 35,
-      specialQ: 'How many billable hours per week do attorneys spend on tasks like intake, follow-ups, or scheduling?',
-      specialOpts: ['0–2', '3–5', '6–10', '10+'],
-      specialVals: { '0–2': 1, '3–5': 4, '6–10': 8, '10+': 12 },
-      specialCalc: (n) => Math.round(n * 52 * 250),
-      specialLabel: 'Attorney time wasted on non-billable work',
-      specialIcon: '⚖️'
-    },
-    { id: 'trades', label: 'HVAC / Plumbing / Roofing', icon: '🔧', avgClient: 2800, avgHourly: 28,
-      specialQ: 'How many job leads per week come in while your crew is on-site and can\'t answer?',
-      specialOpts: ['0–2', '3–5', '6–10', '10+'],
-      specialVals: { '0–2': 1, '3–5': 4, '6–10': 8, '10+': 12 },
-      specialCalc: (n) => Math.round(n * 52 * 0.4 * 2800),
-      specialLabel: 'Jobs lost while crew was on-site',
-      specialIcon: '🔧'
-    },
-    { id: 'realestate', label: 'Real Estate', icon: '🏠', avgClient: 8500, avgHourly: 30,
-      specialQ: 'How many leads per month do you respond to after the first 5 minutes?',
-      specialOpts: ['0–2', '3–6', '7–12', '12+'],
-      specialVals: { '0–2': 1, '3–6': 4.5, '7–12': 9.5, '12+': 15 },
-      specialCalc: (n) => Math.round(n * 12 * 0.35 * 8500),
-      specialLabel: 'Leads gone cold from slow response',
-      specialIcon: '🏠'
-    },
-    { id: 'wellness', label: 'Wellness / Fitness', icon: '💆', avgClient: 600, avgHourly: 18,
-      specialQ: 'How many members cancel per month that nobody follows up with?',
-      specialOpts: ['0–2', '3–6', '7–12', '12+'],
-      specialVals: { '0–2': 1, '3–6': 4.5, '7–12': 9.5, '12+': 15 },
-      specialCalc: (n) => Math.round(n * 12 * 600 * 0.3),
-      specialLabel: 'Cancelled members with no win-back attempt',
-      specialIcon: '💆'
-    },
-    { id: 'restaurant', label: 'Restaurant / Catering', icon: '🍽️', avgClient: 450, avgHourly: 16,
-      specialQ: 'How many catering or event inquiries per month slip through without a follow-up?',
-      specialOpts: ['0–1', '2–4', '5–8', '8+'],
-      specialVals: { '0–1': 0.5, '2–4': 3, '5–8': 6.5, '8+': 10 },
-      specialCalc: (n) => Math.round(n * 12 * 1800),
-      specialLabel: 'Catering & event leads that slipped through',
-      specialIcon: '🍽️'
-    },
-    { id: 'other', label: 'Other', icon: '💼', avgClient: 1500, avgHourly: 22,
-      specialQ: 'How many potential deals or opportunities per month fall through the cracks?',
-      specialOpts: ['0–1', '2–4', '5–8', '8+'],
-      specialVals: { '0–1': 0.5, '2–4': 3, '5–8': 6.5, '8+': 10 },
-      specialCalc: (n) => Math.round(n * 12 * 1500),
-      specialLabel: 'Deals lost to dropped follow-through',
-      specialIcon: '💼'
-    },
-  ];
-
-  const state = { industry: null, missed: null, noshows: null, admin: null, lost: null, special: null };
-
-  const list = document.getElementById('roiIndustryList');
-  INDUSTRIES.forEach(ind => {
-    const btn = document.createElement('button');
-    btn.className = 'roi-ind-btn';
-    btn.dataset.id = ind.id;
-    btn.innerHTML = `<span style="font-size:20px">${ind.icon}</span>${ind.label}<span class="check">✓</span>`;
-    btn.onclick = function() {
-      state.industry = ind.id;
-      state.special = null; // reset when switching industry
-      list.querySelectorAll('.roi-ind-btn').forEach(b => b.classList.remove('selected'));
-      btn.classList.add('selected');
-
-      // Build industry-specific question
-      const wrap = document.getElementById('q_special_wrap');
-      const label = document.getElementById('q_special_label');
-      const container = document.getElementById('q_special');
-      label.textContent = ind.specialQ;
-      container.innerHTML = ind.specialOpts.map(opt =>
-        `<button onclick="selectOption('special','${opt}')" class="roi-opt" data-val="${opt}">${opt}</button>`
-      ).join('');
-      wrap.style.display = 'block';
-
-      setTimeout(() => {
-        document.getElementById('roiStep1').style.display = 'none';
-        document.getElementById('roiStep2').style.display = 'block';
-      }, 300);
-    };
-    list.appendChild(btn);
-  });
-
-  window.selectOption = function(key, val) {
-    state[key] = val;
-    const container = document.getElementById('q_' + key);
-    container.querySelectorAll('.roi-opt').forEach(b => {
-      b.classList.toggle('selected', b.dataset.val === val);
-    });
-    if (state.missed && state.noshows && state.admin && state.lost && state.special) {
-      const btn = document.getElementById('roiCalcBtn');
-      btn.disabled = false;
-      btn.style.opacity = '1';
+    /* Header */
+    .header {
+      padding: 16px 24px 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background-color: #F8F6F1 !important;
     }
-  };
-
-  function midpoint(range) {
-    const map = {
-      '0-1': 0.5, '0-2': 1, '1-5': 3, '2-4': 3,
-      '3-5': 4, '5-8': 6.5, '5-10': 7.5,
-      '6-10': 8, '8+': 10, '10+': 12,
-      '10-20': 15, '20+': 25
-    };
-    return map[range] || 1;
-  }
-
-  window.calculateROI = function() {
-    const ind = INDUSTRIES.find(i => i.id === state.industry);
-    if (!ind) return;
-
-    const missedPerWeek = midpoint(state.missed);
-    const noshowsPerMonth = midpoint(state.noshows);
-    const adminHrsPerWeek = midpoint(state.admin);
-    const lostPerMonth = midpoint(state.lost);
-
-    const missedLeadRevenue = Math.round(missedPerWeek * 52 * 0.3 * ind.avgClient);
-    const noshowRevenue = Math.round(noshowsPerMonth * 12 * ind.avgClient * 0.4);
-    const adminCost = Math.round(adminHrsPerWeek * 52 * ind.avgHourly);
-    const lostClientRevenue = Math.round(lostPerMonth * 12 * ind.avgClient);
-
-    // Industry-specific
-    const specialVal = ind.specialVals[state.special] || 0;
-    const specialRevenue = ind.specialCalc(specialVal);
-
-    const total = missedLeadRevenue + noshowRevenue + adminCost + lostClientRevenue + specialRevenue;
-
-    const totalEl = document.getElementById('roiTotal');
-    animateValue(totalEl, 0, total, 1200);
-
-    const breakdown = document.getElementById('roiBreakdown');
-    const rows = [
-      { icon: '📞', label: 'Missed leads & slow follow-up', value: missedLeadRevenue },
-      { icon: '❌', label: 'No-shows & cancellations', value: noshowRevenue },
-      { icon: '⏱️', label: 'Staff time on manual admin', value: adminCost },
-      { icon: '🏃', label: 'Clients lost to competitors', value: lostClientRevenue },
-      { icon: ind.specialIcon, label: ind.specialLabel, value: specialRevenue },
-    ];
-    breakdown.innerHTML = rows.map(r =>
-      `<div class="breakdown-row">
-        <span class="label"><span class="icon">${r.icon}</span>${r.label}</span>
-        <span class="value">$${r.value.toLocaleString()}/yr</span>
-      </div>`
-    ).join('');
-
-    document.getElementById('roiStep2').style.display = 'none';
-    document.getElementById('roiStep3').style.display = 'block';
-    document.getElementById('roiStep3').scrollIntoView({ behavior: 'smooth', block: 'start' });
-  };
-
-  function animateValue(el, start, end, duration) {
-    const startTime = performance.now();
-    function update(currentTime) {
-      const elapsed = currentTime - startTime;
-      const progress = Math.min(elapsed / duration, 1);
-      const eased = 1 - Math.pow(1 - progress, 3);
-      const current = Math.round(start + (end - start) * eased);
-      el.textContent = '$' + current.toLocaleString();
-      if (progress < 1) requestAnimationFrame(update);
+    .header-brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
-    requestAnimationFrame(update);
-  }
-
-  window.resetCalc = function() {
-    state.industry = null; state.missed = null; state.noshows = null; state.admin = null; state.lost = null; state.special = null;
-    list.querySelectorAll('.roi-ind-btn').forEach(b => b.classList.remove('selected'));
-    document.querySelectorAll('.roi-opt').forEach(b => b.classList.remove('selected'));
-    document.getElementById('q_special_wrap').style.display = 'none';
-    document.getElementById('roiCalcBtn').disabled = true;
-    document.getElementById('roiCalcBtn').style.opacity = '0.4';
-    document.getElementById('roiStep1').style.display = 'block';
-    document.getElementById('roiStep2').style.display = 'none';
-    document.getElementById('roiStep3').style.display = 'none';
-  };
-})();
-</script>
-
-  
-
-/* CONTACT */
-    #contact { background: var(--navy); padding: 7rem 4rem; text-align: center; position: relative; overflow: hidden; }
-    #contact::before { content:''; position: absolute; inset: 0; background: radial-gradient(ellipse at center, rgba(46,139,87,0.07) 0%, transparent 70%); }
-    .contact-inner { position: relative; z-index: 1; max-width: 620px; margin: 0 auto; }
-    #contact .section-title { color: var(--white); }
-    #contact .section-sub { color: rgba(255,255,255,0.55); margin: 0 auto 2.5rem; }
-    .contact-form { display: flex; flex-direction: column; gap: 1rem; max-width: 480px; margin: 0 auto; }
-    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-    .form-input { background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12); border-radius: 4px; padding: 0.85rem 1.1rem; color: var(--white); font-family: 'DM Sans', sans-serif; font-size: 0.9rem; outline: none; transition: border-color 0.2s; }
-    .form-input::placeholder { color: rgba(255,255,255,0.35); }
-    .form-input:focus { border-color: var(--accent); }
-    .form-select { background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12); border-radius: 4px; padding: 0.85rem 1.1rem; color: rgba(255,255,255,0.7); font-family: 'DM Sans', sans-serif; font-size: 0.9rem; outline: none; transition: border-color 0.2s; appearance: none; }
-    .form-select option { background: var(--navy2); color: var(--white); }
-    .form-textarea { background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12); border-radius: 4px; padding: 0.85rem 1.1rem; color: var(--white); font-family: 'DM Sans', sans-serif; font-size: 0.9rem; outline: none; transition: border-color 0.2s; resize: vertical; min-height: 100px; }
-    .form-textarea::placeholder { color: rgba(255,255,255,0.35); }
-    .form-textarea:focus { border-color: var(--accent); }
-    .btn-submit { background: var(--accent); color: var(--navy); border: none; border-radius: 4px; padding: 1rem; font-family: 'DM Sans', sans-serif; font-size: 0.95rem; font-weight: 700; cursor: pointer; transition: all 0.2s; letter-spacing: 0.04em; }
-    .btn-submit:hover { background: var(--accent2); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(46,139,87,0.3); }
-
-    /* FOOTER */
-    footer { background: #080F1E; padding: 2rem 4rem; display: flex; align-items: center; justify-content: space-between; }
-    .footer-logo { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; color: var(--white); }
-    .footer-logo span { color: var(--accent); }
-    .footer-copy { font-size: 0.8rem; color: rgba(255,255,255,0.3); }
-    .footer-location { font-size: 0.8rem; color: rgba(255,255,255,0.35); display: flex; align-items: center; gap: 0.4rem; }
-
-    /* REVEAL */
-    .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
-    .reveal.visible { opacity: 1; transform: translateY(0); }
-
-    /* RESPONSIVE */
-    @media (max-width: 900px) {
-      nav { padding: 1rem 1.5rem; }
-      .nav-links { display: none; }
-      section { padding: 4rem 1.5rem; }
-      #hero { padding: 7rem 1.5rem 4rem; }
-      .problems-grid { grid-template-columns: 1fr; }
-      .services-layout { grid-template-columns: 1fr; }
-      .industries-grid { grid-template-columns: repeat(2,1fr); }
-      .process-steps { grid-template-columns: 1fr 1fr; }
-      .process-steps::before { display: none; }
-      .pricing-grid { grid-template-columns: 1fr; }
-      .form-row { grid-template-columns: 1fr; }
-      footer { flex-direction: column; gap: 0.75rem; text-align: center; }
+    .header-logo {
+      width: 32px; height: 32px; border-radius: 8px;
+      background: linear-gradient(135deg, #0A1F3D, #2E8B57);
+      display: flex; align-items: center; justify-content: center;
+      color: #FFFFFF; font-size: 12px; font-weight: 800;
+      letter-spacing: -0.03em;
     }
+    .header-name {
+      font-size: 15px; font-weight: 700; color: #0A1F3D;
+      letter-spacing: -0.02em;
+    }
+    .header-step {
+      font-size: 12px; color: #6B7280;
+    }
+
+    /* Progress */
+    .progress { display: flex; gap: 4px; padding: 0 24px; margin-bottom: 8px; }
+    .progress-bar {
+      flex: 1; height: 3px; border-radius: 2px;
+      background: #E5E7EB;
+      transition: background 0.4s ease;
+    }
+    .progress-bar.active { background: #2E8B57; }
+
+    /* Content */
+    .content { flex: 1; padding: 20px 0 120px; background-color: #F8F6F1 !important; }
+    .content.step-0 { padding-top: 32px; }
+    .content.step-4 { padding-bottom: 80px; }
+
+    /* Steps */
+    .step { padding: 0 24px; display: none; background-color: #F8F6F1 !important; }
+    .step.active { display: block; }
+
+    /* Fade-in animation */
+    .fade-in {
+      opacity: 0; transform: translateY(16px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+    /* Step Intro */
+    .intro-center { text-align: center; }
+    .intro-tagline {
+      font-family: Georgia, serif;
+      font-size: clamp(15px, 4vw, 18px);
+      color: #6B7280 !important;
+      line-height: 1.5;
+      margin: 0 auto 28px;
+      max-width: 320px;
+      letter-spacing: -0.01em;
+    }
+    .intro-tagline em {
+      color: #0A1F3D !important;
+      font-style: italic;
+      font-weight: 700;
+    }
+    .intro-title {
+      font-family: Georgia, serif;
+      font-size: clamp(24px, 6vw, 32px);
+      font-weight: 700; color: #0A1F3D !important;
+      margin: 0 0 12px; line-height: 1.2;
+    }
+    .intro-title span { color: #2E8B57 !important; }
+    .intro-sub {
+      color: #6B7280 !important;
+      font-size: clamp(14px, 3.5vw, 16px);
+      line-height: 1.6; margin: 0 0 28px;
+      max-width: 340px; margin-left: auto; margin-right: auto;
+    }
+
+    /* How it works box */
+    .how-box {
+      background-color: rgba(10,31,61,0.03) !important; border-radius: 14px;
+      padding: 18px 20px; margin-bottom: 24px;
+      max-width: 340px; margin-left: auto; margin-right: auto;
+      text-align: left;
+    }
+    .how-label {
+      margin: 0 0 10px; font-size: 13px; font-weight: 700;
+      color: #0A1F3D !important; letter-spacing: 0.03em; text-transform: uppercase;
+    }
+    .how-step {
+      display: flex; gap: 10px; align-items: flex-start;
+      margin-bottom: 8px;
+    }
+    .how-step:last-child { margin-bottom: 0; }
+    .how-num {
+      width: 22px; height: 22px; border-radius: 50%; flex-shrink: 0;
+      background: #2E8B57; color: #FFFFFF;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 700;
+    }
+    .how-text { font-size: 14px; color: #1A1A2E !important; line-height: 1.5; }
+
+    .consult-label {
+      font-size: 13px; color: #2E8B57 !important; font-weight: 600;
+      letter-spacing: 0.05em; text-transform: uppercase; margin: 0 0 6px;
+    }
+    .consult-sub {
+      font-size: 13px; color: #6B7280 !important; margin: 0 0 28px;
+    }
+
+    .trust-badges {
+      display: flex; justify-content: center; gap: 24px;
+      margin-top: 28px; flex-wrap: wrap;
+    }
+    .trust-badges span {
+      font-size: 12px; color: #6B7280 !important; white-space: nowrap;
+    }
+
+    /* Buttons */
+    .btn-primary {
+      padding: 16px 32px; border-radius: 12px; border: none;
+      background: linear-gradient(135deg, #2E8B57, #246B45);
+      color: #FFFFFF; font-size: 16px; font-weight: 700;
+      cursor: pointer; font-family: inherit; letter-spacing: -0.01em;
+      box-shadow: 0 4px 16px rgba(46,139,87,0.25);
+      transition: all 0.2s ease; display: inline-block;
+    }
+    .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(46,139,87,0.35); }
+    .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+    .btn-secondary {
+      padding: 16px 20px; border-radius: 12px;
+      border: 1.5px solid #E5E7EB;
+      background-color: #FFFFFF !important; color: #1A1A2E !important;
+      font-size: 14px; font-weight: 600;
+      cursor: pointer; font-family: inherit;
+    }
+
+    /* Form */
+    .step-title {
+      font-family: Georgia, serif;
+      font-size: clamp(20px, 5vw, 24px);
+      font-weight: 700; color: #0A1F3D !important;
+      margin: 0 0 6px; line-height: 1.2;
+    }
+    .step-sub {
+      font-size: 14px; color: #6B7280 !important;
+      margin: 0 0 24px; line-height: 1.5;
+    }
+    label.field-label {
+      display: block; font-size: 13px; font-weight: 600;
+      color: #0A1F3D !important; margin-bottom: 6px; margin-top: 16px;
+    }
+    input.field-input, textarea.field-input {
+      width: 100%; padding: 14px 16px; border-radius: 10px;
+      border: 1.5px solid #E5E7EB; font-size: 15px;
+      color: #1A1A2E !important; background-color: #FFFFFF !important;
+      outline: none; font-family: inherit;
+      transition: border-color 0.2s ease;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+    input.field-input:focus, textarea.field-input:focus {
+      border-color: #2E8B57;
+    }
+    textarea.field-input {
+      resize: vertical; min-height: 80px; line-height: 1.5;
+    }
+
+    /* Option buttons */
+    .option-list { display: flex; flex-direction: column; gap: 10px; }
+    .option-btn {
+      width: 100%; padding: 14px 16px; border-radius: 12px;
+      border: 2px solid #E5E7EB; background-color: #FFFFFF !important;
+      cursor: pointer; display: flex; align-items: center; gap: 12px;
+      font-size: 15px; color: #1A1A2E !important; font-weight: 400;
+      transition: all 0.2s ease; text-align: left; font-family: inherit;
+    }
+    .option-btn:hover { border-color: #ccc; }
+    .option-btn.selected {
+      border-color: #2E8B57; background-color: rgba(46,139,87,0.06) !important;
+      font-weight: 600; color: #1A1A2E !important;
+    }
+    .option-icon { font-size: 20px; }
+    .option-check { margin-left: auto; color: #2E8B57; font-weight: 700; }
+
+    /* Time slots grid */
+    .slots-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+    }
+    .slot-btn {
+      width: 100%; padding: 14px 8px; border-radius: 10px;
+      border: 2px solid #E5E7EB; background: #FFFFFF;
+      color: #1A1A2E; cursor: pointer; font-size: 13px;
+      font-weight: 500; transition: all 0.2s ease; font-family: inherit;
+    }
+    .slot-btn.selected {
+      border-color: #2E8B57; background: #2E8B57;
+      color: #FFFFFF; font-weight: 700;
+    }
+
+    /* Cal embed */
+    .cal-wrapper {
+      border-radius: 14px; overflow: hidden;
+      border: 1px solid #E5E7EB; background-color: #FFFFFF !important;
+      position: relative;
+    }
+    .cal-wrapper iframe {
+      width: 100%; height: 700px; border: none;
+    }
+    .scroll-hint {
+      text-align: center; padding: 10px 0 6px;
+      animation: pulseHint 2s ease infinite;
+    }
+    .scroll-hint span {
+      font-size: 12px; color: #2E8B57 !important; font-weight: 600;
+      display: inline-flex; align-items: center; gap: 6px;
+    }
+    @keyframes pulseHint {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+    .cal-note {
+      font-size: 12px; color: #6B7280; text-align: center;
+      margin-top: 14px; line-height: 1.5;
+    }
+
+    /* Bottom nav */
+    .nav-bar {
+      position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
+      width: 100%; max-width: 420px;
+      padding: 16px 24px;
+      padding-bottom: max(16px, env(safe-area-inset-bottom));
+      background-color: #F8F6F1 !important;
+      border-top: 1px solid #E5E7EB;
+      display: none; gap: 12px; box-sizing: border-box;
+    }
+    .nav-bar.visible { display: flex; }
+    .nav-bar .btn-primary { flex: 1; text-align: center; }
+
+    .nav-bar-cal {
+      position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
+      width: 100%; max-width: 420px;
+      padding: 12px 24px;
+      padding-bottom: max(12px, env(safe-area-inset-bottom));
+      background-color: #F8F6F1 !important;
+      border-top: 1px solid #E5E7EB;
+      display: none; box-sizing: border-box;
+    }
+    .nav-bar-cal.visible { display: block; }
   </style>
 </head>
 <body>
+  <div class="container" id="container">
 
-<!-- NAV -->
-<nav>
-  <div class="nav-logo">Work<span>Smart</span> SC</div>
-  <ul class="nav-links">
-    <li><a href="#problems">Problems</a></li>
-    <li><a href="#services">Services</a></li>
-    <li><a href="#industries">Industries</a></li>
-    <li><a href="#pricing">Pricing</a></li>
-  </ul>
-  <a href="#contact" class="nav-cta">Get a Free Consultation</a>
-</nav>
+    <!-- Header -->
+    <div class="header">
+      <div class="header-brand">
+        <div class="header-logo">WS</div>
+        <span class="header-name">WorkSmart SC</span>
+      </div>
+      <span class="header-step" id="stepIndicator"></span>
+    </div>
 
-<!-- HERO -->
-<section id="hero">
-  <div class="hero-grid"></div>
-  <div class="hero-glow"></div>
-  <div class="hero-glow2"></div>
-  <div class="hero-content">
-    <div class="hero-eyebrow">
-      <div class="hero-eyebrow-dot"></div>
-      <span>Greenville, SC — AI Automation</span>
+    <!-- Progress -->
+    <div class="progress" id="progressBar" style="display:none;">
+      <div class="progress-bar" id="prog1"></div>
+      <div class="progress-bar" id="prog2"></div>
+      <div class="progress-bar" id="prog3"></div>
+      <div class="progress-bar" id="prog4"></div>
     </div>
-    <h1 class="hero-title">Work Smarter.<br/><em>Grow Faster.</em></h1>
-    <p class="hero-sub">We build smart systems that handle the repetitive, time-consuming work holding your business back — so your team can focus on the work only they can do.</p>
-    <div class="hero-actions">
-      <a href="#contact" class="btn-primary">Book a Free Consultation</a>
-      <a href="#services" class="btn-secondary">See What We Build <span class="btn-arrow">→</span></a>
-    </div>
-  </div>
-  <div class="hero-stats">
-    <div class="stat"><span class="stat-num">10+</span><span class="stat-label">Hours Saved Weekly</span></div>
-    <div class="stat"><span class="stat-num">48hr</span><span class="stat-label">Avg. Build Time</span></div>
-    <div class="stat"><span class="stat-num">ROI</span><span class="stat-label">From Month One</span></div>
-  </div>
-</section>
 
-<!-- PROBLEMS -->
-<section id="problems">
-  <div class="problems-inner">
-    <div class="problems-header reveal">
-      <span class="section-label">The Problem</span>
-      <h2 class="section-title">Your team is buried in work<br/>that shouldn't require a human.</h2>
-      <p class="section-sub">Every hour spent on scheduling, follow-ups, and repetitive admin is an hour not spent on growing your business or serving your clients.</p>
-    </div>
-    <div class="problems-grid reveal">
-      <div class="problem-card"><div class="problem-icon">📅</div><div class="problem-title">Scheduling Chaos</div><p class="problem-desc">Staff spending hours on the phone booking, rescheduling, and confirming appointments that an AI can handle automatically 24/7.</p></div>
-      <div class="problem-card"><div class="problem-icon">🔁</div><div class="problem-title">Repetitive Follow-Ups</div><p class="problem-desc">Leads going cold, invoices going unpaid, and customers going uncontacted because nobody had time to send the same message for the hundredth time.</p></div>
-      <div class="problem-card"><div class="problem-icon">📦</div><div class="problem-title">Manual Supply Ordering</div><p class="problem-desc">Meetings held and hours spent determining what supplies to order — when usage patterns are predictable and the decision could be automated entirely.</p></div>
-      <div class="problem-card"><div class="problem-icon">💬</div><div class="problem-title">Slow Customer Response</div><p class="problem-desc">Inquiries sitting unanswered for hours while staff are busy. First businesses to respond win the customer — AI responds in seconds, every time.</p></div>
-      <div class="problem-card"><div class="problem-icon">📋</div><div class="problem-title">Data Entry Everywhere</div><p class="problem-desc">Information living in emails, texts, and sticky notes instead of your systems — creating errors, gaps, and hours of manual reconciliation every week.</p></div>
-      <div class="problem-card"><div class="problem-icon">⚠️</div><div class="problem-title">Things Falling Through</div><p class="problem-desc">Tasks that depend on someone remembering to do them. AI doesn't forget. It closes every loop, confirms every action, and escalates when something needs a human.</p></div>
-    </div>
-  </div>
-</section>
+    <!-- Content -->
+    <div class="content step-0" id="contentArea">
 
-<!-- SERVICES -->
-<section id="services">
-  <div class="services-inner">
-    <div class="services-layout">
-      <div>
-        <div class="reveal">
-          <span class="section-label">What We Build</span>
-          <h2 class="section-title">Smart systems built for how your business actually works.</h2>
-          <p class="section-sub">Every system is custom-built for your specific workflows — not a generic software subscription that requires you to change how you operate.</p>
-        </div>
-        <div class="services-list reveal">
-          <div class="service-item active" onclick="setService(0)"><span class="service-num">01</span><div><div class="service-name">Scheduling & Booking Agents</div><div class="service-brief">Automated appointment management, confirmations, and reminders</div></div></div>
-          <div class="service-item" onclick="setService(1)"><span class="service-num">02</span><div><div class="service-name">Customer Communication Agents</div><div class="service-brief">Instant response, follow-up sequences, and inquiry handling</div></div></div>
-          <div class="service-item" onclick="setService(2)"><span class="service-num">03</span><div><div class="service-name">Operations & Supply Agents</div><div class="service-brief">Inventory tracking, automated ordering, and supply management</div></div></div>
-          <div class="service-item" onclick="setService(3)"><span class="service-num">04</span><div><div class="service-name">Workflow Automation</div><div class="service-brief">Connect your existing tools and eliminate manual data transfer</div></div></div>
-          <div class="service-item" onclick="setService(4)"><span class="service-num">05</span><div><div class="service-name">AI-Powered SEO Management</div><div class="service-brief">AI that actively manages your Google ranking and local visibility</div></div></div>
+      <!-- STEP 0: Intro -->
+      <div class="step active" id="step0">
+        <div class="intro-center">
+          <div class="fade-in" data-delay="100">
+            <p class="intro-tagline">Good businesses work hard.<br><em>Great businesses work smart.</em></p>
+          </div>
+          <div class="fade-in" data-delay="200">
+            <h1 class="intro-title">You're Leaving<br><span>Revenue on the Table.</span></h1>
+          </div>
+          <div class="fade-in" data-delay="350">
+            <p class="intro-sub">Every business has bottlenecks that silently cost money — whether it's missed opportunities, slow processes, or work that shouldn't need a human. We build custom AI systems that fix the problem at the root.</p>
+          </div>
+          <div class="fade-in" data-delay="450">
+            <div class="how-box">
+              <p class="how-label">How it works</p>
+              <div class="how-step"><span class="how-num">1</span><span class="how-text">You tell us what's not working</span></div>
+              <div class="how-step"><span class="how-num">2</span><span class="how-text">We design a system built around your problem</span></div>
+              <div class="how-step"><span class="how-num">3</span><span class="how-text">Your business runs smarter — automatically</span></div>
+            </div>
+          </div>
+          <div class="fade-in" data-delay="550">
+            <p class="consult-label">Free 20-Minute Consultation</p>
+            <p class="consult-sub">We'll show you exactly where you're losing money — and what a custom solution looks like.</p>
+          </div>
+          <div class="fade-in" data-delay="700">
+            <button class="btn-primary" onclick="goNext()">Book My Free Consult →</button>
+          </div>
+          <div class="fade-in" data-delay="850">
+            <div class="trust-badges">
+              <span>🔒 No obligation</span>
+              <span>⏱️ 20 min</span>
+              <span>🛠️ Custom-built for you</span>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="services-detail reveal">
-        <div class="detail-card" id="detail-card">
-          <div class="detail-tag" id="detail-tag">Most Popular</div>
-          <h3 class="detail-title" id="detail-title">Scheduling & Booking Agents</h3>
-          <p class="detail-desc" id="detail-desc">An AI agent that handles your entire appointment workflow — booking, confirming, reminding, and rescheduling — without a single staff member touching it. Available 24/7, never puts a caller on hold, and integrates with your existing calendar system.</p>
-          <ul class="detail-points" id="detail-points">
-            <li>Answers booking requests via text, web chat, or phone</li>
-            <li>Sends automated confirmations and 24-hour reminders</li>
-            <li>Handles cancellations and fills slots from a waitlist automatically</li>
-            <li>Escalates complex situations to a human instantly</li>
-            <li>Works with your existing calendar — no new software to learn</li>
-          </ul>
+
+      <!-- STEP 1: Contact Info -->
+      <div class="step" id="step1">
+        <div class="fade-in" data-delay="100">
+          <h2 class="step-title">Tell us about yourself</h2>
+          <p class="step-sub">We'll use this to personalize your consultation.</p>
+        </div>
+        <div class="fade-in" data-delay="200">
+          <label class="field-label">Your Name *</label>
+          <input class="field-input" type="text" id="fieldName" placeholder="e.g. Sarah Johnson" oninput="checkCanAdvance()">
+        </div>
+        <div class="fade-in" data-delay="300">
+          <label class="field-label">Business Name *</label>
+          <input class="field-input" type="text" id="fieldBusiness" placeholder="e.g. Greenville Family Dental" oninput="checkCanAdvance()">
+        </div>
+        <div class="fade-in" data-delay="400">
+          <label class="field-label">Phone Number *</label>
+          <input class="field-input" type="tel" id="fieldPhone" placeholder="(864) 555-0123" oninput="checkCanAdvance()">
+        </div>
+        <div class="fade-in" data-delay="500">
+          <label class="field-label">Email (optional)</label>
+          <input class="field-input" type="email" id="fieldEmail" placeholder="sarah@example.com">
         </div>
       </div>
-    </div>
-  </div>
-</section>
 
-<!-- INDUSTRIES -->
-<section id="industries">
-  <div class="industries-inner">
-    <div class="reveal">
-      <span class="section-label" style="color:var(--accent)">Who We Serve</span>
-      <h2 class="section-title">Built for Upstate SC's business community.</h2>
-      <p class="section-sub">We specialize in local businesses where time is money and repetitive admin is costing both.</p>
-    </div>
-    <div class="industries-grid reveal">
-      <div class="industry-card"><span class="industry-icon">🏥</span><div class="industry-name">Medical & PT Practices</div><p class="industry-pain">Scheduling backlogs, supply ordering, insurance follow-ups, and no-shows all automated.</p></div>
-      <div class="industry-card"><span class="industry-icon">⚖️</span><div class="industry-name">Law Firms</div><p class="industry-pain">Client intake, consultation scheduling, document follow-ups, and lead response handled before staff arrive.</p></div>
-      <div class="industry-card"><span class="industry-icon">🔧</span><div class="industry-name">Contractors & Trades</div><p class="industry-pain">Quote follow-ups, job scheduling, maintenance reminders, and supply reorder automation.</p></div>
-      <div class="industry-card"><span class="industry-icon">🏡</span><div class="industry-name">Real Estate</div><p class="industry-pain">New leads contacted in under 60 seconds, showing scheduling automated, and long-term nurture sequences.</p></div>
-      <div class="industry-card"><span class="industry-icon">💆</span><div class="industry-name">Wellness & Fitness</div><p class="industry-pain">Class bookings, membership inquiries, cancellation win-back, and client check-in sequences automated.</p></div>
-      <div class="industry-card"><span class="industry-icon">🦷</span><div class="industry-name">Dental Practices</div><p class="industry-pain">Recall reminders, appointment confirmations, new patient intake, and supply management without staff involvement.</p></div>
-      <div class="industry-card"><span class="industry-icon">🏘️</span><div class="industry-name">Property Management</div><p class="industry-pain">Maintenance requests, vendor scheduling, tenant communication, and lease renewals automated end-to-end.</p></div>
-      <div class="industry-card"><span class="industry-icon">🍽️</span><div class="industry-name">Restaurants & Catering</div><p class="industry-pain">Reservation management, event inquiries, catering quote follow-ups, and supplier reorder automation.</p></div>
-    </div>
-  </div>
-</section>
-
-<!-- PROCESS -->
-<section id="process">
-  <div class="process-inner">
-    <div class="reveal" style="text-align:center;max-width:600px;margin:0 auto 1rem;">
-      <span class="section-label">How It Works</span>
-      <h2 class="section-title">Up and running in days, not months.</h2>
-      <p class="section-sub" style="margin:0 auto;">No lengthy implementations. No learning new software. We build around how you already work.</p>
-    </div>
-    <div class="process-steps reveal">
-      <div class="process-step"><div class="step-circle">1</div><div class="step-title">Discovery Call</div><p class="step-desc">We learn exactly where your team's time is being consumed and identify the highest-impact automation opportunities.</p></div>
-      <div class="process-step"><div class="step-circle">2</div><div class="step-title">Custom Build</div><p class="step-desc">We build your AI agent around your specific workflows, tools, and business rules — not a generic template.</p></div>
-      <div class="process-step"><div class="step-circle">3</div><div class="step-title">Live Demo</div><p class="step-desc">You see your agent handling real scenarios from your business before anything goes live. Nothing surprises you.</p></div>
-      <div class="process-step"><div class="step-circle">4</div><div class="step-title">Ongoing Support</div><p class="step-desc">We monitor, refine, and improve your agent monthly as your business evolves. You're never on your own.</p></div>
-    </div>
-  </div>
-</section>
-
-<!-- PRICING -->
-<section id="pricing">
-  <div class="pricing-inner">
-    <div class="reveal">
-      <span class="section-label">Pricing</span>
-      <h2 class="section-title">Simple, transparent pricing.</h2>
-      <p class="section-sub">A one-time setup fee to build your agent, then a low monthly retainer to keep it running and improving. Most clients see full ROI within the first 30 days.</p>
-    </div>
-    <div class="pricing-grid reveal">
-      <div class="pricing-card">
-        <div class="pricing-tier">Starter</div>
-        <div class="pricing-name">Single Agent</div>
-        <div class="pricing-price">$500<span style="font-size:1rem;font-weight:400">/mo</span></div>
-        <div class="pricing-period">+ one-time $750 setup fee</div>
-        <div class="pricing-divider"></div>
-        <div class="pricing-setup">Best for: Single-location businesses with one core automation need</div>
-        <ul class="pricing-features">
-          <li>One custom AI agent</li>
-          <li>Integration with your existing tools</li>
-          <li>SMS and email automation</li>
-          <li>Monthly performance review</li>
-          <li>Email support</li>
-        </ul>
-        <a href="#contact" class="btn-plan btn-plan-outline">Get Started</a>
+      <!-- STEP 2: Industry -->
+      <div class="step" id="step2">
+        <div class="fade-in" data-delay="100">
+          <h2 class="step-title">What type of business?</h2>
+          <p class="step-sub">Every industry has different bottlenecks — this helps us come prepared.</p>
+        </div>
+        <div class="option-list" id="industryList"></div>
       </div>
-      <div class="pricing-card featured">
-        <div class="pricing-badge">Most Popular</div>
-        <div class="pricing-tier">Growth</div>
-        <div class="pricing-name">Full Operations Suite</div>
-        <div class="pricing-price" style="color:var(--accent)">$1,200<span style="font-size:1rem;font-weight:400;color:rgba(255,255,255,0.5)">/mo</span></div>
-        <div class="pricing-period" style="color:rgba(255,255,255,0.4)">+ one-time $1,500 setup fee</div>
-        <div class="pricing-divider"></div>
-        <div class="pricing-setup">Best for: Practices and businesses with multiple automation needs</div>
-        <ul class="pricing-features">
-          <li>Up to 3 custom AI agents</li>
-          <li>Full workflow integration</li>
-          <li>SMS, email, and web chat automation</li>
-          <li>Weekly performance reporting</li>
-          <li>Priority support with same-day response</li>
-          <li>Quarterly strategy review</li>
-        </ul>
-        <a href="#contact" class="btn-plan btn-plan-filled">Get Started</a>
+
+      <!-- STEP 3: Pain Points -->
+      <div class="step" id="step3">
+        <div class="fade-in" data-delay="100">
+          <h2 class="step-title">What's costing you?</h2>
+          <p class="step-sub">Pick what resonates — we'll dig into the details on the call.</p>
+        </div>
+        <div class="option-list" id="painList"></div>
+        <div class="fade-in" data-delay="550">
+          <label class="field-label" style="margin-top:20px;">Anything specific? (optional)</label>
+          <textarea class="field-input" id="fieldDetails" placeholder="e.g. We need a way to automatically re-engage patients who cancel..." rows="3"></textarea>
+        </div>
       </div>
+
+      <!-- STEP 4: Confirmation + Cal.com -->
+      <div class="step" id="step4">
+        <div class="fade-in" data-delay="100">
+          <div style="text-align:center; margin-bottom: 24px;">
+            <div style="width:64px; height:64px; border-radius:50%; background:linear-gradient(135deg,#2E8B57,#34A065); display:flex; align-items:center; justify-content:center; margin:0 auto 16px; font-size:28px; color:#fff;">✓</div>
+            <h2 class="step-title" style="text-align:center; color:#2E8B57 !important;" id="confirmName">You're in!</h2>
+            <p class="step-sub" style="text-align:center; max-width:300px; margin:6px auto 0;">Here's what we've got. Pick a time below to lock in your consultation.</p>
+          </div>
+        </div>
+
+        <div class="fade-in" data-delay="250">
+          <div id="confirmSummary" style="background:rgba(10,31,61,0.04); border-radius:14px; padding:18px 20px; margin-bottom:24px; border:1px solid #E5E7EB;"></div>
+        </div>
+
+        <div class="fade-in" data-delay="400">
+          <p style="font-size:13px; font-weight:700; color:#0A1F3D !important; letter-spacing:0.03em; text-transform:uppercase; margin-bottom:4px;">Schedule Your Consultation</p>
+          <p style="font-size:12px; color:#6B7280 !important; margin-bottom:12px;">Scroll down inside the box below to select an available time slot.</p>
+          <div class="cal-wrapper">
+            <iframe id="calFrame" src="" title="Book a consultation"></iframe>
+            <div class="scroll-hint"><span>↓ Scroll for available times ↓</span></div>
+          </div>
+        </div>
+
+        <div class="fade-in" data-delay="500">
+          <div style="margin-top:20px; padding:16px 20px; background:rgba(10,31,61,0.03); border-radius:12px; display:flex; align-items:center; gap:12px;">
+            <span style="font-size:24px;">📞</span>
+            <div>
+              <p style="margin:0; font-size:13px; font-weight:600; color:#0A1F3D !important;">Prefer to talk now?</p>
+              <p style="margin:2px 0 0; font-size:13px; color:#6B7280 !important;">Call or text: <a href="tel:8644194713" style="color:#2E8B57; text-decoration:none; font-weight:600;">(864) 419-4713</a></p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /content -->
+
+    <!-- Nav: Steps 1-3 -->
+    <div class="nav-bar" id="navBar">
+      <button class="btn-secondary" onclick="goBack()">← Back</button>
+      <button class="btn-primary" id="btnContinue" onclick="goNext()">Continue →</button>
     </div>
+
+    <!-- Nav: Step 4 (Cal) -->
+    <div class="nav-bar-cal" id="navBarCal">
+      <button class="btn-secondary" onclick="goBack()">← Back</button>
+    </div>
+
   </div>
-</section>
 
-<!-- CONTACT -->
-<section id="contact">
-  <div class="contact-inner">
-    <div class="reveal">
-      <span class="section-label">Free Consultation</span>
-      <h2 class="section-title">See what WorkSmart SC can do for your business.</h2>
-      <p class="section-sub">Tell us about your biggest operational headache. We'll show you exactly how we'd solve it — no commitment required.</p>
-    </div>
-    <div class="reveal" style="text-align:center;margin-bottom:1.5rem;">
-      <p style="color:rgba(255,255,255,0.55);font-size:0.9rem;margin-bottom:0.5rem;">Prefer to reach out directly?</p>
-      <a href="tel:8644194713" style="color:var(--accent);font-weight:700;font-size:1rem;text-decoration:none;margin-right:1.5rem;">📞 864-419-4713</a>
-      <a href="/cdn-cgi/l/email-protection#62010d0e0e0b0c22150d1009110f03101611014c010d0f" style="color:var(--accent);font-weight:700;font-size:1rem;text-decoration:none;">✉️ <span class="__cf_email__" data-cfemail="a2c1cdcececbcce2d5cdd0c9d1cfc3d0d6d1c18cc1cdcf">[email&#160;protected]</span></a>
-    </div>
-    <form class="contact-form reveal" action="https://formspree.io/f/xleqkpvn" method="POST">
-      <div class="form-row">
-        <input class="form-input" type="text" name="name" placeholder="Your Name" required />
-        <input class="form-input" type="text" name="business" placeholder="Business Name" required />
-      </div>
-      <div class="form-row">
-        <input class="form-input" type="email" name="email" placeholder="Email Address" required />
-        <input class="form-input" type="tel" name="phone" placeholder="Phone Number" />
-      </div>
-      <select class="form-select" name="business_type">
-        <option value="" disabled selected>What type of business?</option>
-        <option>Medical / Physical Therapy</option>
-        <option>Dental Practice</option>
-        <option>Law Firm</option>
-        <option>Contractor / Trades</option>
-        <option>Real Estate</option>
-        <option>Fitness / Wellness</option>
-        <option>Restaurant / Catering</option>
-        <option>Property Management</option>
-        <option>Other</option>
-      </select>
-      <textarea class="form-textarea" name="message" placeholder="What's your biggest operational headache right now?"></textarea>
-      <button type="submit" class="btn-submit">Book My Free Consultation →</button>
-    </form>
-  </div>
-</section>
+  <script>
+    // ⚡ REPLACE THIS with your Cal.com booking link
+    const CAL_URL = 'https://cal.com/worksmartsc/consultation';
 
-<!-- FOOTER -->
-<footer>
-  <div class="footer-logo">Work<span>Smart</span> SC</div>
-  <div class="footer-copy">© 2026 WorkSmart SC. All rights reserved. &nbsp;|&nbsp; Collin Wilson &nbsp;|&nbsp; <a href="tel:8644194713" style="color:inherit;text-decoration:none;">864-419-4713</a> &nbsp;|&nbsp; <a href="/cdn-cgi/l/email-protection#0f6c60636366614f78607d647c626e7d7b7c6c216c6062" style="color:inherit;text-decoration:none;"><span class="__cf_email__" data-cfemail="73101c1f1f1a1d33041c0118001e12010700105d101c1e">[email&#160;protected]</span></a></div>
-  <div class="footer-location">📍 Greenville, South Carolina</div>
-</footer>
+    const INDUSTRIES = [
+      { id: 'pt', label: 'Physical Therapy / Chiro', icon: '🦴' },
+      { id: 'dental', label: 'Dental Office', icon: '🦷' },
+      { id: 'medical', label: 'Medical Practice', icon: '🏥' },
+      { id: 'legal', label: 'Law Firm', icon: '⚖️' },
+      { id: 'trades', label: 'HVAC / Plumbing / Trades', icon: '🔧' },
+      { id: 'realestate', label: 'Real Estate', icon: '🏠' },
+      { id: 'optometry', label: 'Optometry', icon: '👁️' },
+      { id: 'other', label: 'Other', icon: '💼' },
+    ];
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-  // Scroll reveal
-  const reveals = document.querySelectorAll('.reveal');
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-  }, { threshold: 0.1 });
-  reveals.forEach(r => observer.observe(r));
+    const PAIN_POINTS = [
+      { id: 'revenue', label: "We're losing revenue somewhere", icon: '💸' },
+      { id: 'manual', label: 'Too many manual, repetitive tasks', icon: '🔁' },
+      { id: 'speed', label: "We're too slow to respond or deliver", icon: '⏳' },
+      { id: 'scaling', label: "Growing but systems can't keep up", icon: '📈' },
+      { id: 'data', label: "No visibility into what's working", icon: '🔍' },
+      { id: 'custom', label: 'Something else entirely', icon: '🛠️' },
+    ];
 
-  // Service switcher
-  const services = [
-    { tag:"Most Popular", title:"Scheduling & Booking Agents", desc:"An AI agent that handles your entire appointment workflow — booking, confirming, reminding, and rescheduling — without a single staff member touching it. Available 24/7, never puts a caller on hold, and integrates with your existing calendar system.", points:["Answers booking requests via text, web chat, or phone","Sends automated confirmations and 24-hour reminders","Handles cancellations and fills slots from a waitlist automatically","Escalates complex situations to a human instantly","Works with your existing calendar — no new software to learn"] },
-    { tag:"High ROI", title:"Customer Communication Agents", desc:"New leads contacted within 60 seconds, follow-up sequences that never drop a prospect, and customer questions answered instantly — without a single staff member involved. The first business to respond wins the customer. AI ensures that's always you.", points:["Responds to new inquiries in under 60 seconds, 24/7","Nurtures leads automatically until they're ready to buy","Follows up on unpaid invoices without awkward conversations","Answers common questions via SMS or web chat instantly","Hands off to a human the moment a conversation needs one"] },
-    { tag:"Immediate Savings", title:"Operations & Supply Agents", desc:"Stop holding meetings to decide what to order. An AI agent monitors your usage patterns, tracks current inventory, and generates purchase orders automatically for one-tap approval. What used to take an hour of meetings now takes ten seconds.", points:["Tracks inventory levels and usage patterns automatically","Generates reorder recommendations before you run out","Sends one-tap approval requests to the right person","Logs all orders and maintains audit trail automatically","Adapts to seasonal patterns and usage changes over time"] },
-    { tag:"Foundation Layer", title:"Workflow Automation", desc:"Your business runs on a dozen different tools that don't talk to each other. We connect them — so information flows automatically, nothing gets re-entered twice, and your team stops copying data from one system to another all day.", points:["Connects your existing software without replacing anything","Eliminates manual data re-entry between systems","Triggers actions automatically based on business events","Creates audit trails and reporting without extra work","Scales as your business grows without additional staff"] },
-    { tag:"New Service", title:"AI-Powered SEO Management", desc:"An AI that actively manages your local search presence every day — not a monthly PDF from an agency. Google Business Profile optimization, local citation building, review management, competitor tracking, and keyword-targeted content — all running automatically while you focus on your business.", points:["Google Business Profile optimized and updated weekly","Local citations built across 50+ directories automatically","Review monitoring with AI-drafted response suggestions","Keyword-targeted local content published consistently","Competitor ranking tracked and gaps identified monthly"] },
-  ];
+    let currentStep = 0;
+    let form = { name: '', business: '', phone: '', email: '', industry: '', pains: [], details: '' };
 
-  function setService(i) {
-    document.querySelectorAll('.service-item').forEach((el,idx) => el.classList.toggle('active', idx === i));
-    const s = services[i];
-    document.getElementById('detail-tag').textContent = s.tag;
-    document.getElementById('detail-title').textContent = s.title;
-    document.getElementById('detail-desc').textContent = s.desc;
-    document.getElementById('detail-points').innerHTML = s.points.map(p => `<li>${p}</li>`).join('');
-  }
-  setService(0);
-</script>
+    // Build option lists
+    function buildOptions() {
+      const indList = document.getElementById('industryList');
+      INDUSTRIES.forEach((ind, i) => {
+        const div = document.createElement('div');
+        div.className = 'fade-in';
+        div.dataset.delay = 150 + i * 60;
+        div.innerHTML = `<button class="option-btn" data-id="${ind.id}" onclick="selectIndustry('${ind.id}')">
+          <span class="option-icon">${ind.icon}</span>${ind.label}<span class="option-check" style="display:none">✓</span>
+        </button>`;
+        indList.appendChild(div);
+      });
 
-<script src="/chat-widget.js"></script>
+      const painListEl = document.getElementById('painList');
+      PAIN_POINTS.forEach((p, i) => {
+        const div = document.createElement('div');
+        div.className = 'fade-in';
+        div.dataset.delay = 150 + i * 60;
+        div.innerHTML = `<button class="option-btn" data-id="${p.id}" onclick="togglePain('${p.id}')">
+          <span class="option-icon">${p.icon}</span>${p.label}<span class="option-check" style="display:none">✓</span>
+        </button>`;
+        painListEl.appendChild(div);
+      });
+    }
+
+    function selectIndustry(id) {
+      form.industry = id;
+      document.querySelectorAll('#industryList .option-btn').forEach(btn => {
+        const selected = btn.dataset.id === id;
+        btn.classList.toggle('selected', selected);
+        btn.querySelector('.option-check').style.display = selected ? 'inline' : 'none';
+      });
+      checkCanAdvance();
+    }
+
+    function togglePain(id) {
+      const idx = form.pains.indexOf(id);
+      if (idx > -1) form.pains.splice(idx, 1);
+      else form.pains.push(id);
+
+      document.querySelectorAll('#painList .option-btn').forEach(btn => {
+        const selected = form.pains.includes(btn.dataset.id);
+        btn.classList.toggle('selected', selected);
+        btn.querySelector('.option-check').style.display = selected ? 'inline' : 'none';
+      });
+      checkCanAdvance();
+    }
+
+    function canAdvance() {
+      switch (currentStep) {
+        case 0: return true;
+        case 1: return form.name.trim() && form.business.trim() && form.phone.trim();
+        case 2: return form.industry;
+        case 3: return form.pains.length > 0;
+        case 4: return true;
+        default: return false;
+      }
+    }
+
+    function checkCanAdvance() {
+      form.name = document.getElementById('fieldName')?.value || form.name;
+      form.business = document.getElementById('fieldBusiness')?.value || form.business;
+      form.phone = document.getElementById('fieldPhone')?.value || form.phone;
+      form.email = document.getElementById('fieldEmail')?.value || form.email;
+      form.details = document.getElementById('fieldDetails')?.value || form.details;
+
+      const btn = document.getElementById('btnContinue');
+      if (btn) {
+        btn.disabled = !canAdvance();
+      }
+    }
+
+    function buildCalUrl() {
+      const params = new URLSearchParams();
+      if (form.name) params.set('name', form.name);
+      if (form.email) params.set('email', form.email);
+      const industry = INDUSTRIES.find(i => i.id === form.industry);
+      const pains = PAIN_POINTS.filter(p => form.pains.includes(p.id));
+      const notes = [
+        `Business: ${form.business}`,
+        industry ? `Industry: ${industry.label}` : '',
+        `Challenges: ${pains.map(p => p.label).join(', ')}`,
+        form.details ? `Details: ${form.details}` : '',
+      ].filter(Boolean).join(' | ');
+      if (notes) params.set('notes', notes);
+      return `${CAL_URL}?${params.toString()}`;
+    }
+
+    function showStep(step) {
+      // Hide all steps
+      document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
+      document.getElementById(`step${step}`).classList.add('active');
+
+      // Content class
+      const content = document.getElementById('contentArea');
+      content.className = `content step-${step}`;
+
+      // Progress
+      const prog = document.getElementById('progressBar');
+      prog.style.display = (step > 0 && step < 4) ? 'flex' : 'none';
+      for (let i = 1; i <= 4; i++) {
+        document.getElementById(`prog${i}`).classList.toggle('active', i <= step);
+      }
+
+      // Step indicator
+      const indicator = document.getElementById('stepIndicator');
+      indicator.textContent = (step > 0 && step < 4) ? `Step ${step} of 4` : '';
+
+      // Nav bars
+      document.getElementById('navBar').classList.toggle('visible', step > 0 && step < 4);
+      document.getElementById('navBarCal').classList.toggle('visible', step === 4);
+
+      // Load Cal iframe + build summary on step 4
+      if (step === 4) {
+        document.getElementById('calFrame').src = buildCalUrl();
+
+        // Build confirmation summary
+        const firstName = form.name.split(' ')[0];
+        document.getElementById('confirmName').textContent = `You're in, ${firstName}!`;
+
+        const industry = INDUSTRIES.find(i => i.id === form.industry);
+        const pains = PAIN_POINTS.filter(p => form.pains.includes(p.id));
+        const rows = [
+          ['Name', form.name],
+          ['Business', form.business],
+          ['Industry', industry ? `${industry.icon} ${industry.label}` : ''],
+          ['Challenges', pains.map(p => p.icon).join(' ')],
+        ].filter(r => r[1]);
+
+        document.getElementById('confirmSummary').innerHTML = rows.map((r, i) =>
+          `<div style="display:flex; justify-content:space-between; align-items:center; padding:10px 0; ${i < rows.length - 1 ? 'border-bottom:1px solid #E5E7EB;' : ''}">
+            <span style="font-size:13px; color:#6B7280 !important;">${r[0]}</span>
+            <span style="font-size:14px; color:#1A1A2E !important; font-weight:600;">${r[1]}</span>
+          </div>`
+        ).join('');
+
+        // Hide scroll hint after user scrolls the iframe area
+        const hint = document.querySelector('.scroll-hint');
+        if (hint) {
+          setTimeout(() => { hint.style.display = 'none'; }, 8000);
+        }
+      }
+
+      // Trigger fade-ins
+      const stepEl = document.getElementById(`step${step}`);
+      stepEl.querySelectorAll('.fade-in').forEach(el => {
+        el.classList.remove('visible');
+        const delay = parseInt(el.dataset.delay) || 0;
+        setTimeout(() => el.classList.add('visible'), delay);
+      });
+
+      checkCanAdvance();
+    }
+
+    function goNext() {
+      if (!canAdvance()) return;
+      currentStep++;
+      showStep(currentStep);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function goBack() {
+      currentStep--;
+      showStep(currentStep);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Init
+    buildOptions();
+    showStep(0);
+  </script>
 </body>
 </html>
