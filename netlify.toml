@@ -2,7 +2,7 @@
   node_bundler = "esbuild"
 
 [build]
-  publish = "/"
+  publish = "."
 
 [context.production.environment]
   NODE_VERSION = "18"
