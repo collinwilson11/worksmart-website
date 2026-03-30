@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Business Operations Audit — WorkSmart SC</title>
+  <meta name="description" content="Free business operations audit example by WorkSmart SC. See how we map your entire operation to find bottlenecks, disconnects, and revenue leaks.">
+  <meta property="og:title" content="Business Operations Audit — WorkSmart SC">
+  <meta property="og:description" content="See what a free WorkSmart SC business audit looks like. Full operations mapping with recommendations.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://www.worksmartsc.com/audit">
+  <link rel="canonical" href="https://www.worksmartsc.com/audit">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
+  <style>
+    body { margin: 0; padding: 0; background: #080C14; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/babel">
+    const { useState } = React;
+
+const C = {
+navy: “#0A1F3D”,
+navyMid: “#0E2444”,
+navyLight: “#132D52”,
+green: “#2E8B57”,
+greenLight: “#3AAF6E”,
+red: “#E05252”,
+amber: “#D4A843”,
+blue: “#4A9BD9”,
+purple: “#8B6FC0”,
+white: “#FFFFFF”,
+text: “rgba(255,255,255,0.88)”,
+textMid: “rgba(255,255,255,0.65)”,
+textDim: “rgba(255,255,255,0.4)”,
+border: “rgba(255,255,255,0.08)”,
+};
+
+const tabs = [
+{ id: “overview”, label: “Overview” },
+{ id: “org”, label: “Org & Roles” },
+{ id: “comms”, label: “Communications” },
+{ id: “ops”, label: “Operations” },
+{ id: “clients”, label: “Client Journey” },
+{ id: “accounting”, label: “Accounting” },
+{ id: “tech”, label: “Tech & Tools” },
+{ id: “recs”, label: “Recommendations” },
+];
+
+/* ═══════ SHARED COMPONENTS ═══════ */
+
+function Node({ x, y, w = 160, h = 70, title, lines = [], status = “neutral”, tag }) {
+const st = {
+ok: { bg: “rgba(46,139,87,0.08)”, border: “rgba(46,139,87,0.4)”, tag: C.greenLight, tagBg: “rgba(46,139,87,0.15)” },
+warn: { bg: “rgba(212,168,67,0.08)”, border: “rgba(212,168,67,0.35)”, tag: C.amber, tagBg: “rgba(212,168,67,0.15)” },
+critical: { bg: “rgba(224,82,82,0.08)”, border: “rgba(224,82,82,0.35)”, tag: C.red, tagBg: “rgba(224,82,82,0.15)” },
+info: { bg: “rgba(74,155,217,0.08)”, border: “rgba(74,155,217,0.35)”, tag: C.blue, tagBg: “rgba(74,155,217,0.15)” },
+neutral: { bg: C.navyMid, border: “rgba(255,255,255,0.12)”, tag: C.textMid, tagBg: “rgba(255,255,255,0.08)” },
+purple: { bg: “rgba(139,111,192,0.08)”, border: “rgba(139,111,192,0.35)”, tag: C.purple, tagBg: “rgba(139,111,192,0.15)” },
+}[status];
+const tagLabels = { bottleneck: “BOTTLENECK”, disconnect: “DISCONNECT”, manual: “MANUAL”, working: “WORKING” };
+return (
+<g>
+<rect x={x} y={y} width={w} height={h} rx={7} fill={st.bg} stroke={st.border} strokeWidth={1.5} />
+<text x={x + 12} y={y + 20} fill={C.white} fontSize={12.5} fontWeight={700} fontFamily=”‘DM Sans’,sans-serif”>{title}</text>
+{lines.map((l, i) => (
+<text key={i} x={x + 12} y={y + 36 + i * 14} fill={C.textMid} fontSize={10} fontFamily=”‘DM Sans’,sans-serif”>{l}</text>
+))}
+{tag && (
+<>
+<rect x={x + 12} y={y + h - 22} width={tagLabels[tag].length * 6.5 + 12} height={16} rx={3} fill={st.tagBg} />
+<text x={x + 18} y={y + h - 10} fill={st.tag} fontSize={8} fontWeight={700} letterSpacing={1} fontFamily=”‘IBM Plex Mono’,monospace”>{tagLabels[tag]}</text>
+</>
+)}
+</g>
+);
+}
+
+function Conn({ x1, y1, x2, y2, color = “rgba(255,255,255,0.18)”, dash = false, label, labelSide = “above” }) {
+const lx = (x1 + x2) / 2;
+const ly = labelSide === “below” ? (y1 + y2) / 2 + 14 : (y1 + y2) / 2 - 6;
+return (
+<g>
+<line x1={x1} y1={y1} x2={x2} y2={y2} stroke={color} strokeWidth={1.8} fill=“none” strokeDasharray={dash ? “6 4” : “none”} />
+<circle cx={x2} cy={y2} r={3.5} fill={color} />
+{label && (
+<>
+<rect x={lx - label.length * 3.3 - 6} y={ly - 10} width={label.length * 6.6 + 12} height={16} rx={4} fill={C.navyMid} stroke={color} strokeWidth={0.8} />
+<text x={lx} y={ly + 1} textAnchor=“middle” fill={color} fontSize={8.5} fontWeight={700} fontFamily=”‘IBM Plex Mono’,monospace”>{label}</text>
+</>
+)}
+</g>
+);
+}
+
+function SectionTitle({ children, sub }) {
+return (
+<div style={{ marginBottom: 24 }}>
+<h2 style={{ fontFamily: “‘Playfair Display’,serif”, fontSize: 26, fontWeight: 800, color: C.white, margin: 0, lineHeight: 1.2 }}>{children}</h2>
+{sub && <p style={{ fontSize: 13, color: C.textMid, marginTop: 6, lineHeight: 1.5 }}>{sub}</p>}
+</div>
+);
+}
+
+function FindingCard({ severity, title, desc, impact, impactType = “loss” }) {
+const cfg = {
+critical: { bg: “rgba(224,82,82,0.06)”, border: “rgba(224,82,82,0.2)”, color: C.red, label: “● CRITICAL” },
+warning: { bg: “rgba(212,168,67,0.06)”, border: “rgba(212,168,67,0.2)”, color: C.amber, label: “▲ WARNING” },
+opportunity: { bg: “rgba(74,155,217,0.06)”, border: “rgba(74,155,217,0.2)”, color: C.blue, label: “◆ OPPORTUNITY” },
+strength: { bg: “rgba(46,139,87,0.06)”, border: “rgba(46,139,87,0.2)”, color: C.greenLight, label: “✓ STRENGTH” },
+}[severity];
+return (
+<div style={{ background: cfg.bg, border: `1px solid ${cfg.border}`, borderRadius: 6, padding: “18px 20px” }}>
+<div style={{ fontSize: 9, fontWeight: 700, letterSpacing: 1.5, color: cfg.color, marginBottom: 8 }}>{cfg.label}</div>
+<div style={{ fontSize: 14, fontWeight: 700, color: C.white, marginBottom: 5 }}>{title}</div>
+<div style={{ fontSize: 12, color: C.textMid, lineHeight: 1.55 }}>{desc}</div>
+{impact && <div style={{ marginTop: 10, fontFamily: “‘IBM Plex Mono’,monospace”, fontSize: 12, fontWeight: 600, color: impactType === “loss” ? C.red : C.greenLight }}>{impact}</div>}
+</div>
+);
+}
+
+function Badge({ text, color }) {
+const bg = { red: “rgba(224,82,82,0.12)”, amber: “rgba(212,168,67,0.12)”, green: “rgba(46,139,87,0.12)”, blue: “rgba(74,155,217,0.12)” }[color];
+const fg = { red: C.red, amber: C.amber, green: C.greenLight, blue: C.blue }[color];
+return <span style={{ background: bg, color: fg, fontSize: 10, fontWeight: 700, letterSpacing: 1, textTransform: “uppercase”, padding: “3px 8px”, borderRadius: 3, marginLeft: 8 }}>{text}</span>;
+}
+
+function DiagramBox({ title, children }) {
+return (
+<div style={{ background: C.navyMid, border: `1px solid ${C.border}`, borderRadius: 8, padding: 28, overflowX: “auto” }}>
+{title && <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: 2, textTransform: “uppercase”, color: C.green, marginBottom: 18 }}>{title}</div>}
+{children}
+</div>
+);
+}
+
+function Legend({ items }) {
+return (
+<div style={{ display: “flex”, gap: 20, flexWrap: “wrap”, marginTop: 14, paddingTop: 14, borderTop: `1px solid ${C.border}` }}>
+{items.map((it, i) => (
+<div key={i} style={{ display: “flex”, alignItems: “center”, gap: 6 }}>
+{it.type === “line” && <div style={{ width: 20, height: 0, borderTop: `2px ${it.dash ? "dashed" : "solid"} ${it.color}` }} />}
+{it.type === “dot” && <div style={{ width: 10, height: 10, borderRadius: 3, background: it.bg, border: `1.5px solid ${it.color}` }} />}
+<span style={{ fontSize: 10, color: C.textDim }}>{it.label}</span>
+</div>
+))}
+</div>
+);
+}
+
+function TableRow({ cols, header = false }) {
+return (
+<div style={{ display: “grid”, gridTemplateColumns: cols.map(c => c.w || “1fr”).join(” “), gap: 12, padding: header ? “0 0 10px” : “9px 0”, borderBottom: `1px solid ${header ? "rgba(255,255,255,0.12)" : C.border}`, alignItems: “center” }}>
+{cols.map((c, i) => (
+<span key={i} style={{ fontSize: header ? 10 : (c.size || 12), fontWeight: header ? 700 : (c.bold ? 700 : 400), color: header ? C.textDim : (c.color || C.textMid), letterSpacing: header ? 1.5 : 0, fontFamily: c.mono ? “‘IBM Plex Mono’,monospace” : “‘DM Sans’,sans-serif”, display: “flex”, alignItems: “center”, gap: 8 }}>
+{c.dot && <span style={{ width: 8, height: 8, borderRadius: “50%”, flexShrink: 0, background: c.dot }} />}
+{c.text}
+</span>
+))}
+</div>
+);
+}
+
+/* ═══════ TAB: OVERVIEW ═══════ */
+
+function OverviewTab() {
+return (
+<div>
+<SectionTitle sub="A high-level map of Summit Plumbing's entire operation — how people, processes, money, and information flow (or don't).">Full Business Overview</SectionTitle>
+
+```
+  <div style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 12, marginBottom: 32 }}>
+    {[
+      { val: "5", label: "Bottlenecks", color: C.red },
+      { val: "4", label: "Disconnects", color: C.amber },
+      { val: "6", label: "Manual Processes", color: C.blue },
+      { val: "3", label: "Strengths", color: C.greenLight },
+      { val: "~$148K", label: "Revenue at Risk / Yr", color: C.red },
+    ].map((s, i) => (
+      <div key={i} style={{ background: C.navyMid, border: `1px solid ${C.border}`, borderRadius: 6, padding: "18px 16px", textAlign: "center" }}>
+        <div style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 24, fontWeight: 700, color: s.color, marginBottom: 4 }}>{s.val}</div>
+        <div style={{ fontSize: 10, color: C.textDim, letterSpacing: 1.2, textTransform: "uppercase" }}>{s.label}</div>
+      </div>
+    ))}
+  </div>
+
+  <DiagramBox title="Master Operations Flow">
+    <svg width={1000} height={740} viewBox="0 0 1000 740" style={{ display: "block" }}>
+      {/* Row backgrounds */}
+      {[
+        { label: "INTAKE", y: 0 },
+        { label: "SCHEDULING", y: 145 },
+        { label: "EXECUTION", y: 290 },
+        { label: "BILLING", y: 435 },
+        { label: "RETENTION", y: 580 },
+      ].map((r, i) => (
+        <g key={i}>
+          <rect x={0} y={r.y} width={1000} height={135} fill={i % 2 === 0 ? "rgba(255,255,255,0.012)" : "transparent"} />
+          <text x={16} y={r.y + 22} fill="rgba(255,255,255,0.25)" fontSize={9} fontWeight={700} letterSpacing={2.5} fontFamily="'IBM Plex Mono',monospace">{r.label}</text>
+          {i < 4 && <line x1={0} y1={r.y + 135} x2={1000} y2={r.y + 135} stroke="rgba(255,255,255,0.04)" strokeWidth={1} />}
+        </g>
+      ))}
+
+      {/* ROW 1: INTAKE */}
+      <Node x={90} y={40} w={175} h={75} title="📞 Phone Calls" lines={["Dana answers ~18/day"]} status="ok" tag="working" />
+      <Node x={310} y={40} w={175} h={75} title="🌐 Website Form" lines={["~4 leads/wk → email"]} status="warn" tag="disconnect" />
+      <Node x={530} y={40} w={175} h={75} title="G  Google Profile" lines={["3.8★ · 22 reviews"]} status="critical" tag="bottleneck" />
+      <Node x={750} y={40} w={175} h={75} title="🗣 Word of Mouth" lines={["Primary source, untracked"]} status="info" tag="manual" />
+
+      {/* Intake → Scheduling: vertical drops */}
+      <Conn x1={178} y1={115} x2={178} y2={190} color="rgba(46,139,87,0.55)" />
+      <Conn x1={398} y1={115} x2={310} y2={190} color="rgba(212,168,67,0.55)" dash label="DELAYED" />
+      <Conn x1={618} y1={115} x2={440} y2={190} color="rgba(224,82,82,0.6)" dash label="NO LINK" />
+      <Conn x1={838} y1={115} x2={560} y2={190} color="rgba(74,155,217,0.45)" dash label="UNTRACKED" />
+
+      {/* ROW 2: SCHEDULING */}
+      <Node x={90} y={185} w={215} h={85} title="📅 Scheduling" lines={["Paper calendar + whiteboard", "Dana calls techs manually"]} status="critical" tag="bottleneck" />
+      <Node x={390} y={185} w={215} h={85} title="👤 Dana (Office Mgr)" lines={["Scheduling + dispatch + invoicing", "Single point of failure"]} status="critical" tag="bottleneck" />
+      <Node x={690} y={185} w={215} h={85} title="🚛 Dispatch" lines={["Group text, no routing", "Techs cross paths daily"]} status="critical" tag="bottleneck" />
+
+      <Conn x1={305} y1={228} x2={390} y2={228} color="rgba(224,82,82,0.6)" label="ALL MANUAL" />
+      <Conn x1={605} y1={228} x2={690} y2={228} color="rgba(224,82,82,0.6)" dash label="GROUP TEXT" />
+
+      {/* Scheduling → Execution */}
+      <Conn x1={198} y1={270} x2={198} y2={335} color="rgba(224,82,82,0.6)" dash />
+      <Conn x1={798} y1={270} x2={798} y2={335} color="rgba(224,82,82,0.6)" dash label="TEXT MSG" labelSide="below" />
+
+      {/* ROW 3: EXECUTION */}
+      <Node x={90} y={330} w={195} h={75} title="🔧 Tech Team (6)" lines={["Skilled, quality work"]} status="ok" tag="working" />
+      <Node x={340} y={330} w={195} h={75} title="📦 Parts / Inventory" lines={["In Marcus's head. 3x/wk runs"]} status="warn" tag="manual" />
+      <Node x={590} y={330} w={195} h={75} title="📋 Job Tickets" lines={["Handwritten carbon copies"]} status="info" tag="manual" />
+      <Node x={840} y={330} w={120} h={60} title="✅ Job Done" lines={[]} status="ok" />
+
+      <Conn x1={285} y1={368} x2={340} y2={368} color="rgba(212,168,67,0.55)" dash label="VERBAL" />
+      <Conn x1={535} y1={368} x2={590} y2={368} color="rgba(74,155,217,0.45)" />
+      <Conn x1={785} y1={368} x2={840} y2={368} color="rgba(46,139,87,0.55)" />
+
+      {/* Execution → Billing */}
+      <Conn x1={688} y1={405} x2={198} y2={480} color="rgba(212,168,67,0.55)" dash label="PAPER TO DANA" />
+      <Conn x1={900} y1={390} x2={900} y2={480} color="rgba(46,139,87,0.55)" />
+
+      {/* ROW 4: BILLING */}
+      <Node x={90} y={475} w={200} h={75} title="📄 Invoicing" lines={["Handwritten → QB", "2-5 day delay"]} status="warn" tag="disconnect" />
+      <Node x={350} y={475} w={195} h={75} title="💻 QuickBooks" lines={["Invoice only. 10% utilized."]} status="info" tag="manual" />
+      <Node x={605} y={475} w={195} h={75} title="💰 Payment Collection" lines={["$38K outstanding"]} status="critical" tag="bottleneck" />
+      <Node x={860} y={475} w={110} h={60} title="💵 Revenue" lines={[]} status="ok" />
+
+      <Conn x1={290} y1={512} x2={350} y2={512} color="rgba(212,168,67,0.55)" dash label="MANUAL ENTRY" />
+      <Conn x1={545} y1={512} x2={605} y2={512} color="rgba(224,82,82,0.6)" dash label="NO AUTO F/U" />
+      <Conn x1={800} y1={512} x2={860} y2={512} color="rgba(46,139,87,0.55)" />
+
+      {/* Billing → Retention */}
+      <Conn x1={198} y1={550} x2={198} y2={625} color="rgba(224,82,82,0.6)" dash label="NOTHING" />
+      <Conn x1={448} y1={550} x2={448} y2={625} color="rgba(224,82,82,0.6)" dash label="NOTHING" />
+
+      {/* ROW 5: RETENTION */}
+      <Node x={90} y={620} w={195} h={75} title="⭐ Review Capture" lines={["No system. 22 total reviews."]} status="critical" tag="bottleneck" />
+      <Node x={340} y={620} w={195} h={75} title="🔄 Follow-Up" lines={["Zero post-job contact"]} status="critical" tag="disconnect" />
+      <Node x={590} y={620} w={195} h={75} title="📣 Marketing" lines={["None. Word of mouth only."]} status="warn" tag="disconnect" />
+      <Node x={840} y={620} w={120} h={60} title="🔁 Repeat" lines={["By accident only"]} status="warn" />
+    </svg>
+    <Legend items={[
+      { type: "line", color: "rgba(46,139,87,0.55)", label: "Connected" },
+      { type: "line", color: "rgba(224,82,82,0.6)", dash: true, label: "Broken / Missing" },
+      { type: "line", color: "rgba(212,168,67,0.55)", dash: true, label: "Weak / Delayed" },
+      { type: "dot", bg: "rgba(224,82,82,0.08)", color: "rgba(224,82,82,0.35)", label: "Critical" },
+      { type: "dot", bg: "rgba(212,168,67,0.08)", color: "rgba(212,168,67,0.35)", label: "Warning" },
+      { type: "dot", bg: "rgba(74,155,217,0.08)", color: "rgba(74,155,217,0.35)", label: "Manual" },
+      { type: "dot", bg: "rgba(46,139,87,0.08)", color: "rgba(46,139,87,0.4)", label: "Working" },
+    ]} />
+  </DiagramBox>
+</div>
+```
+
+);
+}
+
+/* ═══════ TAB: ORG ═══════ */
+
+function OrgTab() {
+return (
+<div>
+<SectionTitle sub="Who does what, who reports to whom, and where the bottlenecks in responsibility sit.">Organizational Structure & Roles</SectionTitle>
+<DiagramBox>
+<svg width={920} height={540} viewBox=“0 0 920 540” style={{ display: “block” }}>
+{/* MARCUS */}
+<rect x={350} y={20} width={220} height={75} rx={8} fill="rgba(46,139,87,0.08)" stroke="rgba(46,139,87,0.4)" strokeWidth={2} />
+<text x={460} y={46} textAnchor="middle" fill={C.white} fontSize={16} fontWeight={800} fontFamily="'DM Sans',sans-serif">Marcus Reeves</text>
+<text x={460} y={64} textAnchor="middle" fill={C.greenLight} fontSize={11} fontWeight={600} fontFamily="'IBM Plex Mono',monospace">OWNER / LEAD TECH</text>
+<text x={460} y={84} textAnchor="middle" fill={C.textDim} fontSize={10}>Estimates · Hiring · Complex jobs · Pricing</text>
+
+```
+      <Conn x1={400} y1={95} x2={180} y2={155} color="rgba(255,255,255,0.22)" label="DELEGATES" />
+      <Conn x1={510} y1={95} x2={550} y2={155} color="rgba(255,255,255,0.22)" label="FIELD LEAD" />
+      <Conn x1={560} y1={70} x2={740} y2={155} color="rgba(139,111,192,0.5)" dash label="DIRECT" />
+
+      {/* DANA */}
+      <rect x={60} y={150} width={240} height={90} rx={8} fill="rgba(224,82,82,0.08)" stroke="rgba(224,82,82,0.35)" strokeWidth={2} />
+      <text x={180} y={178} textAnchor="middle" fill={C.white} fontSize={15} fontWeight={800}>Dana Reeves</text>
+      <text x={180} y={196} textAnchor="middle" fill={C.red} fontSize={11} fontWeight={600} fontFamily="'IBM Plex Mono',monospace">OFFICE MANAGER · OVERLOADED</text>
+      <text x={180} y={214} textAnchor="middle" fill={C.textMid} fontSize={10}>Scheduling · Dispatch · Invoicing · Phones</text>
+      <text x={180} y={228} textAnchor="middle" fill={C.textMid} fontSize={10}>Payment follow-up · Estimate follow-up</text>
+
+      <rect x={60} y={252} width={240} height={28} rx={4} fill="rgba(224,82,82,0.12)" stroke="rgba(224,82,82,0.25)" strokeWidth={1} />
+      <text x={180} y={271} textAnchor="middle" fill={C.red} fontSize={10} fontWeight={700} fontFamily="'IBM Plex Mono',monospace">⚠ SINGLE POINT OF FAILURE — 5+ ROLES</text>
+
+      {/* TECH TEAM */}
+      <rect x={430} y={150} width={230} height={75} rx={8} fill="rgba(74,155,217,0.08)" stroke="rgba(74,155,217,0.35)" strokeWidth={1.5} />
+      <text x={545} y={178} textAnchor="middle" fill={C.white} fontSize={15} fontWeight={800}>Field Technicians (6)</text>
+      <text x={545} y={196} textAnchor="middle" fill={C.blue} fontSize={11} fontWeight={600} fontFamily="'IBM Plex Mono',monospace">SERVICE EXECUTION</text>
+      <text x={545} y={214} textAnchor="middle" fill={C.textMid} fontSize={10}>Repairs · Installs · Inspections</text>
+
+      {/* SUBS */}
+      <rect x={730} y={150} width={170} height={65} rx={8} fill="rgba(139,111,192,0.08)" stroke="rgba(139,111,192,0.35)" strokeWidth={1.5} />
+      <text x={815} y={178} textAnchor="middle" fill={C.white} fontSize={13} fontWeight={700}>Subs (as needed)</text>
+      <text x={815} y={196} textAnchor="middle" fill={C.purple} fontSize={10} fontWeight={600}>Overflow / specialty</text>
+
+      <Conn x1={300} y1={195} x2={430} y2={195} color="rgba(224,82,82,0.6)" label="DISPATCHES VIA TEXT" />
+
+      {/* Individual techs - row 1 */}
+      {[
+        { name: "Mike R.", spec: "Residential lead", x: 340 },
+        { name: "Jason T.", spec: "New construction", x: 500 },
+        { name: "Andre W.", spec: "Water heaters", x: 660 },
+      ].map((t, i) => (
+        <g key={i}>
+          <rect x={t.x} y={300} width={140} height={50} rx={6} fill={C.navyLight} stroke="rgba(74,155,217,0.22)" strokeWidth={1} />
+          <text x={t.x + 70} y={322} textAnchor="middle" fill={C.white} fontSize={12} fontWeight={700}>{t.name}</text>
+          <text x={t.x + 70} y={338} textAnchor="middle" fill={C.textDim} fontSize={10}>{t.spec}</text>
+        </g>
+      ))}
+      {/* Individual techs - row 2 */}
+      {[
+        { name: "Tyler S.", spec: "Drain & sewer", x: 340 },
+        { name: "Kevin B.", spec: "General service", x: 500 },
+        { name: "Chris M.", spec: "Apprentice", x: 660 },
+      ].map((t, i) => (
+        <g key={i}>
+          <rect x={t.x} y={362} width={140} height={50} rx={6} fill={C.navyLight} stroke="rgba(74,155,217,0.22)" strokeWidth={1} />
+          <text x={t.x + 70} y={384} textAnchor="middle" fill={C.white} fontSize={12} fontWeight={700}>{t.name}</text>
+          <text x={t.x + 70} y={400} textAnchor="middle" fill={C.textDim} fontSize={10}>{t.spec}</text>
+        </g>
+      ))}
+
+      <Conn x1={495} y1={225} x2={410} y2={300} color="rgba(74,155,217,0.22)" />
+      <Conn x1={545} y1={225} x2={570} y2={300} color="rgba(74,155,217,0.22)" />
+      <Conn x1={595} y1={225} x2={730} y2={300} color="rgba(74,155,217,0.22)" />
+
+      {/* DANA'S DAILY LOAD */}
+      <rect x={60} y={300} width={250} height={225} rx={8} fill="rgba(224,82,82,0.04)" stroke="rgba(224,82,82,0.15)" strokeWidth={1} />
+      <text x={80} y={326} fill={C.red} fontSize={10} fontWeight={700} letterSpacing={2} fontFamily="'IBM Plex Mono',monospace">DANA'S DAILY LOAD</text>
+      {[
+        { task: "Answer phones (~18 calls)", time: "2.5 hrs" },
+        { task: "Schedule & dispatch", time: "1.5 hrs" },
+        { task: "Enter invoices into QB", time: "1.0 hr" },
+        { task: "Chase late payments", time: "0.5 hrs" },
+        { task: "Follow up on estimates", time: "0.5 hrs" },
+        { task: "Misc admin & filing", time: "1.0 hr" },
+      ].map((t, i) => (
+        <g key={i}>
+          <text x={80} y={355 + i * 24} fill={C.textMid} fontSize={11.5}>{t.task}</text>
+          <text x={285} y={355 + i * 24} textAnchor="end" fill={C.textDim} fontSize={11.5} fontFamily="'IBM Plex Mono',monospace">{t.time}</text>
+        </g>
+      ))}
+      <line x1={80} y1={503} x2={290} y2={503} stroke="rgba(224,82,82,0.3)" strokeWidth={1} />
+      <text x={80} y={520} fill={C.red} fontSize={13} fontWeight={700} fontFamily="'IBM Plex Mono',monospace">TOTAL: 7+ HRS / DAY</text>
+    </svg>
+  </DiagramBox>
+
+  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14, marginTop: 20 }}>
+    <FindingCard severity="critical" title="Dana Is a Single Point of Failure" desc="If Dana is out sick or on vacation, scheduling, dispatch, invoicing, and customer communication all stop. No backup, no documented process." impact="Business stops when Dana stops" />
+    <FindingCard severity="warning" title="Marcus Carries Tribal Knowledge" desc="Parts inventory, pricing logic, subcontractor relationships, and job costing all live in Marcus's head. Nothing documented." impact="Scaling beyond 6 techs is impossible" />
+  </div>
+</div>
+```
+
+);
+}
+
+/* ═══════ TAB: COMMUNICATIONS ═══════ */
+
+function CommsTab() {
+return (
+<div>
+<SectionTitle sub="Every communication channel mapped — who talks to whom, how, when, and what falls through the cracks.">Communications Diagram</SectionTitle>
+
+```
+  {/* INBOUND */}
+  <DiagramBox title="Inbound Communication (Customer → Business)">
+    <svg width={920} height={230} viewBox="0 0 920 230" style={{ display: "block" }}>
+      <Node x={20} y={15} w={160} h={65} title="📞 Phone" lines={["18 calls/day → Dana"]} status="ok" />
+      <Node x={205} y={15} w={160} h={65} title="🌐 Website Form" lines={["~4/wk → Dana email"]} status="warn" />
+      <Node x={390} y={15} w={160} h={65} title="G  Google Profile" lines={["Click-to-call only"]} status="warn" />
+      <Node x={575} y={15} w={160} h={65} title="📱 Direct Text" lines={["Existing customers"]} status="info" />
+      <Node x={760} y={15} w={155} h={65} title="🗣 Walk-in / Referral" lines={["Untracked, verbal"]} status="info" />
+
+      <Conn x1={100} y1={80} x2={400} y2={140} color="rgba(46,139,87,0.55)" />
+      <Conn x1={285} y1={80} x2={420} y2={140} color="rgba(212,168,67,0.55)" dash />
+      <Conn x1={470} y1={80} x2={450} y2={140} color="rgba(212,168,67,0.55)" dash />
+      <Conn x1={655} y1={80} x2={480} y2={140} color="rgba(74,155,217,0.45)" />
+      <Conn x1={838} y1={80} x2={510} y2={140} color="rgba(74,155,217,0.45)" dash />
+
+      <rect x={340} y={135} width={240} height={55} rx={7} fill="rgba(224,82,82,0.1)" stroke="rgba(224,82,82,0.4)" strokeWidth={1.5} />
+      <text x={460} y={160} textAnchor="middle" fill={C.white} fontSize={14} fontWeight={800}>👤 Dana — All Inbound</text>
+      <text x={460} y={180} textAnchor="middle" fill={C.red} fontSize={10} fontWeight={700} fontFamily="'IBM Plex Mono',monospace">NO CRM · NO TRACKING · NO BACKUP</text>
+    </svg>
+  </DiagramBox>
+
+  {/* INTERNAL */}
+  <div style={{ marginTop: 16 }}>
+    <DiagramBox title="Internal Communication (Staff ↔ Staff)">
+      <div style={{ padding: "0 4px" }}>
+        <TableRow header cols={[{ text: "CHANNEL", w: "130px" }, { text: "METHOD", w: "170px" }, { text: "FREQUENCY", w: "120px" }, { text: "ISSUE", w: "1fr" }]} />
+        {[
+          { from: "Dana → Techs", method: "Group iMessage", freq: "10-15x / day", issue: "No individual tracking, messages get buried", color: C.red },
+          { from: "Techs → Dana", method: "Text / call when done", freq: "After each job", issue: "Inconsistent — sometimes hours late", color: C.amber },
+          { from: "Marcus → Dana", method: "Verbal, in-person", freq: "Morning + ad hoc", issue: "No written record of decisions", color: C.amber },
+          { from: "Marcus → Suppliers", method: "Phone call", freq: "2-4x / week", issue: "No purchase orders, no tracking", color: C.blue },
+          { from: "Techs → Techs", method: "Side group text", freq: "Ongoing", issue: "Coordination without leadership visibility", color: C.textDim },
+        ].map((r, i) => (
+          <TableRow key={i} cols={[
+            { text: r.from, w: "130px", bold: true, color: C.white },
+            { text: r.method, w: "170px" },
+            { text: r.freq, w: "120px", mono: true, size: 11 },
+            { text: r.issue, w: "1fr", bold: true, color: r.color, size: 11 },
+          ]} />
+        ))}
+      </div>
+    </DiagramBox>
+  </div>
+
+  {/* OUTBOUND */}
+  <div style={{ marginTop: 16 }}>
+    <DiagramBox title="Outbound Communication (Business → Customer)">
+      <div style={{ padding: "0 4px" }}>
+        <TableRow header cols={[{ text: "TYPE", w: "190px" }, { text: "METHOD", w: "210px" }, { text: "FREQUENCY", w: "120px" }, { text: "STATUS", w: "1fr" }]} />
+        {[
+          { label: "Appointment Confirmation", method: "Dana calls day-before", freq: "Daily", status: "warn", note: "Manual · Sometimes missed", color: C.amber },
+          { label: "Job Completion Update", method: "Tech calls/texts customer", freq: "Per job", status: "ok", note: "Inconsistent — depends on tech", color: C.textDim },
+          { label: "Invoice / Bill", method: "QuickBooks email, 2-5 day delay", freq: "Per job (delayed)", status: "critical", note: "Late invoices = late payments", color: C.red },
+          { label: "Payment Reminder", method: "Dana calls manually", freq: "When she remembers", status: "critical", note: "$38K outstanding — no system", color: C.red },
+          { label: "Review Request", method: "NONE", freq: "Never", status: "critical", note: "22 reviews vs. competitors' 140+", color: C.red },
+          { label: "Follow-Up / Retention", method: "NONE", freq: "Never", status: "critical", note: "Zero post-job engagement", color: C.red },
+          { label: "Marketing / Promos", method: "NONE", freq: "Never", status: "warn", note: "No email list, no social", color: C.amber },
+        ].map((r, i) => (
+          <TableRow key={i} cols={[
+            { text: r.label, w: "190px", bold: true, color: C.white, dot: r.status === "critical" ? C.red : r.status === "warn" ? C.amber : C.greenLight },
+            { text: r.method, w: "210px" },
+            { text: r.freq, w: "120px", mono: true, size: 11 },
+            { text: r.note, w: "1fr", bold: true, color: r.color, size: 11 },
+          ]} />
+        ))}
+      </div>
+    </DiagramBox>
+  </div>
+
+  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14, marginTop: 20 }}>
+    <FindingCard severity="critical" title="No Outbound Communication System" desc="4 of 7 outbound types don't exist. No review requests, no follow-up, no marketing." impact="Est. ~$38K/yr in missed repeat + referral revenue" />
+    <FindingCard severity="critical" title="Group Text Thread = Dispatch System" desc="A single iMessage group thread is the entire dispatch infrastructure. Messages get buried, no confirmation tracking." impact="Mis-dispatches, double-bookings, wasted drive time" />
+  </div>
+</div>
+```
+
+);
+}
+
+/* ═══════ TAB: OPERATIONS ═══════ */
+
+function OpsTab() {
+const steps = [
+{ step: “01”, title: “Customer Calls In”, who: “Dana”, time: “~3 min”, detail: “Takes details on sticky note. Checks paper calendar for availability.”, status: “ok”, issue: null },
+{ step: “02”, title: “Schedule Job”, who: “Dana”, time: “5-10 min”, detail: “Writes on wall calendar + whiteboard. No digital system.”, status: “critical”, issue: “Double-bookings happen 2-3x/week. No conflict detection.” },
+{ step: “03”, title: “Dispatch Tech”, who: “Dana”, time: “5-15 min”, detail: “Sends job info via group text. Hopes the right tech sees it.”, status: “critical”, issue: “No individual assignment, no confirmation, no route optimization.” },
+{ step: “04”, title: “Confirm with Customer”, who: “Dana”, time: “2-5 min ea.”, detail: “Calls each customer the day before. Some don’t answer.”, status: “warn”, issue: “No-shows cost ~$180 ea. About 3-4 per month.” },
+{ step: “05”, title: “Tech Arrives & Works”, who: “Tech”, time: “1-4 hrs”, detail: “Quality work. Handwrites a carbon-copy ticket.”, status: “ok”, issue: null },
+{ step: “06”, title: “Parts & Inventory”, who: “Tech / Marcus”, time: “Varies”, detail: “If parts needed: call Marcus → call supplier → drive to pick up or wait.”, status: “warn”, issue: “Emergency supply runs 3x/week. ~45 min lost per run.” },
+{ step: “07”, title: “Job Complete → Invoice”, who: “Tech → Dana”, time: “2-5 DAY LAG”, detail: “Carbon copy stays in truck. Brought to office end of week. Dana enters into QB.”, status: “critical”, issue: “2-5 day gap. Tickets sometimes lost entirely.” },
+{ step: “08”, title: “Payment Collection”, who: “Dana”, time: “Ongoing”, detail: “QB emails invoice. If unpaid 30+ days, Dana calls manually.”, status: “critical”, issue: “$38K outstanding. 60-day receivables growing.” },
+];
+return (
+<div>
+<SectionTitle sub="The step-by-step lifecycle of a job from first ring to final payment.">Operations & Job Lifecycle</SectionTitle>
+<DiagramBox title="Job Lifecycle — Step by Step">
+<div style={{ display: “flex”, flexDirection: “column”, gap: 4 }}>
+{steps.map((s, i) => (
+<div key={i} style={{ display: “grid”, gridTemplateColumns: “48px 1fr 130px”, gap: 16, padding: “14px 8px”, borderBottom: i < 7 ? `1px solid ${C.border}` : “none”, alignItems: “start” }}>
+<div style={{
+width: 42, height: 42, borderRadius: “50%”, display: “flex”, alignItems: “center”, justifyContent: “center”,
+fontFamily: “‘IBM Plex Mono’,monospace”, fontSize: 14, fontWeight: 700,
+color: s.status === “critical” ? C.red : s.status === “warn” ? C.amber : C.greenLight,
+background: s.status === “critical” ? “rgba(224,82,82,0.1)” : s.status === “warn” ? “rgba(212,168,67,0.1)” : “rgba(46,139,87,0.1)”,
+border: `2px solid ${s.status === "critical" ? "rgba(224,82,82,0.35)" : s.status === "warn" ? "rgba(212,168,67,0.35)" : "rgba(46,139,87,0.35)"}`,
+}}>{s.step}</div>
+<div>
+<div style={{ fontSize: 15, fontWeight: 800, color: C.white, marginBottom: 3 }}>{s.title}</div>
+<div style={{ fontSize: 12, color: C.textMid, marginBottom: s.issue ? 10 : 0 }}>{s.detail}</div>
+{s.issue && (
+<div style={{ display: “inline-block”, padding: “7px 14px”, borderRadius: 5, background: s.status === “critical” ? “rgba(224,82,82,0.08)” : “rgba(212,168,67,0.08)”, border: `1px solid ${s.status === "critical" ? "rgba(224,82,82,0.2)" : "rgba(212,168,67,0.2)"}`, fontSize: 11, fontWeight: 600, color: s.status === “critical” ? C.red : C.amber }}>⚠ {s.issue}</div>
+)}
+</div>
+<div style={{ textAlign: “right”, paddingTop: 4 }}>
+<div style={{ fontSize: 10, color: C.textDim, fontFamily: “‘IBM Plex Mono’,monospace” }}>Who: {s.who}</div>
+<div style={{ fontSize: 10, color: C.textDim, fontFamily: “‘IBM Plex Mono’,monospace”, marginTop: 3 }}>Time: {s.time}</div>
+</div>
+</div>
+))}
+</div>
+</DiagramBox>
+<div style={{ display: “grid”, gridTemplateColumns: “1fr 1fr 1fr”, gap: 14, marginTop: 20 }}>
+<FindingCard severity="critical" title="4.1 Jobs/Day vs. 5.5 Industry Avg" desc="Scheduling chaos and supply runs cost ~1.4 jobs per tech per day." impact="Est. lost capacity: ~$72K/yr" />
+<FindingCard severity="critical" title="2-5 Day Invoice Delay" desc="Handwritten tickets sit in trucks. Dana batch-enters end of week." impact="Directly feeds the $38K AR problem" />
+<FindingCard severity="warning" title="No-Shows: ~$600-700/mo" desc="Day-before confirmation is manual and sometimes missed." impact="~$7,500/yr in wasted appointments" />
+</div>
+</div>
+);
+}
+
+/* ═══════ TAB: CLIENT JOURNEY ═══════ */
+
+function ClientsTab() {
+const stages = [
+{ label: “DISCOVER”, color: C.blue, happens: [“Google search”, “Word of mouth”, “Drive-by / yard sign”], missing: [“SEO optimization”, “Review volume (22 vs 140)”, “No online booking”, “No social presence”], status: “info” },
+{ label: “CONTACT”, color: C.greenLight, happens: [“Customer calls Dana”, “Website form email”, “Texts Dana’s phone”], missing: [“No CRM / lead tracking”, “No auto-reply”, “No after-hours capture”, “Website form untracked”], status: “ok” },
+{ label: “SERVICE”, color: C.greenLight, happens: [“Tech dispatched”, “Job completed”, “Handwritten ticket”], missing: [“No real-time status”, “No ETA texts”, “No photo documentation”, “No job costing”], status: “ok” },
+{ label: “PAYMENT”, color: C.amber, happens: [“Invoice 2-5 days later”, “QB email to customer”, “Dana chases if late”], missing: [“Delayed invoicing”, “No pay-by-text link”, “No automated reminders”, “No online pay option”], status: “warn” },
+{ label: “RETAIN”, color: C.red, happens: [“Nothing.”, “No follow-up.”, “No review ask.”], missing: [“No review request”, “No follow-up text”, “No maintenance reminders”, “No referral program”], status: “critical” },
+];
+return (
+<div>
+<SectionTitle sub="The complete customer journey from first contact through (theoretical) repeat business.">Client Journey & Management</SectionTitle>
+<div style={{ display: “grid”, gridTemplateColumns: “repeat(5, 1fr)”, gap: 10, marginBottom: 20 }}>
+{stages.map((s, i) => (
+<div key={i} style={{ background: C.navyMid, border: `1px solid ${C.border}`, borderRadius: 8, padding: 16, display: “flex”, flexDirection: “column” }}>
+<div style={{ fontSize: 10, fontWeight: 700, letterSpacing: 2, color: s.color, marginBottom: 14, fontFamily: “‘IBM Plex Mono’,monospace” }}>{s.label}</div>
+<div style={{ fontSize: 9, fontWeight: 700, color: C.textDim, letterSpacing: 1.5, marginBottom: 6 }}>WHAT HAPPENS</div>
+<div style={{ marginBottom: 16 }}>
+{s.happens.map((h, j) => <div key={j} style={{ fontSize: 11, color: s.status === “critical” ? C.red : C.textMid, lineHeight: 1.8 }}>{h}</div>)}
+</div>
+<div style={{ fontSize: 9, fontWeight: 700, color: C.red, letterSpacing: 1.5, marginBottom: 6 }}>WHAT’S MISSING</div>
+<div>
+{s.missing.map((m, j) => <div key={j} style={{ fontSize: 11, color: C.textDim, lineHeight: 1.8, display: “flex”, gap: 6, alignItems: “baseline” }}><span style={{ color: i >= 3 ? C.red : C.amber, fontSize: 6 }}>●</span> {m}</div>)}
+</div>
+</div>
+))}
+</div>
+
+```
+  <div style={{ background: "rgba(224,82,82,0.06)", border: "1px solid rgba(224,82,82,0.15)", borderRadius: 8, padding: "22px 24px", display: "grid", gridTemplateColumns: "1fr 1fr", gap: 32 }}>
+    <div>
+      <div style={{ fontSize: 10, fontWeight: 700, color: C.textDim, letterSpacing: 1.5, marginBottom: 6 }}>AVG PLUMBING CUSTOMER LIFETIME VALUE</div>
+      <div style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 28, fontWeight: 700, color: C.greenLight }}>$4,200</div>
+      <div style={{ fontSize: 11, color: C.textDim, marginTop: 4 }}>Over 5 years with maintenance, emergencies, referrals</div>
+    </div>
+    <div>
+      <div style={{ fontSize: 10, fontWeight: 700, color: C.textDim, letterSpacing: 1.5, marginBottom: 6 }}>SUMMIT PLUMBING CURRENT AVG</div>
+      <div style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 28, fontWeight: 700, color: C.red }}>~$680</div>
+      <div style={{ fontSize: 11, color: C.textDim, marginTop: 4 }}>Single job, no follow-up, no repeat capture</div>
+    </div>
+  </div>
+
+  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14, marginTop: 20 }}>
+    <FindingCard severity="critical" title="Customer Lifecycle Ends at Payment" desc="After the invoice, the relationship is over. No review ask, no thank-you, no maintenance plan." impact="Customer LTV is $680 vs $4,200 potential" />
+    <FindingCard severity="warning" title="No Lead Tracking or CRM" desc="Leads arrive through 5 channels and funnel to Dana's memory and sticky notes." impact="Marketing ROI is unmeasurable" />
+  </div>
+</div>
+```
+
+);
+}
+
+/* ═══════ TAB: ACCOUNTING ═══════ */
+
+function AccountingTab() {
+return (
+<div>
+<SectionTitle sub="How money moves through the business — from job pricing to invoicing to collection to reporting.">Accounting & Financial Flow</SectionTitle>
+
+```
+  <DiagramBox title="Money In — Invoice Pipeline">
+    <svg width={920} height={130} viewBox="0 0 920 130" style={{ display: "block" }}>
+      <Node x={10} y={25} w={190} h={70} title="🔧 Job Completed" lines={["Tech writes paper ticket"]} status="ok" />
+      <Node x={240} y={25} w={195} h={70} title="📄 Ticket → Dana" lines={["End of week batch", "2-5 day delay"]} status="critical" />
+      <Node x={475} y={25} w={195} h={70} title="💻 Enter into QB" lines={["Manual data entry, ~1 hr/day"]} status="info" />
+      <Node x={710} y={25} w={200} h={70} title="📧 Invoice Emailed" lines={["QB auto-sends to customer"]} status="ok" />
+      <Conn x1={200} y1={60} x2={240} y2={60} color="rgba(224,82,82,0.6)" dash label="DELAYED" />
+      <Conn x1={435} y1={60} x2={475} y2={60} color="rgba(212,168,67,0.55)" label="MANUAL" />
+      <Conn x1={670} y1={60} x2={710} y2={60} color="rgba(46,139,87,0.55)" />
+    </svg>
+  </DiagramBox>
+
+  <div style={{ marginTop: 16 }}>
+    <DiagramBox title="Payment Collection">
+      <svg width={920} height={130} viewBox="0 0 920 130" style={{ display: "block" }}>
+        <Node x={10} y={25} w={190} h={70} title="✉️ Invoice Sent" lines={["Customer receives email"]} status="ok" />
+        <Node x={240} y={25} w={200} h={70} title="⏳ Wait for Payment" lines={["Check or bill pay only", "No text-to-pay option"]} status="warn" />
+        <Node x={480} y={25} w={200} h={70} title="📞 Dana Chases" lines={["Calls overdue manually", "No schedule, no automation"]} status="critical" />
+        <Node x={720} y={25} w={190} h={70} title="💰 $38K Outstanding" lines={["Growing. 60-day AR up."]} status="critical" />
+        <Conn x1={200} y1={60} x2={240} y2={60} color="rgba(255,255,255,0.18)" />
+        <Conn x1={440} y1={60} x2={480} y2={60} color="rgba(224,82,82,0.6)" dash label="IF UNPAID 30+ DAYS" />
+        <Conn x1={680} y1={60} x2={720} y2={60} color="rgba(224,82,82,0.6)" dash label="OFTEN STALLS" />
+      </svg>
+    </DiagramBox>
+  </div>
+
+  <div style={{ marginTop: 16 }}>
+    <DiagramBox title="Money Out — Expenses">
+      <div style={{ padding: "0 4px" }}>
+        <TableRow header cols={[{ text: "EXPENSE", w: "200px" }, { text: "METHOD", w: "190px" }, { text: "FREQUENCY", w: "110px" }, { text: "NOTE", w: "1fr" }]} />
+        {[
+          { label: "Payroll (6 techs + Dana)", method: "QuickBooks payroll", freq: "Bi-weekly", status: "ok", note: "Functioning but no job-cost tie-in" },
+          { label: "Parts & Materials", method: "Marcus orders by phone", freq: "2-4x/wk", status: "warn", note: "No POs, no tracking, no cost comparison" },
+          { label: "Vehicle / Fuel", method: "Company cards", freq: "Ongoing", status: "warn", note: "No route optimization = ~$320/mo excess" },
+          { label: "Insurance & Licenses", method: "Annual / quarterly", freq: "Scheduled", status: "ok", note: "Marcus handles directly" },
+          { label: "Emergency Supply Runs", method: "Tech or Marcus picks up", freq: "3x/week", status: "critical", note: "~$180/run in lost time + retail markup" },
+        ].map((r, i) => (
+          <TableRow key={i} cols={[
+            { text: r.label, w: "200px", bold: true, color: C.white, dot: r.status === "critical" ? C.red : r.status === "warn" ? C.amber : C.greenLight },
+            { text: r.method, w: "190px" },
+            { text: r.freq, w: "110px", mono: true, size: 11 },
+            { text: r.note, w: "1fr", bold: true, color: r.status === "critical" ? C.red : r.status === "warn" ? C.amber : C.textDim, size: 11 },
+          ]} />
+        ))}
+      </div>
+    </DiagramBox>
+  </div>
+
+  <div style={{ marginTop: 16, background: "rgba(74,155,217,0.06)", border: "1px solid rgba(74,155,217,0.15)", borderRadius: 8, padding: "18px 24px" }}>
+    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 12 }}>
+      <div><span style={{ fontSize: 12, fontWeight: 700, color: C.blue }}>QuickBooks Utilization: ~10%</span><span style={{ fontSize: 12, color: C.textMid, marginLeft: 16 }}>Using: Invoicing, payroll</span></div>
+      <span style={{ fontSize: 11, fontWeight: 600, color: C.red }}>NOT using: Job costing · P&L by service · Tech profitability · Expense tracking · POs · AR aging</span>
+    </div>
+  </div>
+
+  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14, marginTop: 20 }}>
+    <FindingCard severity="critical" title="$38K Outstanding AR with No System" desc="Invoices go out late. No automated reminders at 3, 7, 14, or 30 days." impact="$38K currently at risk" />
+    <FindingCard severity="opportunity" title="QuickBooks Is Massively Underutilized" desc="QB has job costing, AR aging, expense categorization, P&L by service type. Summit uses it to email invoices." impact="Unlock data-driven pricing and hiring decisions" impactType="gain" />
+  </div>
+</div>
+```
+
+);
+}
+
+/* ═══════ TAB: TECH ═══════ */
+
+function TechTab() {
+const tools = [
+{ name: “QuickBooks Online”, user: “Dana”, purpose: “Invoicing, payroll”, connects: “Email (invoices)”, status: “info”, note: “90% of features unused” },
+{ name: “iMessage (Group)”, user: “Dana + 6 techs”, purpose: “Dispatch, updates”, connects: “Nothing”, status: “critical”, note: “No tracking, no confirmation” },
+{ name: “Paper Calendar”, user: “Dana”, purpose: “Scheduling”, connects: “Nothing”, status: “critical”, note: “Wall-mounted. No backup.” },
+{ name: “Whiteboard”, user: “Dana + Marcus”, purpose: “Daily assignments”, connects: “Nothing”, status: “warn”, note: “Erased daily. No history.” },
+{ name: “Carbon Copy Tickets”, user: “Techs”, purpose: “Job documentation”, connects: “QB (manual, delayed)”, status: “warn”, note: “2-5 day lag to QB entry” },
+{ name: “Google Business Profile”, user: “Unmanaged”, purpose: “Online presence”, connects: “Phone only”, status: “critical”, note: “3.8★, 22 reviews, no responses” },
+{ name: “Website (basic)”, user: “Unmanaged”, purpose: “Contact form”, connects: “Dana’s email”, status: “warn”, note: “Form emails, no tracking” },
+{ name: “Company Credit Cards”, user: “Techs + Marcus”, purpose: “Fuel, purchases”, connects: “Nothing”, status: “info”, note: “No expense categorization” },
+{ name: “Personal Phones”, user: “Everyone”, purpose: “All communication”, connects: “Everything”, status: “info”, note: “Business # = Dana’s cell” },
+];
+return (
+<div>
+<SectionTitle sub="Every software, tool, and service in use — what it does, who uses it, and what it connects to.">Technology & Tools Stack</SectionTitle>
+<div style={{ display: “grid”, gridTemplateColumns: “1fr 1fr 1fr”, gap: 12, marginBottom: 20 }}>
+{tools.map((t, i) => {
+const cfg = { critical: { bg: “rgba(224,82,82,0.06)”, border: “rgba(224,82,82,0.2)”, nc: C.red }, warn: { bg: “rgba(212,168,67,0.06)”, border: “rgba(212,168,67,0.2)”, nc: C.amber }, info: { bg: “rgba(74,155,217,0.05)”, border: “rgba(74,155,217,0.15)”, nc: C.blue } }[t.status];
+return (
+<div key={i} style={{ background: cfg.bg, border: `1px solid ${cfg.border}`, borderRadius: 8, padding: 16 }}>
+<div style={{ fontSize: 13, fontWeight: 800, color: C.white, marginBottom: 8 }}>{t.name}</div>
+<div style={{ fontSize: 11, color: C.textMid, lineHeight: 1.7 }}>
+<strong>Used by:</strong> {t.user}<br />
+<strong>For:</strong> {t.purpose}<br />
+<strong>Connects to:</strong> {t.connects}
+</div>
+<div style={{ marginTop: 10, fontSize: 10, fontWeight: 700, color: cfg.nc }}>⚠ {t.note}</div>
+</div>
+);
+})}
+</div>
+
+```
+  <DiagramBox title="Integration Status">
+    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "4px 48px", padding: "0 4px" }}>
+      {[
+        { pair: "QuickBooks ↔ Calendar", status: "None", color: C.red },
+        { pair: "QuickBooks ↔ Dispatch", status: "None", color: C.red },
+        { pair: "Website ↔ Calendar", status: "None", color: C.red },
+        { pair: "Google Profile ↔ Anything", status: "None", color: C.red },
+        { pair: "Job Tickets ↔ QuickBooks", status: "Manual, 2-5 day lag", color: C.amber },
+        { pair: "Phone ↔ CRM", status: "No CRM exists", color: C.red },
+      ].map((r, i) => (
+        <div key={i} style={{ display: "flex", justifyContent: "space-between", padding: "10px 0", borderBottom: `1px solid ${C.border}` }}>
+          <span style={{ fontSize: 12, fontWeight: 600, color: C.textMid }}>{r.pair}</span>
+          <span style={{ fontSize: 12, fontWeight: 700, color: r.color, fontFamily: "'IBM Plex Mono',monospace" }}>{r.status}</span>
+        </div>
+      ))}
+    </div>
+  </DiagramBox>
+
+  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14, marginTop: 20 }}>
+    <FindingCard severity="critical" title="Zero Integration Between Any Tools" desc="Nothing talks to anything. Calendar doesn't sync with dispatch. Tickets don't flow to QB. Every handoff is manual." impact="Every process requires manual re-entry" />
+    <FindingCard severity="opportunity" title="Business Phone = Dana's Cell" desc="After-hours calls go to personal voicemail. No routing, no IVR, no capture." impact="Missed after-hours leads: est. 8-12/mo" impactType="loss" />
+  </div>
+</div>
+```
+
+);
+}
+
+/* ═══════ TAB: RECOMMENDATIONS ═══════ */
+
+function RecsTab() {
+const recs = [
+{ num: 1, priority: “IMMEDIATE”, pColor: “red”, title: “Automate Scheduling, Dispatch & Confirmations”, desc: “Replace paper calendar and group texts with a digital system. Auto-assign techs by zone. Text confirmations and reminders to customers.”, effort: “2-3 week setup”, impact: “+$72K/yr capacity”, impactSub: “Fewer double-bookings, more jobs/day, zero no-shows” },
+{ num: 2, priority: “IMMEDIATE”, pColor: “red”, title: “Automated Invoicing & Payment Follow-Up”, desc: “Digital tickets in the field → invoice auto-generates same day. Auto-reminders at 3, 7, 14, 30 days with pay-now link.”, effort: “1 week setup”, impact: “Recover $38K AR”, impactSub: “Eliminate invoice delay, reduce AR by 60%+” },
+{ num: 3, priority: “HIGH”, pColor: “amber”, title: “Review Capture System”, desc: “Auto-text every completed job a Google review link. Goal: 100+ reviews in 6 months.”, effort: “Same-day setup”, impact: “+15-25 leads/mo”, impactSub: “22 reviews → 120+ in 6 months” },
+{ num: 4, priority: “HIGH”, pColor: “amber”, title: “Customer Follow-Up & Retention”, desc: “Post-job thank-you. 30-day check-in. Seasonal maintenance reminders. Annual touch.”, effort: “2 week setup”, impact: “+$38K/yr repeat”, impactSub: “Increase LTV from $680 → $2,000+” },
+{ num: 5, priority: “MEDIUM”, pColor: “blue”, title: “Parts & Inventory Tracking”, desc: “Simple truck-stock system with reorder alerts. Eliminate 3x/week emergency supply runs.”, effort: “2-3 week setup”, impact: “+$8K/yr saved”, impactSub: “Eliminate emergency runs & downtime” },
+{ num: 6, priority: “MEDIUM”, pColor: “blue”, title: “Dedicated Business Phone + After-Hours Capture”, desc: “Separate business number with auto-attendant. After-hours auto-reply captures leads 24/7.”, effort: “1 week setup”, impact: “+8-12 leads/mo”, impactSub: “Capture after-hours & weekend leads” },
+];
+const cm = { red: C.red, amber: C.amber, blue: C.blue };
+const bm = { red: “rgba(224,82,82,0.1)”, amber: “rgba(212,168,67,0.1)”, blue: “rgba(74,155,217,0.1)” };
+const sm = { red: “rgba(224,82,82,0.3)”, amber: “rgba(212,168,67,0.3)”, blue: “rgba(74,155,217,0.3)” };
+
+return (
+<div>
+<SectionTitle sub="Prioritized by impact and ease of implementation.">Recommendations</SectionTitle>
+<div style={{ display: “flex”, flexDirection: “column”, gap: 14 }}>
+{recs.map((r) => (
+<div key={r.num} style={{ background: C.navyMid, border: `1px solid ${C.border}`, borderRadius: 8, padding: “20px 24px”, display: “grid”, gridTemplateColumns: “50px 1fr 140px 160px”, alignItems: “center”, gap: 20 }}>
+<div style={{ width: 44, height: 44, borderRadius: “50%”, display: “flex”, alignItems: “center”, justifyContent: “center”, fontFamily: “‘IBM Plex Mono’,monospace”, fontSize: 18, fontWeight: 700, color: cm[r.pColor], background: bm[r.pColor], border: `2px solid ${sm[r.pColor]}` }}>{r.num}</div>
+<div>
+<div style={{ display: “flex”, alignItems: “center”, gap: 8, marginBottom: 4, flexWrap: “wrap” }}>
+<span style={{ fontSize: 15, fontWeight: 800, color: C.white }}>{r.title}</span>
+<Badge text={r.priority} color={r.pColor} />
+</div>
+<div style={{ fontSize: 12, color: C.textMid, lineHeight: 1.55 }}>{r.desc}</div>
+</div>
+<div style={{ textAlign: “center” }}>
+<div style={{ fontSize: 11, color: C.textDim, marginBottom: 2 }}>Effort</div>
+<div style={{ fontSize: 13, fontWeight: 700, color: C.textMid }}>{r.effort}</div>
+</div>
+<div style={{ textAlign: “right” }}>
+<div style={{ fontFamily: “‘IBM Plex Mono’,monospace”, fontSize: 15, fontWeight: 700, color: C.greenLight }}>{r.impact}</div>
+<div style={{ fontSize: 10, color: C.textDim, marginTop: 2 }}>{r.impactSub}</div>
+</div>
+</div>
+))}
+</div>
+
+```
+  <div style={{ marginTop: 24, background: "rgba(46,139,87,0.06)", border: "1px solid rgba(46,139,87,0.2)", borderRadius: 8, padding: "24px 28px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+    <div>
+      <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: 2, textTransform: "uppercase", color: C.greenLight, marginBottom: 6 }}>Total Estimated Annual Impact</div>
+      <div style={{ fontSize: 13, color: C.textMid }}>If all 6 recommendations implemented over 60-90 days</div>
+    </div>
+    <div style={{ textAlign: "right" }}>
+      <div style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 32, fontWeight: 700, color: C.greenLight }}>+$148K+/yr</div>
+      <div style={{ fontSize: 11, color: C.textDim }}>recovered revenue + new capacity + retained customers</div>
+    </div>
+  </div>
+</div>
+```
+
+);
+}
+
+/* ═══════ MAIN ═══════ */
+
+function BusinessAudit() {
+const [activeTab, setActiveTab] = useState(“overview”);
+const content = { overview: <OverviewTab />, org: <OrgTab />, comms: <CommsTab />, ops: <OpsTab />, clients: <ClientsTab />, accounting: <AccountingTab />, tech: <TechTab />, recs: <RecsTab /> };
+
+return (
+<div style={{ minHeight: “100vh”, background: “#080C14”, fontFamily: “‘DM Sans’, sans-serif”, color: C.text }}>
+<style>{`@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;800&family=Playfair+Display:wght@700;800;900&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap'); * { margin: 0; padding: 0; box-sizing: border-box; } ::-webkit-scrollbar { height: 6px; width: 6px; } ::-webkit-scrollbar-track { background: rgba(255,255,255,0.03); } ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 3px; }`}</style>
+
+```
+  <div style={{ background: `linear-gradient(135deg, ${C.navy} 0%, ${C.navyMid} 100%)`, borderBottom: "1px solid rgba(46,139,87,0.15)", padding: "32px 40px 24px", position: "relative", overflow: "hidden" }}>
+    <div style={{ position: "absolute", top: "-50%", right: "-5%", width: 500, height: 500, background: "radial-gradient(circle, rgba(46,139,87,0.1) 0%, transparent 70%)", pointerEvents: "none" }} />
+    <div style={{ position: "relative", zIndex: 1 }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 16 }}>
+        <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: 2.5, textTransform: "uppercase", color: C.greenLight }}>WorkSmart SC · Business Operations Audit</div>
+        <div style={{ fontSize: 12, color: C.textDim, fontFamily: "'IBM Plex Mono',monospace" }}>March 2026</div>
+      </div>
+      <h1 style={{ fontFamily: "'Playfair Display',serif", fontSize: 34, fontWeight: 900, color: C.white, marginBottom: 4 }}>Summit Plumbing Co.</h1>
+      <p style={{ fontSize: 14, color: C.textMid }}>Full Operations Analysis — Marcus & Dana Reeves · 6 techs, 1 office manager · ~$820K/yr · Greenville / Simpsonville SC</p>
+    </div>
+  </div>
+
+  <div style={{ background: C.navy, borderBottom: `1px solid ${C.border}`, display: "flex", overflowX: "auto", padding: "0 28px", position: "sticky", top: 0, zIndex: 10 }}>
+    {tabs.map((tab) => (
+      <button key={tab.id} onClick={() => setActiveTab(tab.id)} style={{
+        background: "none", border: "none", padding: "14px 18px", fontSize: 12, fontWeight: 700, fontFamily: "'DM Sans',sans-serif", letterSpacing: 0.5,
+        color: activeTab === tab.id ? C.greenLight : C.textDim,
+        borderBottom: activeTab === tab.id ? `2px solid ${C.green}` : "2px solid transparent",
+        cursor: "pointer", whiteSpace: "nowrap", transition: "all 0.15s",
+      }}>{tab.label}</button>
+    ))}
+  </div>
+
+  <div style={{ padding: "32px 40px 60px", maxWidth: 1080, margin: "0 auto" }}>{content[activeTab]}</div>
+
+  <div style={{ background: C.navyMid, borderTop: "1px solid rgba(46,139,87,0.15)", padding: "20px 40px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+    <span style={{ fontSize: 13, fontWeight: 700, color: C.greenLight }}>WorkSmart SC</span>
+    <span style={{ fontSize: 12, color: C.textDim }}>collin@worksmartsc.com · 864-419-4713 · worksmartsc.com</span>
+    <span style={{ fontSize: 11, color: C.textDim, fontStyle: "italic" }}>Prepared by Collin Wilson</span>
+  </div>
+</div>
+```
+
+);
+}
+
+```
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(React.createElement(BusinessAudit));
+```
+
+  </script>
+</body>
+</html>
