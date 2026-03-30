@@ -419,7 +419,75 @@ body{background:#080C14;color:var(--text);font-family:'DM Sans',sans-serif;min-h
   <h2 class="sec-title">Organizational Structure &amp; Roles</h2>
   <p class="sec-sub">Who does what, who reports to whom, and where the bottlenecks in responsibility sit.</p>
   <div class="dia-box">
-    <p style="color:var(--text-mid);font-size:13px;padding:40px 0;text-align:center">Full interactive org chart, role breakdown, and Dana's daily workload analysis available in the complete audit.</p>
+    <svg width="920" height="540" viewBox="0 0 920 540">
+      <!-- MARCUS -->
+      <rect x="350" y="20" width="220" height="75" rx="8" fill="rgba(46,139,87,0.08)" stroke="rgba(46,139,87,0.4)" stroke-width="2"/>
+      <text x="460" y="46" text-anchor="middle" fill="#fff" font-size="16" font-weight="800" font-family="'DM Sans'">Marcus Reeves</text>
+      <text x="460" y="64" text-anchor="middle" fill="#3AAF6E" font-size="11" font-weight="600" font-family="'IBM Plex Mono'">OWNER / LEAD TECH</text>
+      <text x="460" y="84" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="10">Estimates · Hiring · Complex jobs · Pricing</text>
+
+```
+  <!-- Marcus → Dana -->
+  <line x1="400" y1="95" x2="180" y2="155" stroke="rgba(255,255,255,0.22)" stroke-width="1.8"/><circle cx="180" cy="155" r="3.5" fill="rgba(255,255,255,0.22)"/>
+  <rect x="240" y="112" width="78" height="16" rx="4" fill="#0E2444" stroke="rgba(255,255,255,0.22)" stroke-width="0.8"/><text x="279" y="123" text-anchor="middle" fill="rgba(255,255,255,0.35)" font-size="8.5" font-weight="700" font-family="'IBM Plex Mono'">DELEGATES</text>
+  <!-- Marcus → Techs -->
+  <line x1="510" y1="95" x2="550" y2="155" stroke="rgba(255,255,255,0.22)" stroke-width="1.8"/><circle cx="550" cy="155" r="3.5" fill="rgba(255,255,255,0.22)"/>
+  <rect x="496" y="112" width="74" height="16" rx="4" fill="#0E2444" stroke="rgba(255,255,255,0.22)" stroke-width="0.8"/><text x="533" y="123" text-anchor="middle" fill="rgba(255,255,255,0.35)" font-size="8.5" font-weight="700" font-family="'IBM Plex Mono'">FIELD LEAD</text>
+  <!-- Marcus → Subs -->
+  <line x1="560" y1="70" x2="740" y2="155" stroke="rgba(139,111,192,0.5)" stroke-width="1.8" stroke-dasharray="6 4"/><circle cx="740" cy="155" r="3.5" fill="rgba(139,111,192,0.5)"/>
+  <rect x="630" y="100" width="52" height="16" rx="4" fill="#0E2444" stroke="rgba(139,111,192,0.5)" stroke-width="0.8"/><text x="656" y="111" text-anchor="middle" fill="rgba(139,111,192,0.5)" font-size="8.5" font-weight="700" font-family="'IBM Plex Mono'">DIRECT</text>
+
+  <!-- DANA -->
+  <rect x="60" y="150" width="240" height="90" rx="8" fill="rgba(224,82,82,0.08)" stroke="rgba(224,82,82,0.35)" stroke-width="2"/>
+  <text x="180" y="178" text-anchor="middle" fill="#fff" font-size="15" font-weight="800">Dana Reeves</text>
+  <text x="180" y="196" text-anchor="middle" fill="#E05252" font-size="11" font-weight="600" font-family="'IBM Plex Mono'">OFFICE MANAGER · OVERLOADED</text>
+  <text x="180" y="214" text-anchor="middle" fill="rgba(255,255,255,0.65)" font-size="10">Scheduling · Dispatch · Invoicing · Phones</text>
+  <text x="180" y="228" text-anchor="middle" fill="rgba(255,255,255,0.65)" font-size="10">Payment follow-up · Estimate follow-up</text>
+  <!-- Warning -->
+  <rect x="60" y="252" width="240" height="28" rx="4" fill="rgba(224,82,82,0.12)" stroke="rgba(224,82,82,0.25)" stroke-width="1"/>
+  <text x="180" y="271" text-anchor="middle" fill="#E05252" font-size="10" font-weight="700" font-family="'IBM Plex Mono'">⚠ SINGLE POINT OF FAILURE — 5+ ROLES</text>
+
+  <!-- Dana → Techs -->
+  <line x1="300" y1="195" x2="430" y2="195" stroke="rgba(224,82,82,0.6)" stroke-width="1.8"/><circle cx="430" cy="195" r="3.5" fill="rgba(224,82,82,0.6)"/>
+  <rect x="318" y="179" width="100" height="16" rx="4" fill="#0E2444" stroke="rgba(224,82,82,0.6)" stroke-width="0.8"/><text x="368" y="190" text-anchor="middle" fill="rgba(224,82,82,0.6)" font-size="7.5" font-weight="700" font-family="'IBM Plex Mono'">DISPATCHES VIA TEXT</text>
+
+  <!-- TECH TEAM -->
+  <rect x="430" y="150" width="230" height="75" rx="8" fill="rgba(74,155,217,0.08)" stroke="rgba(74,155,217,0.35)" stroke-width="1.5"/>
+  <text x="545" y="178" text-anchor="middle" fill="#fff" font-size="15" font-weight="800">Field Technicians (6)</text>
+  <text x="545" y="196" text-anchor="middle" fill="#4A9BD9" font-size="11" font-weight="600" font-family="'IBM Plex Mono'">SERVICE EXECUTION</text>
+  <text x="545" y="214" text-anchor="middle" fill="rgba(255,255,255,0.65)" font-size="10">Repairs · Installs · Inspections</text>
+
+  <!-- SUBS -->
+  <rect x="730" y="150" width="170" height="65" rx="8" fill="rgba(139,111,192,0.08)" stroke="rgba(139,111,192,0.35)" stroke-width="1.5"/>
+  <text x="815" y="178" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">Subs (as needed)</text>
+  <text x="815" y="196" text-anchor="middle" fill="#8B6FC0" font-size="10" font-weight="600">Overflow / specialty</text>
+
+  <!-- Tech team → individual techs -->
+  <line x1="495" y1="225" x2="410" y2="300" stroke="rgba(74,155,217,0.22)" stroke-width="1.5"/><line x1="545" y1="225" x2="570" y2="300" stroke="rgba(74,155,217,0.22)" stroke-width="1.5"/><line x1="595" y1="225" x2="730" y2="300" stroke="rgba(74,155,217,0.22)" stroke-width="1.5"/>
+
+  <!-- Individual techs row 1 -->
+  <rect x="340" y="300" width="140" height="50" rx="6" fill="#132D52" stroke="rgba(74,155,217,0.22)" stroke-width="1"/><text x="410" y="322" text-anchor="middle" fill="#fff" font-size="12" font-weight="700">Mike R.</text><text x="410" y="338" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="10">Residential lead</text>
+  <rect x="500" y="300" width="140" height="50" rx="6" fill="#132D52" stroke="rgba(74,155,217,0.22)" stroke-width="1"/><text x="570" y="322" text-anchor="middle" fill="#fff" font-size="12" font-weight="700">Jason T.</text><text x="570" y="338" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="10">New construction</text>
+  <rect x="660" y="300" width="140" height="50" rx="6" fill="#132D52" stroke="rgba(74,155,217,0.22)" stroke-width="1"/><text x="730" y="322" text-anchor="middle" fill="#fff" font-size="12" font-weight="700">Andre W.</text><text x="730" y="338" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="10">Water heaters</text>
+  <!-- Individual techs row 2 -->
+  <rect x="340" y="362" width="140" height="50" rx="6" fill="#132D52" stroke="rgba(74,155,217,0.22)" stroke-width="1"/><text x="410" y="384" text-anchor="middle" fill="#fff" font-size="12" font-weight="700">Tyler S.</text><text x="410" y="400" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="10">Drain &amp; sewer</text>
+  <rect x="500" y="362" width="140" height="50" rx="6" fill="#132D52" stroke="rgba(74,155,217,0.22)" stroke-width="1"/><text x="570" y="384" text-anchor="middle" fill="#fff" font-size="12" font-weight="700">Kevin B.</text><text x="570" y="400" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="10">General service</text>
+  <rect x="660" y="362" width="140" height="50" rx="6" fill="#132D52" stroke="rgba(74,155,217,0.22)" stroke-width="1"/><text x="730" y="384" text-anchor="middle" fill="#fff" font-size="12" font-weight="700">Chris M.</text><text x="730" y="400" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="10">Apprentice</text>
+
+  <!-- DANA'S DAILY LOAD -->
+  <rect x="60" y="300" width="250" height="225" rx="8" fill="rgba(224,82,82,0.04)" stroke="rgba(224,82,82,0.15)" stroke-width="1"/>
+  <text x="80" y="326" fill="#E05252" font-size="10" font-weight="700" letter-spacing="2" font-family="'IBM Plex Mono'">DANA'S DAILY LOAD</text>
+  <text x="80" y="355" fill="rgba(255,255,255,0.65)" font-size="11.5">Answer phones (~18 calls)</text><text x="285" y="355" text-anchor="end" fill="rgba(255,255,255,0.4)" font-size="11.5" font-family="'IBM Plex Mono'">2.5 hrs</text>
+  <text x="80" y="379" fill="rgba(255,255,255,0.65)" font-size="11.5">Schedule &amp; dispatch</text><text x="285" y="379" text-anchor="end" fill="rgba(255,255,255,0.4)" font-size="11.5" font-family="'IBM Plex Mono'">1.5 hrs</text>
+  <text x="80" y="403" fill="rgba(255,255,255,0.65)" font-size="11.5">Enter invoices into QB</text><text x="285" y="403" text-anchor="end" fill="rgba(255,255,255,0.4)" font-size="11.5" font-family="'IBM Plex Mono'">1.0 hr</text>
+  <text x="80" y="427" fill="rgba(255,255,255,0.65)" font-size="11.5">Chase late payments</text><text x="285" y="427" text-anchor="end" fill="rgba(255,255,255,0.4)" font-size="11.5" font-family="'IBM Plex Mono'">0.5 hrs</text>
+  <text x="80" y="451" fill="rgba(255,255,255,0.65)" font-size="11.5">Follow up on estimates</text><text x="285" y="451" text-anchor="end" fill="rgba(255,255,255,0.4)" font-size="11.5" font-family="'IBM Plex Mono'">0.5 hrs</text>
+  <text x="80" y="475" fill="rgba(255,255,255,0.65)" font-size="11.5">Misc admin &amp; filing</text><text x="285" y="475" text-anchor="end" fill="rgba(255,255,255,0.4)" font-size="11.5" font-family="'IBM Plex Mono'">1.0 hr</text>
+  <line x1="80" y1="493" x2="290" y2="493" stroke="rgba(224,82,82,0.3)" stroke-width="1"/>
+  <text x="80" y="513" fill="#E05252" font-size="13" font-weight="700" font-family="'IBM Plex Mono'">TOTAL: 7+ HRS / DAY</text>
+</svg>
+```
+
   </div>
   <div class="findings-grid">
     <div class="finding critical"><div class="finding-sev cr">● CRITICAL</div><h4>Dana Is a Single Point of Failure</h4><p>If Dana is out, scheduling, dispatch, invoicing, and customer communication all stop. No backup, no documented process.</p><div class="impact loss">Business stops when Dana stops</div></div>
@@ -432,7 +500,58 @@ body{background:#080C14;color:var(--text);font-family:'DM Sans',sans-serif;min-h
   <p class="sec-sub">Every communication channel mapped — who talks to whom, how, when, and what falls through the cracks.</p>
   <div class="dia-box">
     <div class="dia-title">Inbound · Internal · Outbound</div>
-    <p style="color:var(--text-mid);font-size:13px;padding:20px 0;text-align:center">Full inbound funnel diagram, internal communication matrix, and outbound gap analysis available in the complete audit.</p>
+    <!-- INBOUND SVG -->
+    <svg width="920" height="230" viewBox="0 0 920 230">
+      <rect x="20" y="15" width="160" height="65" rx="7" fill="rgba(46,139,87,0.08)" stroke="rgba(46,139,87,0.4)" stroke-width="1.5"/><text x="32" y="35" fill="#fff" font-size="12.5" font-weight="700" font-family="'DM Sans'">📞 Phone</text><text x="32" y="51" fill="rgba(255,255,255,0.65)" font-size="10">18 calls/day → Dana</text>
+      <rect x="205" y="15" width="160" height="65" rx="7" fill="rgba(212,168,67,0.08)" stroke="rgba(212,168,67,0.35)" stroke-width="1.5"/><text x="217" y="35" fill="#fff" font-size="12.5" font-weight="700" font-family="'DM Sans'">🌐 Website Form</text><text x="217" y="51" fill="rgba(255,255,255,0.65)" font-size="10">~4/wk → Dana email</text>
+      <rect x="390" y="15" width="160" height="65" rx="7" fill="rgba(212,168,67,0.08)" stroke="rgba(212,168,67,0.35)" stroke-width="1.5"/><text x="402" y="35" fill="#fff" font-size="12.5" font-weight="700" font-family="'DM Sans'">G  Google Profile</text><text x="402" y="51" fill="rgba(255,255,255,0.65)" font-size="10">Click-to-call only</text>
+      <rect x="575" y="15" width="160" height="65" rx="7" fill="rgba(74,155,217,0.08)" stroke="rgba(74,155,217,0.35)" stroke-width="1.5"/><text x="587" y="35" fill="#fff" font-size="12.5" font-weight="700" font-family="'DM Sans'">📱 Direct Text</text><text x="587" y="51" fill="rgba(255,255,255,0.65)" font-size="10">Existing customers</text>
+      <rect x="760" y="15" width="155" height="65" rx="7" fill="rgba(74,155,217,0.08)" stroke="rgba(74,155,217,0.35)" stroke-width="1.5"/><text x="772" y="35" fill="#fff" font-size="12.5" font-weight="700" font-family="'DM Sans'">🗣 Walk-in</text><text x="772" y="51" fill="rgba(255,255,255,0.65)" font-size="10">Untracked, verbal</text>
+      <!-- Arrows to Dana -->
+      <line x1="100" y1="80" x2="400" y2="140" stroke="rgba(46,139,87,0.55)" stroke-width="1.8"/><circle cx="400" cy="140" r="3.5" fill="rgba(46,139,87,0.55)"/>
+      <line x1="285" y1="80" x2="420" y2="140" stroke="rgba(212,168,67,0.55)" stroke-width="1.8" stroke-dasharray="6 4"/><circle cx="420" cy="140" r="3.5" fill="rgba(212,168,67,0.55)"/>
+      <line x1="470" y1="80" x2="450" y2="140" stroke="rgba(212,168,67,0.55)" stroke-width="1.8" stroke-dasharray="6 4"/><circle cx="450" cy="140" r="3.5" fill="rgba(212,168,67,0.55)"/>
+      <line x1="655" y1="80" x2="480" y2="140" stroke="rgba(74,155,217,0.45)" stroke-width="1.8"/><circle cx="480" cy="140" r="3.5" fill="rgba(74,155,217,0.45)"/>
+      <line x1="838" y1="80" x2="510" y2="140" stroke="rgba(74,155,217,0.45)" stroke-width="1.8" stroke-dasharray="6 4"/><circle cx="510" cy="140" r="3.5" fill="rgba(74,155,217,0.45)"/>
+      <!-- Dana box -->
+      <rect x="340" y="135" width="240" height="55" rx="7" fill="rgba(224,82,82,0.1)" stroke="rgba(224,82,82,0.4)" stroke-width="1.5"/>
+      <text x="460" y="160" text-anchor="middle" fill="#fff" font-size="14" font-weight="800">👤 Dana — All Inbound</text>
+      <text x="460" y="180" text-anchor="middle" fill="#E05252" font-size="10" font-weight="700" font-family="'IBM Plex Mono'">NO CRM · NO TRACKING · NO BACKUP</text>
+    </svg>
+  </div>
+
+  <!-- Internal Comms Table -->
+
+  <div class="dia-box" style="margin-top:16px">
+    <div class="dia-title">Internal Communication (Staff ↔ Staff)</div>
+    <table class="data-table">
+      <thead><tr><th>CHANNEL</th><th>METHOD</th><th>FREQUENCY</th><th>ISSUE</th></tr></thead>
+      <tbody>
+        <tr><td class="bold">Dana → Techs</td><td>Group iMessage</td><td class="mono">10-15x / day</td><td class="red">No individual tracking, messages get buried</td></tr>
+        <tr><td class="bold">Techs → Dana</td><td>Text / call when done</td><td class="mono">After each job</td><td class="amber">Inconsistent — sometimes hours late</td></tr>
+        <tr><td class="bold">Marcus → Dana</td><td>Verbal, in-person</td><td class="mono">Morning + ad hoc</td><td class="amber">No written record of decisions</td></tr>
+        <tr><td class="bold">Marcus → Suppliers</td><td>Phone call</td><td class="mono">2-4x / week</td><td class="blue">No purchase orders, no tracking</td></tr>
+        <tr><td class="bold">Techs → Techs</td><td>Side group text</td><td class="mono">Ongoing</td><td class="dim">Coordination without leadership visibility</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Outbound Comms Table -->
+
+  <div class="dia-box" style="margin-top:16px">
+    <div class="dia-title">Outbound Communication (Business → Customer)</div>
+    <table class="data-table">
+      <thead><tr><th>TYPE</th><th>METHOD</th><th>FREQUENCY</th><th>STATUS</th></tr></thead>
+      <tbody>
+        <tr><td class="bold"><span class="dot" style="background:var(--amber)"></span>Appt Confirmation</td><td>Dana calls day-before</td><td class="mono">Daily</td><td class="amber">Manual · Sometimes missed</td></tr>
+        <tr><td class="bold"><span class="dot" style="background:var(--green-light)"></span>Job Completion</td><td>Tech calls/texts customer</td><td class="mono">Per job</td><td class="dim">Inconsistent — depends on tech</td></tr>
+        <tr><td class="bold"><span class="dot" style="background:var(--red)"></span>Invoice / Bill</td><td>QuickBooks email, 2-5 day delay</td><td class="mono">Per job (delayed)</td><td class="red">Late invoices = late payments</td></tr>
+        <tr><td class="bold"><span class="dot" style="background:var(--red)"></span>Payment Reminder</td><td>Dana calls manually</td><td class="mono">When she remembers</td><td class="red">$38K outstanding — no system</td></tr>
+        <tr><td class="bold"><span class="dot" style="background:var(--red)"></span>Review Request</td><td>NONE</td><td class="mono">Never</td><td class="red">22 reviews vs. competitors' 140+</td></tr>
+        <tr><td class="bold"><span class="dot" style="background:var(--red)"></span>Follow-Up / Retention</td><td>NONE</td><td class="mono">Never</td><td class="red">Zero post-job engagement</td></tr>
+        <tr><td class="bold"><span class="dot" style="background:var(--amber)"></span>Marketing / Promos</td><td>NONE</td><td class="mono">Never</td><td class="amber">No email list, no social</td></tr>
+      </tbody>
+    </table>
   </div>
   <div class="findings-grid">
     <div class="finding critical"><div class="finding-sev cr">● CRITICAL</div><h4>No Outbound Communication System</h4><p>4 of 7 outbound types don't exist. No review requests, no follow-up, no marketing.</p><div class="impact loss">Est. ~$38K/yr in missed repeat + referral revenue</div></div>
@@ -445,7 +564,14 @@ body{background:#080C14;color:var(--text);font-family:'DM Sans',sans-serif;min-h
   <p class="sec-sub">The step-by-step lifecycle of a job from first ring to final payment.</p>
   <div class="dia-box">
     <div class="dia-title">Job Lifecycle — 8 Steps</div>
-    <p style="color:var(--text-mid);font-size:13px;padding:20px 0;text-align:center">Full 8-step process map with bottleneck callouts, time analysis, and responsibility assignments available in the complete audit.</p>
+    <div class="step-row"><div class="step-num ok">01</div><div><div class="step-title">Customer Calls In</div><div class="step-detail">Takes details on sticky note. Checks paper calendar for availability.</div></div><div class="step-meta">Who: Dana<br>Time: ~3 min</div></div>
+    <div class="step-row"><div class="step-num critical">02</div><div><div class="step-title">Schedule Job</div><div class="step-detail">Writes on wall calendar + whiteboard. No digital system.</div><div class="step-issue critical">⚠ Double-bookings happen 2-3x/week. No conflict detection.</div></div><div class="step-meta">Who: Dana<br>Time: 5-10 min</div></div>
+    <div class="step-row"><div class="step-num critical">03</div><div><div class="step-title">Dispatch Tech</div><div class="step-detail">Sends job info via group text. Hopes the right tech sees it.</div><div class="step-issue critical">⚠ No individual assignment, no confirmation, no route optimization.</div></div><div class="step-meta">Who: Dana<br>Time: 5-15 min</div></div>
+    <div class="step-row"><div class="step-num warn">04</div><div><div class="step-title">Confirm with Customer</div><div class="step-detail">Calls each customer the day before. Some don't answer.</div><div class="step-issue warn">⚠ No-shows cost ~$180 ea. About 3-4 per month.</div></div><div class="step-meta">Who: Dana<br>Time: 2-5 min ea.</div></div>
+    <div class="step-row"><div class="step-num ok">05</div><div><div class="step-title">Tech Arrives &amp; Works</div><div class="step-detail">Quality work. Handwrites a carbon-copy ticket.</div></div><div class="step-meta">Who: Tech<br>Time: 1-4 hrs</div></div>
+    <div class="step-row"><div class="step-num warn">06</div><div><div class="step-title">Parts &amp; Inventory</div><div class="step-detail">If parts needed: call Marcus → call supplier → drive to pick up or wait.</div><div class="step-issue warn">⚠ Emergency supply runs 3x/week. ~45 min lost per run.</div></div><div class="step-meta">Who: Tech / Marcus<br>Time: Varies</div></div>
+    <div class="step-row"><div class="step-num critical">07</div><div><div class="step-title">Job Complete → Invoice</div><div class="step-detail">Carbon copy stays in truck. Brought to office end of week. Dana enters into QB.</div><div class="step-issue critical">⚠ 2-5 day gap. Tickets sometimes lost entirely.</div></div><div class="step-meta">Who: Tech → Dana<br>Time: 2-5 DAY LAG</div></div>
+    <div class="step-row"><div class="step-num critical">08</div><div><div class="step-title">Payment Collection</div><div class="step-detail">QB emails invoice. If unpaid 30+ days, Dana calls manually.</div><div class="step-issue critical">⚠ $38K outstanding. 60-day receivables growing.</div></div><div class="step-meta">Who: Dana<br>Time: Ongoing</div></div>
   </div>
   <div class="findings-grid tri">
     <div class="finding critical"><div class="finding-sev cr">● CRITICAL</div><h4>4.1 Jobs/Day vs. 5.5 Industry Avg</h4><p>Scheduling chaos and supply runs cost ~1.4 jobs per tech per day.</p><div class="impact loss">Est. lost capacity: ~$72K/yr</div></div>
