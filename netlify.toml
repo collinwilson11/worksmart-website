@@ -1,8 +1,5 @@
-[functions]
-  node_bundler = "esbuild"
-
 [build]
-  publish = "."
+  command = "next build"
 
-[context.production.environment]
-  NODE_VERSION = "18"
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
